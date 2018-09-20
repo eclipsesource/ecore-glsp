@@ -1,0 +1,123 @@
+/*
+ * Copyright (C) 2017 TypeFox and others.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ */
+ svg {
+    margin-top: 15px;
+    width: 100%;
+    height: 500px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #bbb;
+}
+
+.sprotty-graph {
+    font-size: 15pt;
+}
+
+.sprotty-node {
+    fill: #cdc;
+    stroke: #152;
+    stroke-width: 0;
+    font-weight: bold;
+}
+
+.sprotty-node.selected {
+    stroke-width: 5;
+}
+
+.sprotty-node.mouseover:not(.selected) {
+    stroke-width: 3;
+}
+
+.sprotty-comp {
+    line-height: 3px;
+    font-weight: normal;
+    text-align: left;
+}
+
+.sprotty-label {
+    stroke-width: 0;
+    fill: #000;
+    font-weight: inherit;
+    text-align: inherit;
+    font-size: 100%;
+}
+
+.sprotty-label.heading {
+    font-weight: bold;
+}
+
+.sprotty-icon {
+    fill: #153;
+    stroke-width: 0;
+}
+
+.sprotty-label.icon {
+    fill: #fff;
+}
+
+.sprotty-button {
+    fill: #152;
+    stroke-width: 0;
+}
+
+.sprotty-edge {
+    fill: none;
+    stroke: #488;
+    stroke-width: 2px;
+}
+.sprotty-edge.composition, .sprotty-edge.inheritance  {
+    fill: #fff;
+}
+.sprotty-edge.aggregation {
+    fill: #fff;
+}
+
+.sprotty-edge.selected {
+    stroke: #844;
+    stroke-width: 4px;
+}
+
+.sprotty-edge.mouseover:not(.selected) {
+    stroke-width: 3px;
+}
+
+.sprotty-edge > .sprotty-routing-handle {
+    r: 7px;
+    fill: #884;
+    stroke: none;
+    z-index: 1000;
+}
+
+.sprotty-edge > .sprotty-routing-handle[data-kind='line'] {
+    opacity: 0.35;
+}
+
+.sprotty-edge > .sprotty-routing-handle.selected {
+    fill: #66a;
+}
+
+.sprotty-edge > .sprotty-routing-handle.mouseover {
+    stroke: #112;
+    stroke-width: 1;
+}
+
+.sprotty-missing {
+    stroke-width: 1;
+    stroke: #f00;
+    fill: #f00;
+    font-size: 14pt;
+    text-anchor: middle;
+}
+
+.sprotty-popup-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.sprotty-popup-body > p {
+    margin-bottom: 2px;
+}

@@ -1,0 +1,32 @@
+{
+  "name": "sprotty-ecore",
+  "version": "0.1.0",
+  "description": "sprotty diagrams for Ecore",
+  "author": "EclipseSource Muenchen GmbH",
+  "license": "Apache-2.0",
+  "keywords": [
+    "sprotty",
+    "workflow",
+    "diagram"
+  ],
+  "dependencies": {
+    "glsp-sprotty": "latest"
+  },
+  "devDependencies": {
+    "rimraf": "latest",
+    "typescript": "^2.9.2"
+  },
+  "scripts": {
+    "prepare": "yarn run clean && yarn run build",
+    "clean": "rimraf lib",
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "files": [
+    "lib",
+    "src",
+    "build",
+    "css",
+    "icons"
+  ]
+}

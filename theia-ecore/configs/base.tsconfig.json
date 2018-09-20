@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+        "skipLibCheck": true,
+        "declaration": true,
+        "declarationMap": true,
+        "noImplicitAny": false,
+        "noEmitOnError": false,
+        "noImplicitThis": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "strictNullChecks": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "downlevelIteration": true,
+        "skipLibCheck": true,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "target": "es5",
+        "jsx": "react",
+        "lib": [
+            "es6",
+            "dom"
+        ],
+        "types": [
+            "node", "reflect-metadata"
+        ],
+        "typeRoots": [
+            "node_modules/@types", "typings"
+        ],
+        "sourceMap": true
+    }
+}
