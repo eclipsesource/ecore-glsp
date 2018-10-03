@@ -23,9 +23,8 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 import com.eclipsesource.glsp.api.action.kind.RequestModelAction;
-import com.eclipsesource.glsp.api.factory.FileBasedModelFactory;
 import com.eclipsesource.glsp.api.factory.ModelFactory;
-import com.eclipsesource.glsp.api.utils.InitalRequestOptions;
+import com.eclipsesource.glsp.api.utils.ModelOptions;
 import com.eclipsesource.glsp.ecore.model.ClassNode;
 import com.eclipsesource.glsp.ecore.model.EcoreEdge;
 import com.eclipsesource.glsp.ecore.model.Icon;
@@ -45,13 +44,13 @@ import io.typefox.sprotty.api.SNode;
 
 public class EcoreModelFactory implements ModelFactory {
 
-	private static Logger LOGGER = Logger.getLogger(FileBasedModelFactory.class);
+	private static Logger LOGGER = Logger.getLogger(EcoreModelFactory.class);
 
 	private static final String FILE_PREFIX = "file://";
 
 	@Override
 	public SModelRoot loadModel(RequestModelAction action) {
-		String sourceURI = action.getOptions().get(InitalRequestOptions.SOURCE_URI);
+		String sourceURI = action.getOptions().get(ModelOptions.SOURCE_URI);
 		SGraph result = new SGraph();
 		result.setId("graph");
 		result.setType("graph");

@@ -15,12 +15,12 @@ import com.eclipsesource.glsp.api.action.kind.CollapseExpandAllAction;
 import com.eclipsesource.glsp.api.action.kind.OpenAction;
 import com.eclipsesource.glsp.api.action.kind.SelectAction;
 import com.eclipsesource.glsp.api.action.kind.SelectAllAction;
-import com.eclipsesource.glsp.api.listener.GraphicalModelExpansionListener;
-import com.eclipsesource.glsp.api.listener.GraphicalModelSelectionListener;
-import com.eclipsesource.glsp.api.listener.ModelElementOpenListener;
+import com.eclipsesource.glsp.api.model.ModelElementOpenListener;
+import com.eclipsesource.glsp.api.model.ModelExpansionListener;
+import com.eclipsesource.glsp.api.model.ModelSelectionListener;
 
 public class EcoreServerListener
-		implements GraphicalModelSelectionListener, GraphicalModelExpansionListener, ModelElementOpenListener {
+		implements ModelSelectionListener, ModelExpansionListener, ModelElementOpenListener {
 
 	@Override
 	public void elementOpened(OpenAction action) {

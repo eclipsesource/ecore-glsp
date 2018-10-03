@@ -13,6 +13,7 @@ package com.eclipsesource.glsp.ecore;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
+import org.apache.log4j.BasicConfigurator;
 import org.eclipse.elk.alg.layered.options.LayeredMetaDataProvider;
 
 import com.eclipsesource.glsp.server.ServerLauncher;
@@ -24,6 +25,7 @@ public class EcoreServerLauncher {
 
 	public static void main(String[] args) {
 		ElkLayoutEngine.initialize(new LayeredMetaDataProvider());
+		BasicConfigurator.configure();
 		ServerLauncher launcher=new ServerLauncher("localhost", 5007, new EcoreServerRuntimeModule());
 		try {
 			launcher.run();

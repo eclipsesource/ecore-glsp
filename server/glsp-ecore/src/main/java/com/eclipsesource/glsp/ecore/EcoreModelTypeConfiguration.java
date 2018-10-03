@@ -13,7 +13,7 @@ package com.eclipsesource.glsp.ecore;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.eclipsesource.glsp.api.factory.FileBasedModelFactory;
+import com.eclipsesource.glsp.api.model.ModelTypeConfiguration;
 import com.eclipsesource.glsp.ecore.model.ClassNode;
 import com.eclipsesource.glsp.ecore.model.EcoreEdge;
 import com.eclipsesource.glsp.ecore.model.Icon;
@@ -27,10 +27,10 @@ import io.typefox.sprotty.api.SGraph;
 import io.typefox.sprotty.api.SLabel;
 import io.typefox.sprotty.api.SModelElement;
 
-public class EcoreSprottyFileModelFactory extends FileBasedModelFactory {
+public class EcoreModelTypeConfiguration implements ModelTypeConfiguration {
 
 	@Override
-	protected Map<String, Class<? extends SModelElement>> getModelTypeSchema() {
+	public Map<String, Class<? extends SModelElement>> getModelTypes() {
 		return new HashMap<String, Class<? extends SModelElement>>() {
 			private static final long serialVersionUID = 1L;
 			{
@@ -60,7 +60,6 @@ public class EcoreSprottyFileModelFactory extends FileBasedModelFactory {
 				put("edge:composition", EcoreEdge.class);
 			}
 		};
-
 	}
 
 }
