@@ -12,9 +12,13 @@
     border-width: 1px;
     border-color: #bbb;
 }
+.sprotty {
+    height: 100%;
+}
 
 .sprotty-graph {
     font-size: 15pt;
+    height: 100%;
 }
 
 .sprotty-node {
