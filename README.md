@@ -3,7 +3,7 @@
 Server 
 * Build:
   * cd server/glsp-ecore
-  * mvn install
+  * mvn install -U
 
 * Run:
   * 
