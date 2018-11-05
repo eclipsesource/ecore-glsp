@@ -13,14 +13,18 @@
     "glsp-sprotty": "latest"
   },
   "devDependencies": {
+    "css-loader": "^1.0.1",
     "rimraf": "latest",
-    "typescript": "^2.9.2"
+    "ts-loader": "^5.3.0",
+    "typescript": "^2.9.2",
+    "webpack": "^4.23.1"
   },
   "scripts": {
     "prepare": "yarn run clean && yarn run build",
     "clean": "rimraf lib",
     "build": "tsc",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "bundle": "webpack --progress --config ./configs/webpack.config.js"
   },
   "files": [
     "lib",
