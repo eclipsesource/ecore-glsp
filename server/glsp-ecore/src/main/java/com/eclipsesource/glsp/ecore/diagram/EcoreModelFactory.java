@@ -50,7 +50,12 @@ public class EcoreModelFactory implements ModelFactory {
 
 	@Override
 	public SModelRoot loadModel(RequestModelAction action) {
-		String sourceURI = action.getOptions().get(ModelOptions.SOURCE_URI);
+		ResourceSet resourceSet = new ResourceSetImpl();
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
+		return loadModel(resourceSet, action.getOptions().get(ModelOptions.SOURCE_URI));
+	}
+
+	public SModelRoot loadModel(ResourceSet resourceSet, String sourceURI) {
 		SGraph result = new SGraph();
 		result.setId("graph");
 		result.setType("graph");
@@ -59,10 +64,8 @@ public class EcoreModelFactory implements ModelFactory {
 			sourceURI = sourceURI.substring(0, sourceURI.lastIndexOf('.')) + ".ecore";
 			File modelFile = convertToFile(sourceURI);
 			if (modelFile != null && modelFile.exists()) {
-				ResourceSet rs = new ResourceSetImpl();
-				rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
 				EcorePackage.eINSTANCE.eClass();
-				Resource resource = rs.createResource(URI.createURI(modelFile.getPath()));
+				Resource resource = resourceSet.createResource(URI.createURI(modelFile.getPath()));
 				resource.load(null);
 				EObject eObject = resource.getContents().get(0);
 				EPackage ePackage = (EPackage) eObject;
