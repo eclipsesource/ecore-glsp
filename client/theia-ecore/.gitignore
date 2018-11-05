@@ -4,5 +4,3 @@ lib
 *.log
 *-app/*
 !*-app/package.json
-.idea
-*.iml

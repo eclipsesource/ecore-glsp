@@ -13,7 +13,7 @@ package com.eclipsesource.glsp.ecore;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.eclipsesource.glsp.api.operations.OperationHandler;
+import com.eclipsesource.glsp.api.handler.OperationHandler;
 import com.eclipsesource.glsp.api.provider.OperationHandlerProvider;
 import com.eclipsesource.glsp.server.operationhandler.DeleteHandler;
 import com.eclipsesource.glsp.server.operationhandler.MoveNodeHandler;
@@ -24,17 +24,9 @@ public class EcoreOperationHandlerProvider implements OperationHandlerProvider {
 	Set<OperationHandler> operationHandlers = new HashSet<>();
 
 	@Override
-	public Set<OperationHandler> getOperationHandlers() {
-//		operationHandlers.add(new CreateAutomatedTaskHandler());
-//		operationHandlers.add(new CreateManualTaskHandler());
-//		operationHandlers.add(new CreateDecisionNodeHandler());
-//		operationHandlers.add(new CreateMergeNodeHandler());
-//		operationHandlers.add(new CreateWeightedEdgeHandler());
-//		operationHandlers.add(new CreateEdgeHandler());
-//		operationHandlers.add(new DeleteWorkflowElementHandler());
+	public Set<OperationHandler> getHandlers() {
 		operationHandlers.add(new MoveNodeHandler());
 		operationHandlers.add(new DeleteHandler());
 		return operationHandlers;
 	}
-
 }
