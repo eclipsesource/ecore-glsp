@@ -5,7 +5,42 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { boundsModule, buttonModule, configureModelElement, configureViewerOptions, ConsoleLogger, defaultModule, edgeEditModule, ExpandButtonView, expandModule, exportModule, fadeModule, hoverModule, HtmlRoot, HtmlRootView, LogLevel, moveModule, PolylineEdgeView, PreRenderedElement, PreRenderedView, SButton, SCompartment, SCompartmentView, SEdge, selectModule, SGraph, SGraphView, SLabel, SLabelView, SRoutingHandle, SRoutingHandleView, TYPES, undoRedoModule, viewportModule } from "glsp-sprotty/lib";
+import { 
+    boundsModule, 
+    buttonModule, 
+    configureModelElement, 
+    configureViewerOptions, 
+    ConsoleLogger, 
+    defaultModule, 
+    edgeEditModule, 
+    ExpandButtonView, 
+    expandModule, 
+    exportModule, 
+    fadeModule, 
+    hoverModule, 
+    HtmlRoot, 
+    HtmlRootView, 
+    LogLevel, 
+    moveModule, 
+    PolylineEdgeView, 
+    PreRenderedElement, 
+    PreRenderedView, 
+    SButton, 
+    SCompartment, 
+    SCompartmentView, 
+    SEdge, 
+    selectModule, 
+    SGraph, 
+    SGraphView, 
+    SLabel, 
+    SLabelView, 
+    SRoutingHandle, 
+    SRoutingHandleView, 
+    TYPES, 
+    undoRedoModule, 
+    viewportModule, 
+    LocalModelSource 
+} from "glsp-sprotty/lib";
 import { Container, ContainerModule } from "inversify";
 import { ClassNode, Icon, Link } from "./model";
 import { AggregationEdgeView, ArrowEdgeView, ClassNodeView, CompositionEdgeView, IconView, InheritanceEdgeView, LinkView } from "./views";
@@ -38,6 +73,7 @@ export default (containerId: string) => {
             needsClientLayout: true,
             baseDiv: containerId
         });
+        bind('EcoreDiagramModelSource').to(LocalModelSource).inSingletonScope();
     });
 
     const container = new Container();

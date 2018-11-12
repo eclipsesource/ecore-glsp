@@ -1,6 +1,5 @@
 package com.eclipsesource.glsp.ecore.diagram;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,28 +45,25 @@ public class EcoreModelFactory implements ModelFactory {
 
 	private static Logger LOGGER = Logger.getLogger(EcoreModelFactory.class);
 
-	private static final String FILE_PREFIX = "file://";
-
 	@Override
 	public SModelRoot loadModel(RequestModelAction action) {
-		String sourceURI = action.getOptions().get(ModelOptions.SOURCE_URI);
+		ResourceSet resourceSet = new ResourceSetImpl();
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
+		return loadModel(resourceSet, URI.createURI(action.getOptions().get(ModelOptions.SOURCE_URI)));
+	}
+
+	public SModelRoot loadModel(ResourceSet resourceSet, URI sourceURI) {
 		SGraph result = new SGraph();
 		result.setId("graph");
 		result.setType("graph");
 		result.setSize(new Dimension(10000, 8000));
 		try {
-			sourceURI = sourceURI.substring(0, sourceURI.lastIndexOf('.')) + ".ecore";
-			File modelFile = convertToFile(sourceURI);
-			if (modelFile != null && modelFile.exists()) {
-				ResourceSet rs = new ResourceSetImpl();
-				rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
-				EcorePackage.eINSTANCE.eClass();
-				Resource resource = rs.createResource(URI.createURI(modelFile.getPath()));
-				resource.load(null);
-				EObject eObject = resource.getContents().get(0);
-				EPackage ePackage = (EPackage) eObject;
-				fillGraph(result, ePackage);
-			}
+			EcorePackage.eINSTANCE.eClass();
+			Resource resource = resourceSet.createResource(sourceURI);
+			resource.load(null);
+			EObject eObject = resource.getContents().get(0);
+			EPackage ePackage = (EPackage) eObject;
+			fillGraph(result, ePackage);
 		} catch (IOException e) {
 			e.printStackTrace();
 			LOGGER.error(e);
@@ -216,13 +212,4 @@ public class EcoreModelFactory implements ModelFactory {
 		classChildren.add(linkCompartment);
 		return classNode;
 	}
-
-	private File convertToFile(String sourceURI) {
-		if (sourceURI != null && sourceURI.startsWith(FILE_PREFIX)) {
-			return new File(sourceURI.replace(FILE_PREFIX, ""));
-		}
-		return null;
-
-	}
-
 }
