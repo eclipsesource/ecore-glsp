@@ -11,7 +11,7 @@
   "dependencies": {
     "@theia/core": "latest",
     "sprotty-ecore": "^0.1.0",
-    "glsp-theia-extension": "latest"
+    "glsp-theia-extension": "0.1.0-next.8f55d9d9"
   },
   "devDependencies": {
     "rimraf": "latest",

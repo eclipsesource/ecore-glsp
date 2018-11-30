@@ -10,7 +10,7 @@
     "diagram"
   ],
   "dependencies": {
-    "glsp-sprotty": "latest"
+    "glsp-sprotty": "0.1.0-next.8f55d9d9"
   },
   "devDependencies": {
     "css-loader": "^1.0.1",

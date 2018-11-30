@@ -8,7 +8,7 @@
 /** @jsx svg */
 import { svg }  from 'snabbdom-jsx';
 
-import { RenderingContext, RectangularNodeView, IView, PolylineEdgeView, SEdge, Point, toDegrees, SLabelView } from "glsp-sprotty/lib";
+import { RenderingContext, RectangularNodeView, IView, PolylineEdgeView, SEdge, Point, toDegrees, SLabelView} from "glsp-sprotty/lib";
 import { VNode } from "snabbdom/vnode";
 import { Icon, ClassNode, EdgeWithMultiplicty, Link } from './model';
 
@@ -16,7 +16,7 @@ export class ClassNodeView extends RectangularNodeView {
     render(node: ClassNode, context: RenderingContext): VNode {
         return <g class-node={true}>
             <rect class-sprotty-node={true} class-selected={node.selected} class-mouseover={node.hoverFeedback}
-                x={0} y={0}
+                x={0} y={0} rx={10} ry={10}
                 width={Math.max(0, node.bounds.width)} height={Math.max(0, node.bounds.height)} />
             {context.renderChildren(node)}
         </g>;
