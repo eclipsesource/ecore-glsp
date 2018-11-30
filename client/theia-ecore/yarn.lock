@@ -4457,17 +4457,17 @@ globby@^8.0.1:
     pify "^3.0.0"
     slash "^1.0.0"
 
-glsp-sprotty@0.4.4, glsp-sprotty@latest:
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/glsp-sprotty/-/glsp-sprotty-0.4.4.tgz#4ba9ef1b91816e9b7a7b30aac834f0933193d564"
-  integrity sha512-OmMmbPyG5GjI3Ou03MMSDHmql/JwgI654wMXFCi4jB9FyjpAKxjX1igWfYuLTrP39+1SLwL4T/aGbwhTQQ6MPg==
+glsp-sprotty@0.1.0-next.8f55d9d9, glsp-sprotty@next:
+  version "0.1.0-next.8f55d9d9"
+  resolved "https://registry.yarnpkg.com/glsp-sprotty/-/glsp-sprotty-0.1.0-next.8f55d9d9.tgz#cac61e1f8d5401bd09a8cc75aaf88fc3540b447e"
+  integrity sha512-mDWWug8URzXTGxzeAyK9TmiBvsYV0IaaliK5ORX5gP6cEZ2Ws6LxPSaNo14jl1BjgRNWhAFdFeNgNlHeEUoK/A==
   dependencies:
-    sprotty latest
+    sprotty next
 
-glsp-theia-extension@latest:
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/glsp-theia-extension/-/glsp-theia-extension-0.1.7.tgz#e78889d8569eada16db493189403be338f351a34"
-  integrity sha512-8jzbFKjfJeqmsy2VyG+bE/tcdUJGtY2zvo2jo5WQmsB/qKUGitEevw8MLF16Blv4CVHjI+WJ9mX6lCqAqqdaEg==
+glsp-theia-extension@0.1.0-next.8f55d9d9:
+  version "0.1.0-next.8f55d9d9"
+  resolved "https://registry.yarnpkg.com/glsp-theia-extension/-/glsp-theia-extension-0.1.0-next.8f55d9d9.tgz#70dfdadd5f21b81dabaf61e995edc25344194107"
+  integrity sha512-FjX+mcIXKQlR/eCAU5jCp2RlgH0L0gRd90uRJ7VGNaTVYUysBHP1KflXx+j3edswEy+04dgu2UZwfXYCwHibgg==
   dependencies:
     "@theia/core" latest
     "@theia/editor" latest
@@ -4475,8 +4475,8 @@ glsp-theia-extension@latest:
     "@theia/languages" latest
     "@theia/monaco" latest
     "@types/node" "^8.0.14"
-    glsp-sprotty "0.4.4"
-    theia-glsp "0.1.22"
+    glsp-sprotty next
+    theia-glsp "0.1.0-next.8f55d9d9"
 
 got@^7.0.0:
   version "7.1.0"
@@ -8438,10 +8438,10 @@ sprintf-js@~1.0.2:
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
   integrity sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=
 
-sprotty@latest:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/sprotty/-/sprotty-0.4.2.tgz#10d4c17932a317990f15bba25957e021218c8adb"
-  integrity sha512-G7SV8HzeT2qSpXzLTQbOVrGrlc2ZDn/6lliIu57K8+yDRCwAWtdLBWhlqu7j79msKXErOM51v3gZaNoHFBpJzA==
+sprotty@next:
+  version "0.5.0-next.3be64bd"
+  resolved "https://registry.yarnpkg.com/sprotty/-/sprotty-0.5.0-next.3be64bd.tgz#4c2a3ca05c58d85598fcd1d376918fbf44897df4"
+  integrity sha512-PWo2QeoAxk+WH6SSn05gg72h0A9ta+/yTtwmQFEGsIzu5xFOqDcp3ryAmiUoJCaCRsc8lVpD9D2efBo3xn6fOA==
   dependencies:
     file-saver "1.3.3"
     inversify "^4.3.0"
@@ -8813,17 +8813,17 @@ textextensions@2:
   resolved "https://registry.yarnpkg.com/textextensions/-/textextensions-2.2.0.tgz#38ac676151285b658654581987a0ce1a4490d286"
   integrity sha512-j5EMxnryTvKxwH2Cq+Pb43tsf6sdEgw6Pdwxk83mPaq0ToeFJt6WE4J3s5BqY7vmjlLgkgXvhtXUxo80FyBhCA==
 
-theia-glsp@0.1.22:
-  version "0.1.22"
-  resolved "https://registry.yarnpkg.com/theia-glsp/-/theia-glsp-0.1.22.tgz#616bd358007a158f1b1738f1df875baa4671db87"
-  integrity sha512-SfE33d4McDv04mRF7xQHkPkF5KU9GlmrAN4ncPsIKhwCit1PsHxl/G6CNRsVZLO8urIt/yxQHzLCV85vTDR+5w==
+theia-glsp@0.1.0-next.8f55d9d9:
+  version "0.1.0-next.8f55d9d9"
+  resolved "https://registry.yarnpkg.com/theia-glsp/-/theia-glsp-0.1.0-next.8f55d9d9.tgz#9f2d82bc0b38f5229de88498ae8b4c66a8e32b46"
+  integrity sha512-iiGfXTOducEzyZdneRK/BKlNLqq7JqMAVFu0C7PTVI5eEr6M9HJ3XcI5ekYNpN83uYX2aw1subdvtBTqciSa0g==
   dependencies:
     "@theia/core" latest
     "@theia/editor" latest
     "@theia/filesystem" latest
     "@theia/languages" latest
     "@theia/monaco" latest
-    glsp-sprotty "0.4.4"
+    sprotty next
 
 throttleit@0.0.2:
   version "0.0.2"

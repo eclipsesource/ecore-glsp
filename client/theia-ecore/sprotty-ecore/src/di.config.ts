@@ -42,7 +42,7 @@ import {
     LocalModelSource 
 } from "glsp-sprotty/lib";
 import { Container, ContainerModule } from "inversify";
-import { ClassNode, Icon, Link } from "./model";
+import { ClassNode, Icon, Link, EdgeWithMultiplicty } from "./model";
 import { AggregationEdgeView, ArrowEdgeView, ClassNodeView, CompositionEdgeView, IconView, InheritanceEdgeView, LinkView } from "./views";
 
 export default (containerId: string) => {
@@ -66,8 +66,8 @@ export default (containerId: string) => {
         configureModelElement(context, 'volatile-routing-point', SRoutingHandle, SRoutingHandleView);
         configureModelElement(context, 'edge:association', SEdge, ArrowEdgeView)
         configureModelElement(context, 'edge:inheritance', SEdge, InheritanceEdgeView)
-        configureModelElement(context, 'edge:aggregation', SEdge, AggregationEdgeView)
-        configureModelElement(context, 'edge:composition', SEdge, CompositionEdgeView)
+        configureModelElement(context, 'edge:aggregation', EdgeWithMultiplicty, AggregationEdgeView)
+        configureModelElement(context, 'edge:composition', EdgeWithMultiplicty, CompositionEdgeView)
         configureModelElement(context, 'link', Link, LinkView)
         configureViewerOptions(context, {
             needsClientLayout: true,

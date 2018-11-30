@@ -19,20 +19,21 @@
 .sprotty-graph {
     font-size: 15pt;
     height: 100%;
+    background: #fff
 }
 
-.sprotty-node {
-    fill: #cdc;
-    stroke: #152;
-    stroke-width: 0;
+.ecore-node {
+    fill: #fffcdb;
+    stroke: black;
+    stroke-width: 1;
     font-weight: bold;
 }
 
-.sprotty-node.selected {
+.ecore-node.selected {
     stroke-width: 5;
 }
 
-.sprotty-node.mouseover:not(.selected) {
+.ecore-node.mouseover:not(.selected) {
     stroke-width: 3;
 }
 
@@ -40,13 +41,15 @@
     line-height: 3px;
     font-weight: normal;
     text-align: left;
+    stroke: #000;
+    stroke-width: 2px;
 }
 
 .sprotty-label {
     stroke-width: 0;
+    width: inherit;
     fill: #000;
     font-weight: inherit;
-    text-align: inherit;
     font-size: 100%;
 }
 
@@ -55,12 +58,12 @@
 }
 
 .sprotty-icon {
-    fill: #153;
+    fill: #debe5b;
     stroke-width: 0;
 }
 
 .sprotty-label.icon {
-    fill: #fff;
+    fill: black;
 }
 
 .sprotty-button {
@@ -68,43 +71,33 @@
     stroke-width: 0;
 }
 
-.sprotty-edge {
+.ecore-edge {
     fill: none;
-    stroke: #488;
+    stroke: black;
     stroke-width: 2px;
 }
-.sprotty-edge.composition, .sprotty-edge.inheritance  {
-    fill: #fff;
-}
-.sprotty-edge.aggregation {
-    fill: #fff;
-}
 
-.sprotty-edge.selected {
-    stroke: #844;
-    stroke-width: 4px;
-}
 
-.sprotty-edge.mouseover:not(.selected) {
+.ecore-edge.mouseover:not(.selected) {
     stroke-width: 3px;
 }
 
-.sprotty-edge > .sprotty-routing-handle {
+.ecore-edge > .sprotty-routing-handle {
     r: 7px;
     fill: #884;
     stroke: none;
     z-index: 1000;
 }
 
-.sprotty-edge > .sprotty-routing-handle[data-kind='line'] {
+.ecore-edge > .sprotty-routing-handle[data-kind='line'] {
     opacity: 0.35;
 }
 
-.sprotty-edge > .sprotty-routing-handle.selected {
+.ecore-edge > .sprotty-routing-handle.selected {
     fill: #66a;
 }
 
-.sprotty-edge > .sprotty-routing-handle.mouseover {
+.ecore-edge > .sprotty-routing-handle.mouseover {
     stroke: #112;
     stroke-width: 1;
 }
@@ -125,3 +118,23 @@
 .sprotty-popup-body > p {
     margin-bottom: 2px;
 }
+.ecore-edge.inheritance  {
+    stroke: #888888;
+}
+.ecore-edge.aggregation .ecore-edge.composition {
+    stroke: black;
+}
+
+.ecore-edge.selected {
+    stroke: #844;
+    stroke-width: 4px;
+}
+.ecore-node.abstract {
+    fill: #ededed;
+}
+
+.ecore-node.enum {
+    fill: #e7f2da;
+}
+
+
