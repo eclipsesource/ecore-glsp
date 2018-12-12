@@ -89,6 +89,7 @@ public class EcoreModelFactory implements ModelFactory {
 				attributeCompartment.setId(node.getId() + "_attrs");
 				attributeCompartment.setType("comp:comp");
 				attributeCompartment.setLayout("vbox");
+				attributeCompartment.setPosition(new Point(0, 0));
 				List<SModelElement> attributes = new ArrayList<SModelElement>();
 				LayoutOptions attributeCompartementLO = new LayoutOptions();
 				attributeCompartementLO.setHAlign("left");
@@ -234,6 +235,7 @@ public class EcoreModelFactory implements ModelFactory {
 //		linkCompartment.setId(classNode.getId()+"_linkComp");
 //		linkCompartment.setType("comp:comp");
 //		linkCompartment.setLayout("vbox");
+//		linkCompartment.setPosition(new Point(0, 0));
 //		
 //		Link link = new Link();
 //		link.setId(classNode.getId()+"_link");
