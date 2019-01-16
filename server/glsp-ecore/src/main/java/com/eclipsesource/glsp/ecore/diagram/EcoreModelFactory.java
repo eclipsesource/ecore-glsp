@@ -2,7 +2,6 @@ package com.eclipsesource.glsp.ecore.diagram;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,14 +27,11 @@ import com.eclipsesource.glsp.api.utils.ModelOptions;
 import com.eclipsesource.glsp.ecore.model.ClassNode;
 import com.eclipsesource.glsp.ecore.model.EcoreEdge;
 import com.eclipsesource.glsp.ecore.model.Icon;
-import com.eclipsesource.glsp.ecore.model.Link;
 
 import io.typefox.sprotty.api.Dimension;
 import io.typefox.sprotty.api.LayoutOptions;
 import io.typefox.sprotty.api.Point;
-import io.typefox.sprotty.api.SButton;
 import io.typefox.sprotty.api.SCompartment;
-import io.typefox.sprotty.api.SEdge;
 import io.typefox.sprotty.api.SGraph;
 import io.typefox.sprotty.api.SLabel;
 import io.typefox.sprotty.api.SModelElement;
@@ -54,6 +50,10 @@ public class EcoreModelFactory implements ModelFactory {
 	}
 
 	public SModelRoot loadModel(ResourceSet resourceSet, URI sourceURI) {
+		return loadModel(resourceSet, sourceURI, true);
+	}
+
+	public SModelRoot loadModel(ResourceSet resourceSet, URI sourceURI, boolean serverSideLayout) {
 		SGraph result = new SGraph();
 		result.setId("graph");
 		result.setType("graph");
@@ -70,8 +70,10 @@ public class EcoreModelFactory implements ModelFactory {
 			LOGGER.error(e);
 		}
 
-		EcoreLayoutEngine layoutEngine = new EcoreLayoutEngine();
-		layoutEngine.layout(result);
+		if (serverSideLayout) {
+			EcoreLayoutEngine layoutEngine = new EcoreLayoutEngine();
+			layoutEngine.layout(result);
+		}
 		return result;
 	}
 
