@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.elk.core.data.ILayoutMetaDataProvider;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -37,6 +38,7 @@ import io.typefox.sprotty.api.SLabel;
 import io.typefox.sprotty.api.SModelElement;
 import io.typefox.sprotty.api.SModelRoot;
 import io.typefox.sprotty.api.SNode;
+import io.typefox.sprotty.layout.ElkLayoutEngine;
 
 public class EcoreModelFactory implements ModelFactory {
 
@@ -50,10 +52,6 @@ public class EcoreModelFactory implements ModelFactory {
 	}
 
 	public SModelRoot loadModel(ResourceSet resourceSet, URI sourceURI) {
-		return loadModel(resourceSet, sourceURI, true);
-	}
-
-	public SModelRoot loadModel(ResourceSet resourceSet, URI sourceURI, boolean serverSideLayout) {
 		SGraph result = new SGraph();
 		result.setId("graph");
 		result.setType("graph");
@@ -69,12 +67,13 @@ public class EcoreModelFactory implements ModelFactory {
 			e.printStackTrace();
 			LOGGER.error(e);
 		}
-
-		if (serverSideLayout) {
-			EcoreLayoutEngine layoutEngine = new EcoreLayoutEngine();
-			layoutEngine.layout(result);
-		}
 		return result;
+	}
+
+	public void layoutModel(SGraph result, ILayoutMetaDataProvider layoutMetaDataProvider) {
+		ElkLayoutEngine.initialize(layoutMetaDataProvider);
+		EcoreLayoutEngine layoutEngine = new EcoreLayoutEngine();
+		layoutEngine.layout(result);
 	}
 
 	private void fillGraph(SGraph sGraph, EPackage ePackage) {
