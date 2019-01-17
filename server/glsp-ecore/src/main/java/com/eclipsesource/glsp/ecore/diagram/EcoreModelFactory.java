@@ -70,7 +70,7 @@ public class EcoreModelFactory implements ModelFactory {
 		return result;
 	}
 
-	public void layoutModel(SGraph result, ILayoutMetaDataProvider layoutMetaDataProvider) {
+	public void layoutModel(SModelRoot result, ILayoutMetaDataProvider layoutMetaDataProvider) {
 		ElkLayoutEngine.initialize(layoutMetaDataProvider);
 		EcoreLayoutEngine layoutEngine = new EcoreLayoutEngine();
 		layoutEngine.layout(result);
