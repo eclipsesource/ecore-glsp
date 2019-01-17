@@ -2,11 +2,11 @@ package com.eclipsesource.glsp.ecore.diagram;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.elk.core.data.ILayoutMetaDataProvider;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -28,19 +28,17 @@ import com.eclipsesource.glsp.api.utils.ModelOptions;
 import com.eclipsesource.glsp.ecore.model.ClassNode;
 import com.eclipsesource.glsp.ecore.model.EcoreEdge;
 import com.eclipsesource.glsp.ecore.model.Icon;
-import com.eclipsesource.glsp.ecore.model.Link;
 
 import io.typefox.sprotty.api.Dimension;
 import io.typefox.sprotty.api.LayoutOptions;
 import io.typefox.sprotty.api.Point;
-import io.typefox.sprotty.api.SButton;
 import io.typefox.sprotty.api.SCompartment;
-import io.typefox.sprotty.api.SEdge;
 import io.typefox.sprotty.api.SGraph;
 import io.typefox.sprotty.api.SLabel;
 import io.typefox.sprotty.api.SModelElement;
 import io.typefox.sprotty.api.SModelRoot;
 import io.typefox.sprotty.api.SNode;
+import io.typefox.sprotty.layout.ElkLayoutEngine;
 
 public class EcoreModelFactory implements ModelFactory {
 
@@ -69,10 +67,13 @@ public class EcoreModelFactory implements ModelFactory {
 			e.printStackTrace();
 			LOGGER.error(e);
 		}
+		return result;
+	}
 
+	public void layoutModel(SModelRoot result, ILayoutMetaDataProvider layoutMetaDataProvider) {
+		ElkLayoutEngine.initialize(layoutMetaDataProvider);
 		EcoreLayoutEngine layoutEngine = new EcoreLayoutEngine();
 		layoutEngine.layout(result);
-		return result;
 	}
 
 	private void fillGraph(SGraph sGraph, EPackage ePackage) {
