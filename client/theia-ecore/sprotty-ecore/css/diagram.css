@@ -125,6 +125,14 @@
     stroke: black;
 }
 
+.ecore-edge > .diamond.aggregation {
+    fill: white;
+}
+
+.ecore-edge > .diamond.composition {
+    fill: black;
+}
+
 .ecore-edge.selected {
     stroke: #844;
     stroke-width: 4px;
