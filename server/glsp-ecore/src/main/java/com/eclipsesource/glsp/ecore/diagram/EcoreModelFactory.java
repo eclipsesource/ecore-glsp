@@ -3,7 +3,10 @@ package com.eclipsesource.glsp.ecore.diagram;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.eclipse.elk.core.data.ILayoutMetaDataProvider;
@@ -20,6 +23,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 import com.eclipsesource.glsp.api.action.kind.RequestModelAction;
@@ -51,6 +55,35 @@ public class EcoreModelFactory implements ModelFactory {
 		return loadModel(resourceSet, URI.createURI(action.getOptions().get(ModelOptions.SOURCE_URI)));
 	}
 
+	public Map<String, SModelRoot> loadModels(ResourceSet resourceSet, URI sourceURI) {
+		Map<String, SModelRoot> result = new LinkedHashMap<>();
+		EcorePackage.eINSTANCE.eClass();
+		try {
+			Resource resource = resourceSet.createResource(sourceURI);
+			resource.load(null);
+			EcoreUtil.resolveAll(resource);
+			
+			List<EPackage> ePackages = resourceSet.getResources().stream().map(r -> r.getContents().get(0)).filter(EPackage.class::isInstance).map(EPackage.class::cast).collect(Collectors.toList());
+			for(EPackage ePackage:ePackages) {
+				result.put(ePackage.getName(), loadModel(ePackage));				
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			LOGGER.error(e);
+		}
+		return result;
+	}
+
+	public SModelRoot loadModel(EPackage ePackage) {
+		SGraph result = new SGraph();
+		result.setId("graph");
+		result.setType("graph");
+		result.setSize(new Dimension(10000, 8000));
+		fillGraph(result, ePackage);
+		return result;
+	}
+
+	@Deprecated
 	public SModelRoot loadModel(ResourceSet resourceSet, URI sourceURI) {
 		SGraph result = new SGraph();
 		result.setId("graph");
@@ -77,98 +110,114 @@ public class EcoreModelFactory implements ModelFactory {
 	}
 
 	private void fillGraph(SGraph sGraph, EPackage ePackage) {
-		List<SModelElement> graphChildren = new ArrayList<SModelElement>();
-		sGraph.setChildren(graphChildren);
+		Map<String, SModelElement> graphChildren = new LinkedHashMap<String, SModelElement>();
+		
 
 		for (EClassifier eClassifier : ePackage.getEClassifiers()) {
-			SNode node = createClassifierNode(eClassifier);
-			graphChildren.add(node);
-			if (eClassifier instanceof EClass) {
-				// create attributes
-				EClass eClass = (EClass) eClassifier;
-				SCompartment attributeCompartment = new SCompartment();
-				attributeCompartment.setId(node.getId() + "_attrs");
-				attributeCompartment.setType("comp:comp");
-				attributeCompartment.setLayout("vbox");
-				attributeCompartment.setPosition(new Point(0, 0));
-				List<SModelElement> attributes = new ArrayList<SModelElement>();
-				LayoutOptions attributeCompartementLO = new LayoutOptions();
-				attributeCompartementLO.setHAlign("left");
-				attributeCompartment.setLayoutOptions(attributeCompartementLO);
-				attributeCompartment.setChildren(attributes);
-				node.getChildren().add(attributeCompartment);
-				for (EAttribute eAttribute : eClass.getEAttributes()) {
-					SLabel attribute = new SLabel();
-					attribute.setId(node.getId() + "_" + eAttribute.getName());
-					attribute.setType("label:text");
-					attribute.setText(String.format(" - %s : %s", eAttribute.getName(),
-							eAttribute.getEAttributeType().getName()));
-					attributes.add(attribute);
-				}
-				for (EReference eReference : eClass.getEReferences()) {
-					EcoreEdge reference = new EcoreEdge();
-					reference.getCssClasses().add("ecore-edge");
-					reference.setId(String.format("%s_%s_%s", eClass.getName(),
-							eReference.getEReferenceType().getName(), eReference.getName()));
-					String type = eReference.isContainment() ? "composition" : "aggregation";
-					reference.getCssClasses().add(type);
-					reference.setType("edge:" + type);
-					reference.setSourceId(eClass.getName());
-					reference.setTargetId(eReference.getEReferenceType().getName());
-					reference.setMultiplicitySource("0..1");
-					reference.setMultiplicityTarget(
-							String.format("%s..%s", eReference.getLowerBound(), eReference.getUpperBound()));
+			createClassifierNode(ePackage, graphChildren, eClassifier, false);
+		}
+		sGraph.setChildren(new ArrayList<>(graphChildren.values()));
+	}
 
-					SLabel refName = new SLabel();
-					refName.setId(reference.getId() + "_name");
-					refName.setType("label:text");
-					refName.setText(eReference.getName());
-					reference.setChildren(Collections.singletonList(refName));
+	private void createClassifierNode(EPackage ePackage, Map<String, SModelElement> graphChildren, EClassifier eClassifier, boolean foreignPackage) {
+		SNode node = createClassifierNode(eClassifier, foreignPackage);
+		graphChildren.put(node.getId(),node);
+		if (eClassifier instanceof EClass) {
+			// create attributes
+			EClass eClass = (EClass) eClassifier;
+			SCompartment attributeCompartment = new SCompartment();
+			attributeCompartment.setId(node.getId() + "_attrs");
+			attributeCompartment.setType("comp:comp");
+			attributeCompartment.setLayout("vbox");
+			attributeCompartment.setPosition(new Point(0, 0));
+			List<SModelElement> attributes = new ArrayList<SModelElement>();
+			LayoutOptions attributeCompartementLO = new LayoutOptions();
+			attributeCompartementLO.setHAlign("left");
+			attributeCompartment.setLayoutOptions(attributeCompartementLO);
+			attributeCompartment.setChildren(attributes);
+			node.getChildren().add(attributeCompartment);
+			for (EAttribute eAttribute : eClass.getEAttributes()) {
+				SLabel attribute = new SLabel();
+				attribute.setId(node.getId() + "_" + eAttribute.getName());
+				attribute.setType("label:text");
+				attribute.setText(String.format(" - %s : %s", eAttribute.getName(),
+						eAttribute.getEAttributeType().getName()));
+				attributes.add(attribute);
+			}
+			for (EReference eReference : eClass.getEReferences()) {
+				EcoreEdge reference = new EcoreEdge();
+				reference.getCssClasses().add("ecore-edge");
+				reference.setId(String.format("%s_%s_%s", eClass.getName(),
+						eReference.getEReferenceType().getName(), eReference.getName()));
+				String type = eReference.isContainment() ? "composition" : "aggregation";
+				reference.getCssClasses().add(type);
+				reference.setType("edge:" + type);
+				reference.setSourceId(eClass.getEPackage().getName()+"/"+eClass.getName());
+				reference.setTargetId(eReference.getEReferenceType().getEPackage().getName()+"/"+eReference.getEReferenceType().getName());
+				reference.setMultiplicitySource("0..1");
+				reference.setMultiplicityTarget(
+						String.format("%s..%s", eReference.getLowerBound(), eReference.getUpperBound()==-1?"*":eReference.getUpperBound()));
 
-					graphChildren.add(reference);
-				}
-				for (EClass superClass : eClass.getESuperTypes()) {
-					EcoreEdge reference = new EcoreEdge();
-					reference.getCssClasses().add("ecore-edge");
-					reference.getCssClasses().add("inheritance");
-					reference.setId(String.format("%s_%s_parent", eClass.getName(), superClass.getName()));
-					reference.setType("edge:inheritance");
-					reference.setSourceId(eClass.getName());
-					reference.setTargetId(superClass.getName());
-					graphChildren.add(reference);
-				}
-			} else if (eClassifier instanceof EEnum) {
-				// create attributes
-				EEnum eEnum = (EEnum) eClassifier;
-				SCompartment literalsCompartment = new SCompartment();
-				LayoutOptions literalsCompartmentLO = new LayoutOptions();
-				literalsCompartmentLO.setHAlign("left");
-				literalsCompartment.setLayoutOptions(literalsCompartmentLO);
-				literalsCompartment.setId(node.getId() + "_enums");
-				literalsCompartment.setType("comp:comp");
-				literalsCompartment.setLayout("vbox");
-				List<SModelElement> literals = new ArrayList<SModelElement>();
-				literalsCompartment.setChildren(literals);
-				node.getChildren().add(literalsCompartment);
+				SLabel refName = new SLabel();
+				refName.setId(reference.getId() + "_name");
+				refName.setType("label:text");
+				refName.setText(eReference.getName());
+				reference.setChildren(Collections.singletonList(refName));
 
-				for (EEnumLiteral eliteral : eEnum.getELiterals()) {
-					SLabel literal = new SLabel();
-					literal.setId(node.getId() + "_" + eliteral.getName());
-					literal.setType("label:text");
-					literal.setText(" - " + eliteral.getLiteral());
-					literals.add(literal);
+				graphChildren.put(reference.getId(),reference);
+				
+				if(eReference.getEReferenceType().getEPackage() != ePackage) {
+					EClass referencedType = eReference.getEReferenceType();
+					String referenedid = referencedType.getEPackage().getName()+"/"+referencedType.getName();
+					if(!graphChildren.containsKey(referenedid)) {
+						createClassifierNode(eReference.getEReferenceType().getEPackage(), graphChildren, referencedType, true);
+					}
 				}
+			}
+			for (EClass superClass : eClass.getESuperTypes()) {
+				EcoreEdge reference = new EcoreEdge();
+				reference.getCssClasses().add("ecore-edge");
+				reference.getCssClasses().add("inheritance");
+				reference.setId(String.format("%s_%s_parent", eClass.getName(), superClass.getName()));
+				reference.setType("edge:inheritance");
+				reference.setSourceId(eClass.getEPackage().getName()+"/"+eClass.getName());
+				reference.setTargetId(superClass.getEPackage().getName()+"/"+superClass.getName());
+				graphChildren.put(reference.getId(),reference);
+			}
+		} else if (eClassifier instanceof EEnum) {
+			// create attributes
+			EEnum eEnum = (EEnum) eClassifier;
+			SCompartment literalsCompartment = new SCompartment();
+			LayoutOptions literalsCompartmentLO = new LayoutOptions();
+			literalsCompartmentLO.setHAlign("left");
+			literalsCompartment.setLayoutOptions(literalsCompartmentLO);
+			literalsCompartment.setId(node.getId() + "_enums");
+			literalsCompartment.setType("comp:comp");
+			literalsCompartment.setLayout("vbox");
+			List<SModelElement> literals = new ArrayList<SModelElement>();
+			literalsCompartment.setChildren(literals);
+			node.getChildren().add(literalsCompartment);
+
+			for (EEnumLiteral eliteral : eEnum.getELiterals()) {
+				SLabel literal = new SLabel();
+				literal.setId(node.getId() + "_" + eliteral.getName());
+				literal.setType("label:text");
+				literal.setText(" - " + eliteral.getLiteral());
+				literals.add(literal);
 			}
 		}
 	}
 
-	private SNode createClassifierNode(EClassifier eClassifier) {
+	private SNode createClassifierNode(EClassifier eClassifier, boolean foreignPackage) {
 		ClassNode classNode = new ClassNode();
-		classNode.setId(eClassifier.getName());
+		classNode.setId(eClassifier.getEPackage().getName()+"/"+eClassifier.getName());
 		classNode.setType("node:class");
 		classNode.setLayout("vbox");
 		classNode.setExpanded(true);
 		classNode.getCssClasses().add("ecore-node");
+		if(foreignPackage) {
+			classNode.getCssClasses().add("foreign-package");
+		}
 		List<SModelElement> classChildren = new ArrayList<SModelElement>();
 		classNode.setChildren(classChildren);
 		classNode.setPosition(new Point(0, 0));
