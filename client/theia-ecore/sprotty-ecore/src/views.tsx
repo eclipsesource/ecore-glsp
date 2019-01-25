@@ -87,7 +87,7 @@ abstract class DiamondEdgeView extends PolylineEdgeView {
         const pn_1 = segments[segments.length - 2];
         const lastEdgeAngle = angle(pn_1, pn);
         return [
-            <path class-sprotty-edge={true} class-composition={this.isComposition()} class-aggregation={this.isAggregation()} d={rhombStr}
+            <path class-sprotty-edge={true} class-diamond={true} class-composition={this.isComposition()} class-aggregation={this.isAggregation()} d={rhombStr}
                 transform={`rotate(${firstEdgeAngle} ${p1.x} ${p1.y}) translate(${p1.x} ${p1.y})`} />,
             <text class-sprotty-label={true} transform={`rotate(${firstEdgeAngle} ${p1.x} ${p1.y}) translate(${p1.x + 15} ${p1.y - 5})`}>{edge.multiplicitySource}</text>,
             <text class-sprotty-label={true} transform={`rotate(${lastEdgeAngle} ${pn.x} ${pn.y}) translate(${pn.x - 15} ${pn.y - 5})`}>{edge.multiplicityTarget}</text>
