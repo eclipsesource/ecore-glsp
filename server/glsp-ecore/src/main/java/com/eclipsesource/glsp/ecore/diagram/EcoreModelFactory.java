@@ -144,45 +144,49 @@ public class EcoreModelFactory implements ModelFactory {
 						eAttribute.getEAttributeType().getName()));
 				attributes.add(attribute);
 			}
-			for (EReference eReference : eClass.getEReferences()) {
-				EcoreEdge reference = new EcoreEdge();
-				reference.getCssClasses().add("ecore-edge");
-				reference.setId(String.format("%s_%s_%s", eClass.getName(),
-						eReference.getEReferenceType().getName(), eReference.getName()));
-				String type = eReference.isContainment() ? "composition" : "aggregation";
-				reference.getCssClasses().add(type);
-				reference.setType("edge:" + type);
-				reference.setSourceId(eClass.getEPackage().getName()+"/"+eClass.getName());
-				reference.setTargetId(eReference.getEReferenceType().getEPackage().getName()+"/"+eReference.getEReferenceType().getName());
-				reference.setMultiplicitySource("0..1");
-				reference.setMultiplicityTarget(
-						String.format("%s..%s", eReference.getLowerBound(), eReference.getUpperBound()==-1?"*":eReference.getUpperBound()));
-
-				SLabel refName = new SLabel();
-				refName.setId(reference.getId() + "_name");
-				refName.setType("label:text");
-				refName.setText(eReference.getName());
-				reference.setChildren(Collections.singletonList(refName));
-
-				graphChildren.put(reference.getId(),reference);
-				
-				if(eReference.getEReferenceType().getEPackage() != ePackage) {
-					EClass referencedType = eReference.getEReferenceType();
-					String referenedid = referencedType.getEPackage().getName()+"/"+referencedType.getName();
-					if(!graphChildren.containsKey(referenedid)) {
-						createClassifierNode(eReference.getEReferenceType().getEPackage(), graphChildren, referencedType, true);
+			// we do not want to have edged from classes which are in a foreign package
+			if(!foreignPackage) {
+				for (EReference eReference : eClass.getEReferences()) {
+					EcoreEdge reference = new EcoreEdge();
+					reference.getCssClasses().add("ecore-edge");
+					reference.setId(String.format("%s_%s_%s", eClass.getName(),
+							eReference.getEReferenceType().getName(), eReference.getName()));
+					String type = eReference.isContainment() ? "composition" : "aggregation";
+					reference.getCssClasses().add(type);
+					reference.setType("edge:" + type);
+					reference.setSourceId(eClass.getEPackage().getName()+"/"+eClass.getName());
+					reference.setTargetId(eReference.getEReferenceType().getEPackage().getName()+"/"+eReference.getEReferenceType().getName());
+					reference.setMultiplicitySource("0..1");
+					reference.setMultiplicityTarget(
+							String.format("%s..%s", eReference.getLowerBound(), eReference.getUpperBound()==-1?"*":eReference.getUpperBound()));
+	
+					SLabel refName = new SLabel();
+					refName.setId(reference.getId() + "_name");
+					refName.setType("label:text");
+					refName.setText(eReference.getName());
+					reference.setChildren(Collections.singletonList(refName));
+	
+					graphChildren.put(reference.getId(),reference);
+					
+					if(eReference.getEReferenceType().getEPackage() != ePackage) {
+						EClass referencedType = eReference.getEReferenceType();
+						String referenedid = referencedType.getEPackage().getName()+"/"+referencedType.getName();
+						if(!graphChildren.containsKey(referenedid)) {
+							createClassifierNode(eReference.getEReferenceType().getEPackage(), graphChildren, referencedType, true);
+						}
 					}
 				}
-			}
-			for (EClass superClass : eClass.getESuperTypes()) {
-				EcoreEdge reference = new EcoreEdge();
-				reference.getCssClasses().add("ecore-edge");
-				reference.getCssClasses().add("inheritance");
-				reference.setId(String.format("%s_%s_parent", eClass.getName(), superClass.getName()));
-				reference.setType("edge:inheritance");
-				reference.setSourceId(eClass.getEPackage().getName()+"/"+eClass.getName());
-				reference.setTargetId(superClass.getEPackage().getName()+"/"+superClass.getName());
-				graphChildren.put(reference.getId(),reference);
+			
+				for (EClass superClass : eClass.getESuperTypes()) {
+					EcoreEdge reference = new EcoreEdge();
+					reference.getCssClasses().add("ecore-edge");
+					reference.getCssClasses().add("inheritance");
+					reference.setId(String.format("%s_%s_parent", eClass.getName(), superClass.getName()));
+					reference.setType("edge:inheritance");
+					reference.setSourceId(eClass.getEPackage().getName()+"/"+eClass.getName());
+					reference.setTargetId(superClass.getEPackage().getName()+"/"+superClass.getName());
+					graphChildren.put(reference.getId(),reference);
+				}
 			}
 		} else if (eClassifier instanceof EEnum) {
 			// create attributes
