@@ -10,11 +10,11 @@
  ******************************************************************************/
 package com.eclipsesource.glsp.ecore;
 
+import org.eclipse.sprotty.SModelElement;
+import org.eclipse.sprotty.SModelRoot;
+
 import com.eclipsesource.glsp.api.action.kind.RequestPopupModelAction;
 import com.eclipsesource.glsp.api.factory.PopupModelFactory;
-
-import io.typefox.sprotty.api.SModelElement;
-import io.typefox.sprotty.api.SModelRoot;
 
 public class EcorePopupFactory implements PopupModelFactory {
 

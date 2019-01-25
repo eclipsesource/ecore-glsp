@@ -15,9 +15,7 @@ import com.eclipsesource.glsp.api.factory.PopupModelFactory;
 import com.eclipsesource.glsp.api.model.ModelElementOpenListener;
 import com.eclipsesource.glsp.api.model.ModelExpansionListener;
 import com.eclipsesource.glsp.api.model.ModelSelectionListener;
-import com.eclipsesource.glsp.api.model.ModelTypeConfiguration;
-import com.eclipsesource.glsp.api.operations.OperationConfiguration;
-import com.eclipsesource.glsp.api.provider.OperationHandlerProvider;
+import com.eclipsesource.glsp.api.provider.ModelTypeConfigurationProvider;
 import com.eclipsesource.glsp.ecore.diagram.EcoreModelFactory;
 import com.eclipsesource.glsp.server.ServerModule;
 
@@ -27,11 +25,6 @@ public class EcoreServerRuntimeModule extends ServerModule {
 	public Class<? extends ModelFactory> bindModelFactory() {
 //		return EcoreSprottyFileModelFactory.class;
 		return EcoreModelFactory.class;
-	}
-
-	@Override
-	protected Class<? extends ModelTypeConfiguration> bindModelTypeConfiguration() {
-		return EcoreModelTypeConfiguration.class;
 	}
 
 	@Override
@@ -55,14 +48,9 @@ public class EcoreServerRuntimeModule extends ServerModule {
 	}
 
 	@Override
-	public Class<? extends OperationConfiguration> bindOperationConfiguration() {
-		return EcoreOperationConfiguration.class;
+	protected Class<? extends ModelTypeConfigurationProvider> bindModelTypesConfigurationProvider() {
+		return EcoreModelTypeConfigurationProvider.class;
 	}
 
-	@Override
-	
-	protected Class<? extends OperationHandlerProvider> bindOperatioHandlerProvider() {
-		return EcoreOperationHandlerProvider.class;
-	}
 
 }

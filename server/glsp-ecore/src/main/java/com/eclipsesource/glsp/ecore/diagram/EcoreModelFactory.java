@@ -25,6 +25,16 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.sprotty.Dimension;
+import org.eclipse.sprotty.LayoutOptions;
+import org.eclipse.sprotty.Point;
+import org.eclipse.sprotty.SCompartment;
+import org.eclipse.sprotty.SGraph;
+import org.eclipse.sprotty.SLabel;
+import org.eclipse.sprotty.SModelElement;
+import org.eclipse.sprotty.SModelRoot;
+import org.eclipse.sprotty.SNode;
+import org.eclipse.sprotty.layout.ElkLayoutEngine;
 
 import com.eclipsesource.glsp.api.action.kind.RequestModelAction;
 import com.eclipsesource.glsp.api.factory.ModelFactory;
@@ -33,16 +43,6 @@ import com.eclipsesource.glsp.ecore.model.ClassNode;
 import com.eclipsesource.glsp.ecore.model.EcoreEdge;
 import com.eclipsesource.glsp.ecore.model.Icon;
 
-import io.typefox.sprotty.api.Dimension;
-import io.typefox.sprotty.api.LayoutOptions;
-import io.typefox.sprotty.api.Point;
-import io.typefox.sprotty.api.SCompartment;
-import io.typefox.sprotty.api.SGraph;
-import io.typefox.sprotty.api.SLabel;
-import io.typefox.sprotty.api.SModelElement;
-import io.typefox.sprotty.api.SModelRoot;
-import io.typefox.sprotty.api.SNode;
-import io.typefox.sprotty.layout.ElkLayoutEngine;
 
 public class EcoreModelFactory implements ModelFactory {
 

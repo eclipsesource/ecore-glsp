@@ -10,8 +10,8 @@
  ******************************************************************************/
 package com.eclipsesource.glsp.ecore.model;
 
-import io.typefox.sprotty.api.Point;
-import io.typefox.sprotty.api.SLabel;
+import org.eclipse.sprotty.Point;
+import org.eclipse.sprotty.SLabel;
 
 public class Link extends SLabel{
 	private String target;

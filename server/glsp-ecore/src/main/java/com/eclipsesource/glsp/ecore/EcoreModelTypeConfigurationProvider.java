@@ -10,27 +10,41 @@
  ******************************************************************************/
 package com.eclipsesource.glsp.ecore;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import com.eclipsesource.glsp.api.model.ModelTypeConfiguration;
+import org.eclipse.sprotty.HtmlRoot;
+import org.eclipse.sprotty.PreRenderedElement;
+import org.eclipse.sprotty.SButton;
+import org.eclipse.sprotty.SCompartment;
+import org.eclipse.sprotty.SEdge;
+import org.eclipse.sprotty.SGraph;
+import org.eclipse.sprotty.SLabel;
+import org.eclipse.sprotty.SModelElement;
+
+import com.eclipsesource.glsp.api.provider.ModelTypeConfigurationProvider;
+import com.eclipsesource.glsp.api.types.EdgeTypeHint;
+import com.eclipsesource.glsp.api.types.NodeTypeHint;
 import com.eclipsesource.glsp.ecore.model.ClassNode;
 import com.eclipsesource.glsp.ecore.model.EcoreEdge;
 import com.eclipsesource.glsp.ecore.model.Icon;
 
-import io.typefox.sprotty.api.HtmlRoot;
-import io.typefox.sprotty.api.PreRenderedElement;
-import io.typefox.sprotty.api.SButton;
-import io.typefox.sprotty.api.SCompartment;
-import io.typefox.sprotty.api.SEdge;
-import io.typefox.sprotty.api.SGraph;
-import io.typefox.sprotty.api.SLabel;
-import io.typefox.sprotty.api.SModelElement;
-
-public class EcoreModelTypeConfiguration implements ModelTypeConfiguration {
+public class EcoreModelTypeConfigurationProvider implements ModelTypeConfigurationProvider {
 
 	@Override
-	public Map<String, Class<? extends SModelElement>> getModelTypes() {
+	public List<EdgeTypeHint> getEdgeTypeHints() {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public List<NodeTypeHint> getNodeTypeHints() {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public Map<String, Class<? extends SModelElement>> getTypeToClassMappings() {
 		return new HashMap<String, Class<? extends SModelElement>>() {
 			private static final long serialVersionUID = 1L;
 			{
@@ -43,17 +57,17 @@ public class EcoreModelTypeConfiguration implements ModelTypeConfiguration {
 				put("edge", SEdge.class);
 				put("html", HtmlRoot.class);
 				put("pre-rendered", PreRenderedElement.class);
-				
+
 				// needed?
-				put( "routing-point", SModelElement.class);
+				put("routing-point", SModelElement.class);
 				put("volatile-routing-point", SModelElement.class);
-				
+
 				// additional ui stuff
 				put("icon", Icon.class);
 				put("button:expand", SButton.class);
-				
+
 				// ecore stuff
-				put("node:class", ClassNode.class);				
+				put("node:class", ClassNode.class);
 				put("edge:association", EcoreEdge.class);
 				put("edge:inheritance", SEdge.class);
 				put("edge:aggregation", EcoreEdge.class);
