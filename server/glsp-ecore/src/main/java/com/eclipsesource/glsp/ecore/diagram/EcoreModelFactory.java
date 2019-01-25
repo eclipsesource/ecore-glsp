@@ -110,17 +110,18 @@ public class EcoreModelFactory implements ModelFactory {
 	}
 
 	private void fillGraph(SGraph sGraph, EPackage ePackage) {
-		List<SModelElement> graphChildren = new ArrayList<SModelElement>();
-		sGraph.setChildren(graphChildren);
+		Map<String, SModelElement> graphChildren = new LinkedHashMap<String, SModelElement>();
+		
 
 		for (EClassifier eClassifier : ePackage.getEClassifiers()) {
 			createClassifierNode(ePackage, graphChildren, eClassifier, false);
 		}
+		sGraph.setChildren(new ArrayList<>(graphChildren.values()));
 	}
 
-	private void createClassifierNode(EPackage ePackage, List<SModelElement> graphChildren, EClassifier eClassifier, boolean foreignPackage) {
+	private void createClassifierNode(EPackage ePackage, Map<String, SModelElement> graphChildren, EClassifier eClassifier, boolean foreignPackage) {
 		SNode node = createClassifierNode(eClassifier, foreignPackage);
-		graphChildren.add(node);
+		graphChildren.put(node.getId(),node);
 		if (eClassifier instanceof EClass) {
 			// create attributes
 			EClass eClass = (EClass) eClassifier;
@@ -163,10 +164,14 @@ public class EcoreModelFactory implements ModelFactory {
 				refName.setText(eReference.getName());
 				reference.setChildren(Collections.singletonList(refName));
 
-				graphChildren.add(reference);
+				graphChildren.put(reference.getId(),reference);
 				
 				if(eReference.getEReferenceType().getEPackage() != ePackage) {
-					createClassifierNode(eReference.getEReferenceType().getEPackage(), graphChildren, eReference.getEReferenceType(), true);
+					EClass referencedType = eReference.getEReferenceType();
+					String referenedid = referencedType.getEPackage().getName()+"/"+referencedType.getName();
+					if(!graphChildren.containsKey(referenedid)) {
+						createClassifierNode(eReference.getEReferenceType().getEPackage(), graphChildren, referencedType, true);
+					}
 				}
 			}
 			for (EClass superClass : eClass.getESuperTypes()) {
@@ -175,9 +180,9 @@ public class EcoreModelFactory implements ModelFactory {
 				reference.getCssClasses().add("inheritance");
 				reference.setId(String.format("%s_%s_parent", eClass.getName(), superClass.getName()));
 				reference.setType("edge:inheritance");
-				reference.setSourceId(eClass.getName());
-				reference.setTargetId(superClass.getName());
-				graphChildren.add(reference);
+				reference.setSourceId(eClass.getEPackage().getName()+"/"+eClass.getName());
+				reference.setTargetId(superClass.getEPackage().getName()+"/"+superClass.getName());
+				graphChildren.put(reference.getId(),reference);
 			}
 		} else if (eClassifier instanceof EEnum) {
 			// create attributes
