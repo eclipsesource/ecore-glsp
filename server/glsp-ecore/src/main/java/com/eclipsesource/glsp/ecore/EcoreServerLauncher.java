@@ -15,10 +15,9 @@ import java.util.concurrent.ExecutionException;
 
 import org.apache.log4j.BasicConfigurator;
 import org.eclipse.elk.alg.layered.options.LayeredMetaDataProvider;
+import org.eclipse.sprotty.layout.ElkLayoutEngine;
 
 import com.eclipsesource.glsp.server.ServerLauncher;
-
-import io.typefox.sprotty.layout.ElkLayoutEngine;
 
 
 public class EcoreServerLauncher {

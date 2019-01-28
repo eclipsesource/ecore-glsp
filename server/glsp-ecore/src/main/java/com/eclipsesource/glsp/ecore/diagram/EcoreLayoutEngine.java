@@ -6,16 +6,16 @@ import org.eclipse.elk.core.options.Direction;
 import org.eclipse.elk.core.options.EdgeType;
 import org.eclipse.elk.graph.ElkGraphElement;
 import org.eclipse.elk.graph.ElkShape;
+import org.eclipse.sprotty.BoundsAware;
+import org.eclipse.sprotty.SCompartment;
+import org.eclipse.sprotty.SGraph;
+import org.eclipse.sprotty.SLabel;
+import org.eclipse.sprotty.SModelElement;
+import org.eclipse.sprotty.SModelRoot;
+import org.eclipse.sprotty.SNode;
+import org.eclipse.sprotty.layout.ElkLayoutEngine;
+import org.eclipse.sprotty.layout.SprottyLayoutConfigurator;
 
-import io.typefox.sprotty.api.BoundsAware;
-import io.typefox.sprotty.api.SCompartment;
-import io.typefox.sprotty.api.SGraph;
-import io.typefox.sprotty.api.SLabel;
-import io.typefox.sprotty.api.SModelElement;
-import io.typefox.sprotty.api.SModelRoot;
-import io.typefox.sprotty.api.SNode;
-import io.typefox.sprotty.layout.ElkLayoutEngine;
-import io.typefox.sprotty.layout.SprottyLayoutConfigurator;
 
 public class EcoreLayoutEngine extends ElkLayoutEngine {
 
@@ -44,8 +44,7 @@ public class EcoreLayoutEngine extends ElkLayoutEngine {
 			
 			
 			configurator.configureByType("node:class")
-			.setProperty(CoreOptions.DIRECTION, Direction.DOWN)
-					;
+			.setProperty(CoreOptions.DIRECTION, Direction.DOWN)	;
 			this.layout((SGraph) root, configurator);
 		}
 	}

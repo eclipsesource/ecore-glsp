@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.eclipsesource.glsp</groupId>
 	<artifactId>glsp-ecore</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<repositories>
 		<repository>
 			<id>sonatype</id>
@@ -23,10 +23,10 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
-		<dependency>
-			<groupId>io.typefox.sprotty</groupId>
-			<artifactId>diagram-layout-engine</artifactId>
-			<version>0.4.0</version>
+	<dependency>
+			<groupId>org.eclipse.sprotty</groupId>
+			<artifactId>org.eclipse.sprotty.layout</artifactId>
+			<version>0.5.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.elk</groupId>
@@ -46,12 +46,12 @@
 		<dependency>
 			<groupId>com.eclipsesource.glsp</groupId>
 			<artifactId>glsp-api</artifactId>
-			<version>0.0.1-20181127.135335-15</version>
+			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.eclipsesource.glsp</groupId>
 			<artifactId>glsp-server</artifactId>
-			<version>0.0.1-20181127.135338-16</version>
+			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.emf</groupId>
