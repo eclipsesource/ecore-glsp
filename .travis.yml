@@ -6,4 +6,4 @@ matrix:
         - cd $TRAVIS_BUILD_DIR/server/glsp-ecore && mvn clean verify
     - language: node_js
       script:
-        - cd $TRAVIS_BUILD_DIR/client/theia-ecore && yarn install
+        - cd $TRAVIS_BUILD_DIR/client/theia-ecore && yarn start
