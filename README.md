@@ -1,4 +1,5 @@
 # ecore-glsp
+[![Build Status](https://travis-ci.org/eclipsesource/ecore-glsp.svg?branch=master)](https://travis-ci.org/eclipsesource/ecore-glsp)
 
 Server 
 * Build:
@@ -7,3 +8,7 @@ Server
 
 * Run:
   * 
+
+Client
+ * cd client/theia-ecore
+ * yarn start
