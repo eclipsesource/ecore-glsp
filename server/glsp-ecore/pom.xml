@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.eclipsesource.glsp</groupId>
 	<artifactId>glsp-ecore</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<repositories>
 		<repository>
 			<id>sonatype</id>
@@ -46,12 +46,12 @@
 		<dependency>
 			<groupId>com.eclipsesource.glsp</groupId>
 			<artifactId>glsp-api</artifactId>
-			<version>0.0.1-20190121.121359-22</version>
+			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.eclipsesource.glsp</groupId>
 			<artifactId>glsp-server</artifactId>
-			<version>0.0.1-20190121.121401-23</version>
+			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.emf</groupId>
