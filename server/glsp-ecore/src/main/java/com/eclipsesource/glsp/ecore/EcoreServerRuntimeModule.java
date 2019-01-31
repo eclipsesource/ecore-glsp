@@ -10,12 +10,15 @@
  ******************************************************************************/
 package com.eclipsesource.glsp.ecore;
 
+import org.eclipse.sprotty.ILayoutEngine;
+
 import com.eclipsesource.glsp.api.factory.ModelFactory;
 import com.eclipsesource.glsp.api.factory.PopupModelFactory;
 import com.eclipsesource.glsp.api.model.ModelElementOpenListener;
 import com.eclipsesource.glsp.api.model.ModelExpansionListener;
 import com.eclipsesource.glsp.api.model.ModelSelectionListener;
 import com.eclipsesource.glsp.api.provider.ModelTypeConfigurationProvider;
+import com.eclipsesource.glsp.ecore.diagram.EcoreLayoutEngine;
 import com.eclipsesource.glsp.ecore.diagram.EcoreModelFactory;
 import com.eclipsesource.glsp.server.ServerModule;
 
@@ -52,5 +55,9 @@ public class EcoreServerRuntimeModule extends ServerModule {
 		return EcoreModelTypeConfigurationProvider.class;
 	}
 
+	@Override
+	protected Class<? extends ILayoutEngine> bindLayoutEngine() {
+		return EcoreLayoutEngine.class;
+	}
 
 }

@@ -8,7 +8,7 @@
 /** @jsx svg */
 import { svg }  from 'snabbdom-jsx';
 
-import { RenderingContext, RectangularNodeView, IView, PolylineEdgeView, SEdge, Point, toDegrees, SLabelView} from "glsp-sprotty/lib";
+import { RenderingContext, RectangularNodeView, IView, PolylineEdgeView, SEdge, Point, toDegrees, SLabelView} from "sprotty/lib";
 import { VNode } from "snabbdom/vnode";
 import { Icon, ClassNode, EdgeWithMultiplicty, Link } from './model';
 

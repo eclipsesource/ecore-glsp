@@ -8,22 +8,21 @@
  * Contributors:
  * 	EclipseSource Muenchen GmbH - initial API and implementation
  ******************************************************************************/
+import { FrontendApplicationContribution, OpenHandler } from "@theia/core/lib/browser";
+import { GLSPClientContribution } from "glsp-theia-extension/lib/browser";
 import { ContainerModule, interfaces } from "inversify";
-
-import { EcoreGLClientContribution } from "./ecore-glclient-contribution";
-import { DiagramConfiguration, DiagramManagerProvider, DiagramManager } from "theia-glsp/lib";
+import { DiagramConfiguration, DiagramManager, DiagramManagerProvider } from "theia-glsp/lib";
+import { EcoreLanguage } from "../common/ecore-language";
 import { EcoreDiagramConfiguration } from "./di.config";
 import { EcoreDiagramManager } from "./ecore-diagram-manager.";
-import { EcoreLanguage } from "../common/ecore-language";
-import { FrontendApplicationContribution, OpenHandler } from "@theia/core/lib/browser";
-import { GraphicalLanguageClientContribution, GLSPPaletteContribution } from "glsp-theia-extension/lib/browser";
-import { MenuContribution, CommandContribution } from "@theia/core";
+import { EcoreGLClientContribution } from "./ecore-glclient-contribution";
+
 
 export default new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind, isBound: interfaces.IsBound, rebind: interfaces.Rebind) => {
     
     
     bind(EcoreGLClientContribution).toSelf().inSingletonScope()
-    bind(GraphicalLanguageClientContribution).toDynamicValue(ctx => ctx.container.get(EcoreGLClientContribution)).inSingletonScope();
+    bind(GLSPClientContribution).toDynamicValue(ctx => ctx.container.get(EcoreGLClientContribution)).inSingletonScope();
     bind(DiagramConfiguration).to(EcoreDiagramConfiguration).inSingletonScope()
     bind(DiagramManagerProvider).toProvider<DiagramManager>(context => {
         return () => {
@@ -37,8 +36,5 @@ export default new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Un
     bind(FrontendApplicationContribution).toDynamicValue(context =>
         context.container.get(EcoreDiagramManager))
     bind(OpenHandler).toDynamicValue(context => context.container.get(EcoreDiagramManager))
-    bind(GLSPPaletteContribution).toSelf().inSingletonScope()
-    bind(MenuContribution).toDynamicValue(ctx => ctx.container.get(GLSPPaletteContribution)).inSingletonScope()
-    bind(CommandContribution).toDynamicValue(ctx => ctx.container.get(GLSPPaletteContribution)).inSingletonScope()
 })
 

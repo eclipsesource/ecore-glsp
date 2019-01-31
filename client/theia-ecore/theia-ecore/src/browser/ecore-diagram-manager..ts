@@ -8,14 +8,15 @@
  * Contributors:
  * 	EclipseSource Muenchen GmbH - initial API and implementation
  ******************************************************************************/
-import { injectable, inject } from "inversify";
-import { TheiaFileSaver, DiagramWidgetRegistry } from "theia-glsp/lib";
-import { EcoreLanguage } from "../common/ecore-language";
-import { GLSPTheiaSprottyConnector, GraphicalLanguageClientContribution, GLSPDiagramManager, GLSPPaletteContribution } from "glsp-theia-extension/lib/browser";
-import { EcoreGLClientContribution } from "./ecore-glclient-contribution";
-import { EditorManager } from "@theia/editor/lib/browser";
-import URI from "@theia/core/lib/common/uri";
 import { OpenerOptions } from "@theia/core/lib/browser";
+import URI from "@theia/core/lib/common/uri";
+import { EditorManager, EditorPreferences } from "@theia/editor/lib/browser";
+import { GLSPClientContribution, GLSPDiagramManager, GLSPTheiaSprottyConnector, GLSPDiagramWidget } from "glsp-theia-extension/lib/browser";
+import { inject, injectable } from "inversify";
+import { DiagramWidgetRegistry, TheiaFileSaver, DiagramWidgetFactory, DiagramWidgetOptions } from "theia-glsp/lib";
+import { EcoreLanguage } from "../common/ecore-language";
+import { EcoreGLClientContribution } from "./ecore-glclient-contribution";
+import { RequestModelAction } from "glsp-sprotty/lib";
 
 
 
@@ -29,14 +30,13 @@ export class EcoreDiagramManager extends GLSPDiagramManager {
 
     constructor(
         @inject(EcoreGLClientContribution)
-        readonly languageClientContribution: GraphicalLanguageClientContribution,
+        readonly languageClientContribution: GLSPClientContribution,
         @inject(TheiaFileSaver)
         readonly theiaFileSaver: TheiaFileSaver,
         @inject(EditorManager)
         readonly editorManager: EditorManager,
         @inject(DiagramWidgetRegistry)
-        readonly diagramWidgetRegistry: DiagramWidgetRegistry,
-        @inject(GLSPPaletteContribution) readonly paletteContribution: GLSPPaletteContribution) {
+        readonly diagramWidgetRegistry: DiagramWidgetRegistry) {
         super();
 
     }
@@ -53,10 +53,31 @@ export class EcoreDiagramManager extends GLSPDiagramManager {
                 this.languageClientContribution,
                 this.theiaFileSaver,
                 this.editorManager,
-                this.diagramWidgetRegistry,
-                this.paletteContribution)
+                this.diagramWidgetRegistry)
 
         }
         return this._diagramConnector
     }
+
+    protected get diagramWidgetFactory(): DiagramWidgetFactory {
+        return options => new EcoreGLSPDiagramWidget(options, this.editorPreferences);
+    }
 }
+
+class EcoreGLSPDiagramWidget extends GLSPDiagramWidget{
+    constructor(options: DiagramWidgetOptions, readonly editorPreferences: EditorPreferences){
+        super(options,editorPreferences)
+    }
+
+    protected sendInitialRequestMessages() {
+        // this.actionDispatcher.dispatch(new RequestTypeHintsAction());
+        this.actionDispatcher.dispatch(new RequestModelAction({
+            sourceUri: decodeURIComponent(this.uri.toString()),
+            diagramType: this.diagramType,
+            needsClientLayout: 'true',
+            needsServerLayout: 'true'
+        }))
+        // this.actionDispatcher.dispatch(new RequestOperationsAction());
+    }
+}
+

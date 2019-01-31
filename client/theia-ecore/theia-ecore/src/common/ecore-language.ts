@@ -13,4 +13,5 @@ export namespace EcoreLanguage {
     export const Name: string = "Ecore"
     export const Label: string = "Ecore diagram"
     export const DiagramType: string = "ecorediagram"
+    export const FileExtension: string= ".ecore"
 }

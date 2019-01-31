@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
-import org.eclipse.elk.core.data.ILayoutMetaDataProvider;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -34,7 +33,6 @@ import org.eclipse.sprotty.SLabel;
 import org.eclipse.sprotty.SModelElement;
 import org.eclipse.sprotty.SModelRoot;
 import org.eclipse.sprotty.SNode;
-import org.eclipse.sprotty.layout.ElkLayoutEngine;
 
 import com.eclipsesource.glsp.api.action.kind.RequestModelAction;
 import com.eclipsesource.glsp.api.factory.ModelFactory;
@@ -101,12 +99,6 @@ public class EcoreModelFactory implements ModelFactory {
 			LOGGER.error(e);
 		}
 		return result;
-	}
-
-	public void layoutModel(SModelRoot result, ILayoutMetaDataProvider layoutMetaDataProvider) {
-		ElkLayoutEngine.initialize(layoutMetaDataProvider);
-		EcoreLayoutEngine layoutEngine = new EcoreLayoutEngine();
-		layoutEngine.layout(result);
 	}
 
 	private void fillGraph(SGraph sGraph, EPackage ePackage) {

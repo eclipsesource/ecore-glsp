@@ -8,11 +8,12 @@
  * Contributors:
  * 	EclipseSource Muenchen GmbH - initial API and implementation
  ******************************************************************************/
+import { BaseGLSPClientContribution } from "glsp-theia-extension/lib/browser";
 import { injectable } from "inversify";
-import { BaseGraphicalLanguageClientContribution } from "glsp-theia-extension/lib/browser"
 import { EcoreLanguage } from "../common/ecore-language";
 @injectable()
-export class EcoreGLClientContribution extends BaseGraphicalLanguageClientContribution {
+export class EcoreGLClientContribution extends BaseGLSPClientContribution {
+    fileExtensions= [EcoreLanguage.FileExtension]
     readonly id = EcoreLanguage.Id
     readonly name = EcoreLanguage.Name
 }

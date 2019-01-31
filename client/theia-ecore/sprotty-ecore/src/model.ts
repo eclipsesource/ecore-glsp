@@ -5,7 +5,7 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { boundsFeature, Expandable, expandFeature, fadeFeature, layoutableChildFeature, layoutContainerFeature, RectangularNode, SEdge, SShapeElement, SLabel } from "glsp-sprotty/lib";
+import { boundsFeature, Expandable, expandFeature, fadeFeature, layoutableChildFeature, layoutContainerFeature, RectangularNode, SEdge, SShapeElement, SLabel } from "sprotty/lib";
 
 export class ClassNode extends RectangularNode implements Expandable {
     expanded: boolean = false;
