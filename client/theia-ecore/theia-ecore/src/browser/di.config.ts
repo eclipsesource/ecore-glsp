@@ -21,7 +21,7 @@ export class EcoreDiagramConfiguration implements DiagramConfiguration {
     diagramType: string = EcoreLanguage.DiagramType
 
     createContainer(widgetId: string): Container {
-        const container = createEcoreDiagramContainer(widgetId,true);
+        const container = createEcoreDiagramContainer(widgetId,true,true);
         container.bind(TYPES.ModelSource).to(GLSPTheiaDiagramServer)
         container.rebind(KeyTool).to(TheiaKeyTool).inSingletonScope()
         container.bind(TYPES.IActionHandlerInitializer).to(SprottySelectionForwardingInitializer)
