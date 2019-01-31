@@ -40,12 +40,12 @@ import {
     undoRedoModule, 
     viewportModule, 
     LocalModelSource 
-} from "glsp-sprotty/lib";
+} from "sprotty/lib";
 import { Container, ContainerModule } from "inversify";
 import { ClassNode, Icon, Link, EdgeWithMultiplicty } from "./model";
 import { AggregationEdgeView, ArrowEdgeView, ClassNodeView, CompositionEdgeView, IconView, InheritanceEdgeView, LinkView } from "./views";
 
-export default (containerId: string) => {
+export default (containerId: string, withSelectionSupport:boolean,needsServerLayout:boolean) => {
     const classDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
         rebind(TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
         rebind(TYPES.LogLevel).toConstantValue(LogLevel.log);
@@ -71,14 +71,19 @@ export default (containerId: string) => {
         configureModelElement(context, 'link', Link, LinkView)
         configureViewerOptions(context, {
             needsClientLayout: true,
+            needsServerLayout,
             baseDiv: containerId
         });
         bind('EcoreDiagramModelSource').to(LocalModelSource).inSingletonScope();
     });
 
     const container = new Container();
-    container.load(defaultModule, selectModule, moveModule, boundsModule, undoRedoModule,
+    const modules=[defaultModule, moveModule, boundsModule, undoRedoModule,
         viewportModule, fadeModule, hoverModule, exportModule, expandModule, buttonModule,
-        edgeEditModule, classDiagramModule);
+        edgeEditModule, classDiagramModule]
+    if (withSelectionSupport){
+        modules.push(selectModule)
+    }
+    container.load(...modules)
     return container;
 };

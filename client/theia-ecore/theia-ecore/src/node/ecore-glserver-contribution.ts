@@ -9,7 +9,7 @@
  * 	EclipseSource Muenchen GmbH - initial API and implementation
  ******************************************************************************/
 import { IConnection } from "@theia/languages/lib/node";
-import { BaseGraphicalLanguageServerContribution } from 'glsp-theia-extension/lib/node';
+import { BaseGLSPServerContribution } from 'glsp-theia-extension/lib/node';
 import { injectable } from "inversify";
 import * as net from 'net';
 import { createSocketConnection } from 'vscode-ws-jsonrpc/lib/server';
@@ -24,7 +24,7 @@ function getPort(): number | undefined {
     }
 }
 @injectable()
-export class EcoreGLServerContribution extends BaseGraphicalLanguageServerContribution {
+export class EcoreGLServerContribution extends BaseGLSPServerContribution {
     readonly id = EcoreLanguage.Id
     readonly name = EcoreLanguage.Name
 
