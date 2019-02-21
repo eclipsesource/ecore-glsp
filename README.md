@@ -10,5 +10,4 @@ Server
   * 
 
 Client
- * cd client/theia-ecore
- * yarn start
+ * Follow instructions on client/theia-ecore [Readme file](https://github.com/eclipsesource/ecore-glsp/blob/master/client/theia-ecore/README.md) 
