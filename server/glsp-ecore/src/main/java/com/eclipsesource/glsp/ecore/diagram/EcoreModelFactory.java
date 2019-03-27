@@ -130,7 +130,8 @@ public class EcoreModelFactory implements ModelFactory {
 			node.getChildren().add(attributeCompartment);
 			for (EAttribute eAttribute : eClass.getEAttributes()) {
 				SLabel attribute = new SLabel();
-				attribute.setId(node.getId() + "_" + eAttribute.getName());
+				attribute.setId(String.format("%s_ATTR_%s_%s", node.getId(),
+						eAttribute.getEAttributeType().getName(), eAttribute.getName()));
 				attribute.setType("label:text");
 				attribute.setText(String.format(" - %s : %s", eAttribute.getName(),
 						eAttribute.getEAttributeType().getName()));
@@ -141,7 +142,7 @@ public class EcoreModelFactory implements ModelFactory {
 				for (EReference eReference : eClass.getEReferences()) {
 					EcoreEdge reference = new EcoreEdge();
 					reference.getCssClasses().add("ecore-edge");
-					reference.setId(String.format("%s_%s_%s", eClass.getName(),
+					reference.setId(String.format("%s_REF_%s_%s", node.getId(),
 							eReference.getEReferenceType().getName(), eReference.getName()));
 					String type = eReference.isContainment() ? "composition" : "aggregation";
 					reference.getCssClasses().add(type);
