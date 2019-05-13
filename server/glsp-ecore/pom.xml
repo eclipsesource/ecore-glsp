@@ -132,7 +132,7 @@
 					<transformers>
 						<transformer
 							implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-							<mainClass>com.eclipsesource.glsp.example.workflow.ExampleServerLauncher</mainClass>
+							<mainClass>com.eclipsesource.glsp.ecore.EcoreServerLauncher</mainClass>
 						</transformer>
 					</transformers>
 					<filters>

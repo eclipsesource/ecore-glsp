@@ -8,6 +8,9 @@
   "devDependencies": {
     "lerna": "2.4.0"
   },
+  "resolutions": {
+    "**/sprotty": "0.5.0-next.efc694a"
+  },
   "workspaces": [
     "theia-ecore",
     "sprotty-ecore",
