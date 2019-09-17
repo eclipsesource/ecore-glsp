@@ -3,11 +3,11 @@
 
 Server 
 * Build:
-  * cd server/glsp-ecore
+  * cd server
   * mvn install -U
 
 * Run:
   * 
 
 Client
- * Follow instructions on client/theia-ecore [Readme file](https://github.com/eclipsesource/ecore-glsp/blob/master/client/theia-ecore/README.md) 
+ * Follow instructions on /client [Readme file](https://github.com/eclipsesource/ecore-glsp/blob/master/client/README.md) 
