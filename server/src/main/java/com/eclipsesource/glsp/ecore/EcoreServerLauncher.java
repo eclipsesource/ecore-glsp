@@ -12,6 +12,7 @@ package com.eclipsesource.glsp.ecore;
 
 import org.apache.log4j.BasicConfigurator;
 import org.eclipse.elk.alg.layered.options.LayeredMetaDataProvider;
+import org.eclipse.emf.ecore.EcorePackage;
 
 import com.eclipsesource.glsp.layout.ElkLayoutEngine;
 import com.eclipsesource.glsp.server.launch.DefaultGLSPServerLauncher;
@@ -20,6 +21,7 @@ import com.eclipsesource.glsp.server.launch.GLSPServerLauncher;
 public class EcoreServerLauncher {
 
 	public static void main(String[] args) {
+		EcorePackage.eINSTANCE.eClass();
 		ElkLayoutEngine.initialize(new LayeredMetaDataProvider());
 		BasicConfigurator.configure();
 		GLSPServerLauncher launcher = new DefaultGLSPServerLauncher(new EcoreGLSPModule());

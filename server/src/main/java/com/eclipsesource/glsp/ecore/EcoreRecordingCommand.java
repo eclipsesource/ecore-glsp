@@ -64,16 +64,10 @@ public class EcoreRecordingCommand extends AbstractCommand {
 	}
 
 	private void applyChanges() {
-		ChangeRecorder recorder = new ChangeRecorder(context.getResourceManager().getEditingDomain().getResourceSet());
-		try {
-			EcoreModelIndex index = context.getModelState().getIndex();
-			change.getObjectsToDetach().forEach(index::remove);
-			change.getObjectsToAttach().forEach(index::add);
-			change.apply();
-		} finally {
-			change = recorder.endRecording();
-			recorder.dispose();
-		}
+		EcoreModelIndex index = context.getModelState().getIndex();
+		change.getObjectsToDetach().forEach(index::remove);
+		change.getObjectsToAttach().forEach(index::add);
+		change.applyAndReverse();
 	}
 
 }

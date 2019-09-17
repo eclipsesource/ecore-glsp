@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import com.eclipsesource.glsp.ecore.enotation.Diagram;
 import com.eclipsesource.glsp.ecore.enotation.Edge;
@@ -52,6 +53,7 @@ public class EcoreFacade {
 		this.modelIndex = modelIndex;
 		this.ePackage = semanticResource.getContents().stream().filter(EPackage.class::isInstance)
 				.map(EPackage.class::cast).findFirst().orElseThrow();
+		EcoreUtil.resolveAll(ePackage);
 	}
 
 	public Resource getSemanticResource() {

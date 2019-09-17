@@ -17,7 +17,6 @@ package com.eclipsesource.glsp.ecore.gmodel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
@@ -105,11 +104,10 @@ public class GModelFactory extends AbstractGModelFactory<EObject, GModelElement>
 	public GEdge create(EReference eReference) {
 		String label = String.format("[%s..%s] %s", eReference.getLowerBound(),
 				eReference.getUpperBound() == -1 ? "*" : eReference.getUpperBound(), eReference.getName());
-		Optional<String> source = modelState.getIndex().getSemanticId(eReference.getEContainingClass());
-		Optional<String> target = modelState.getIndex().getSemanticId(eReference.getEReferenceType());
-		if (source.isEmpty() || target.isEmpty()) {
-			return null;
-		}
+		String source = toId(eReference.getEContainingClass());
+
+		String target = toId(eReference.getEReferenceType());
+
 		String id = toId(eReference);
 		return new GEdgeBuilder().type(eReference.isContainment() ? Types.COMPOSITION : Types.REFERENCE) //
 				.id(id) //
@@ -124,15 +122,15 @@ public class GModelFactory extends AbstractGModelFactory<EObject, GModelElement>
 								.build())//
 						.id(id + "_label") //
 						.text(label).build())
-				.sourceId(source.get()) //
-				.targetId(target.get()) //
+				.sourceId(source) //
+				.targetId(target) //
 				.routerKind(GConstants.RouterKind.MANHATTAN)//
 				.build();
 	}
 
 	public GEdge create(EClass baseClass, EClass superClass) {
-		Optional<String> sourceId = modelState.getIndex().getSemanticId(baseClass);
-		Optional<String> targetId = modelState.getIndex().getSemanticId(superClass);
+		String sourceId = toId(baseClass);
+		String targetId = toId(superClass);
 		if (sourceId.isEmpty() || sourceId.isEmpty()) {
 			return null;
 		}
@@ -141,8 +139,8 @@ public class GModelFactory extends AbstractGModelFactory<EObject, GModelElement>
 				.id(id)//
 				.addCssClass(CSS.ECORE_EDGE) //
 				.addCssClass(CSS.INHERITANCE) //
-				.sourceId(sourceId.get()) //
-				.targetId(targetId.get()) //
+				.sourceId(sourceId) //
+				.targetId(targetId) //
 				.routerKind(GConstants.RouterKind.MANHATTAN)//
 				.build();
 	}
