@@ -67,21 +67,23 @@ import {
 import executeCommandModule from "@glsp/sprotty-client/lib/features/execute/di.config";
 import { Container, ContainerModule } from "inversify";
 
-import { Icon, LabeledNode, SEditableLabel } from "./model";
-import { ClassNodeView, CompositionEdgeView, IconView, InheritanceEdgeView } from "./views";
+import { LabelSelectionFeedback } from "./feedback";
+import { Icon, LabeledNode, SEditableLabel, SLabelNode } from "./model";
+import { ClassNodeView, CompositionEdgeView, IconView, InheritanceEdgeView, LabelNodeView } from "./views";
 
 export default (containerId: string) => {
     const classDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
         rebind(TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
         rebind(TYPES.LogLevel).toConstantValue(LogLevel.info);
         const context = { bind, unbind, isBound, rebind };
+        bind(TYPES.IVNodeDecorator).to(LabelSelectionFeedback);
         configureModelElement(context, 'graph', GLSPGraph, SGraphView);
         configureModelElement(context, 'node:class', LabeledNode, ClassNodeView);
         configureModelElement(context, 'node:enum', LabeledNode, ClassNodeView);
         configureModelElement(context, 'node:datatype', LabeledNode, ClassNodeView);
         configureModelElement(context, 'label:name', SEditableLabel, SLabelView);
         configureModelElement(context, 'label:edge', SLabel, SLabelView);
-        configureModelElement(context, 'node:attribute', SNode, RectangularNodeView);
+        configureModelElement(context, 'node:attribute', SLabelNode, LabelNodeView);
         configureModelElement(context, 'node:enumliteral', SNode, RectangularNodeView);
         configureModelElement(context, 'node:operation', SNode, RectangularNodeView);
         configureModelElement(context, 'label:text', SLabel, SLabelView);
