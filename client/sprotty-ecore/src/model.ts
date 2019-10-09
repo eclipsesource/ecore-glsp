@@ -19,6 +19,7 @@ import {
     EditableLabel,
     editLabelFeature,
     fadeFeature,
+    hoverFeedbackFeature,
     isEditableLabel,
     layoutableChildFeature,
     layoutContainerFeature,
@@ -80,6 +81,6 @@ export class SLabelNode extends SLabel {
     hoverFeedback: boolean = false;
 
     hasFeature(feature: symbol): boolean {
-        return (feature === selectFeature || feature === popupFeature || feature === deletableFeature || super.hasFeature(feature));
+        return (feature === selectFeature || feature === popupFeature || feature === deletableFeature || feature === hoverFeedbackFeature || super.hasFeature(feature));
     }
 }
