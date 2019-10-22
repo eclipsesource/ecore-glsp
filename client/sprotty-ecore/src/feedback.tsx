@@ -16,7 +16,7 @@
 import { injectable } from "inversify";
 import * as snabbdom from "snabbdom-jsx";
 import { VNode } from "snabbdom/vnode";
-import { IVNodeDecorator, SModelElement } from "sprotty";
+import { IVNodePostprocessor, SModelElement } from "sprotty";
 
 import { SLabelNode } from "./model";
 
@@ -26,7 +26,7 @@ const JSX = { createElement: snabbdom.svg };
  * A NodeDecorator to install visual feedback on selected NodeLabels
  */
 @injectable()
-export class LabelSelectionFeedback implements IVNodeDecorator {
+export class LabelSelectionFeedback implements IVNodePostprocessor {
   decorate(vnode: VNode, element: SModelElement): VNode {
     if (element instanceof SLabelNode && element.selected) {
       const vPadding = 3;

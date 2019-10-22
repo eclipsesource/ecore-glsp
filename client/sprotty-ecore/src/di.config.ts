@@ -62,7 +62,8 @@ import {
     toolFeedbackModule,
     TYPES,
     validationModule,
-    viewportModule
+    viewportModule,
+    zorderModule
 } from "@glsp/sprotty-client/lib";
 import executeCommandModule from "@glsp/sprotty-client/lib/features/execute/di.config";
 import { Container, ContainerModule } from "inversify";
@@ -76,7 +77,7 @@ export default (containerId: string) => {
         rebind(TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
         rebind(TYPES.LogLevel).toConstantValue(LogLevel.info);
         const context = { bind, unbind, isBound, rebind };
-        bind(TYPES.IVNodeDecorator).to(LabelSelectionFeedback);
+        bind(TYPES.IVNodePostprocessor).to(LabelSelectionFeedback);
         configureModelElement(context, 'graph', GLSPGraph, SGraphView);
         configureModelElement(context, 'node:class', LabeledNode, ClassNodeView);
         configureModelElement(context, 'node:enum', LabeledNode, ClassNodeView);
@@ -109,7 +110,7 @@ export default (containerId: string) => {
         hoverModule, fadeModule, exportModule, expandModule, openModule, buttonModule, modelSourceModule, labelEditModule, labelEditUiModule, glspEditLabelValidationModule,
         classDiagramModule, saveModule, executeCommandModule, toolFeedbackModule, modelHintsModule,
         commandPaletteModule, glspCommandPaletteModule, paletteModule, requestResponseModule, routingModule, edgeLayoutModule,
-        layoutCommandsModule);
+        layoutCommandsModule, zorderModule);
     return container;
 
 };

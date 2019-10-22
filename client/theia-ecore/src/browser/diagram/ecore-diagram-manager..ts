@@ -21,11 +21,11 @@ import {
     GLSPTheiaSprottyConnector
 } from "@glsp/theia-integration/lib/browser";
 import { MessageService } from "@theia/core";
-import { Widget, WidgetManager } from "@theia/core/lib/browser";
+import { WidgetManager } from "@theia/core/lib/browser";
 import { EditorManager } from "@theia/editor/lib/browser";
 import { inject, injectable } from "inversify";
 import { DiagramServer, ModelSource, RequestModelAction, TYPES } from "sprotty";
-import { DiagramWidgetOptions, TheiaFileSaver } from "sprotty-theia/lib";
+import { DiagramWidget, DiagramWidgetOptions, TheiaFileSaver } from "sprotty-theia/lib";
 
 import { EcoreLanguage } from "../../common/ecore-language";
 import { EcoreGLSPDiagramClient } from "./ecore-glsp-diagram-client";
@@ -39,7 +39,7 @@ export class EcoreDiagramManager extends GLSPDiagramManager {
 
     private _diagramConnector: GLSPTheiaSprottyConnector;
 
-    async createWidget(options?: any): Promise<Widget> {
+    async createWidget(options?: any): Promise<DiagramWidget> {
         if (DiagramWidgetOptions.is(options)) {
             const clientId = this.createClientId();
             const config = this.diagramConfigurationRegistry.get(options.diagramType);
