@@ -23,8 +23,8 @@ import com.eclipsesource.glsp.api.types.ElementAndBounds;
 import com.eclipsesource.glsp.ecore.EcoreModelIndex;
 import com.eclipsesource.glsp.ecore.enotation.Shape;
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
-import com.eclipsesource.glsp.graph.GBounds;
-import com.eclipsesource.glsp.graph.util.GraphUtil;
+import com.eclipsesource.glsp.graph.GDimension;
+import com.eclipsesource.glsp.graph.GPoint;
 
 public class EcoreChangeBoundsOperationHandler implements OperationHandler {
 
@@ -43,13 +43,13 @@ public class EcoreChangeBoundsOperationHandler implements OperationHandler {
 	private void applyBounds(ChangeBoundsOperationAction action, EcoreModelIndex index) {
 		for (ElementAndBounds element : action.getNewBounds()) {
 			index.getNotation(element.getElementId(), Shape.class)
-					.ifPresent(notationElement -> changeElementBounds(notationElement, element.getNewBounds()));
+					.ifPresent(notationElement -> changeElementBounds(notationElement, element.getNewSize(), element.getNewPosition()));
 		}
 	}
 
-	private void changeElementBounds(Shape element, GBounds newBounds) {
-		element.setPosition(GraphUtil.point(newBounds.getX(), newBounds.getY()));
-		element.setSize(GraphUtil.dimension(newBounds.getWidth(), newBounds.getHeight()));
+	private void changeElementBounds(Shape element, GDimension dimension, GPoint position) {
+		element.setPosition(position);
+		element.setSize(dimension);
 	}
 
 	@Override
