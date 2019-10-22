@@ -43,13 +43,18 @@ public class EcoreChangeBoundsOperationHandler implements OperationHandler {
 	private void applyBounds(ChangeBoundsOperationAction action, EcoreModelIndex index) {
 		for (ElementAndBounds element : action.getNewBounds()) {
 			index.getNotation(element.getElementId(), Shape.class)
-					.ifPresent(notationElement -> changeElementBounds(notationElement, element.getNewSize(), element.getNewPosition()));
+					.ifPresent(notationElement -> changeElementBounds(notationElement, element.getNewSize(),
+							element.getNewPosition()));
 		}
 	}
 
 	private void changeElementBounds(Shape element, GDimension dimension, GPoint position) {
-		element.setPosition(position);
-		element.setSize(dimension);
+		if (position != null) {
+			element.setPosition(position);
+		}
+		if (dimension != null) {
+			element.setSize(dimension);
+		}
 	}
 
 	@Override

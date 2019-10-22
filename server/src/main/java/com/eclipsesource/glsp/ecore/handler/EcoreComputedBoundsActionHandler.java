@@ -37,7 +37,8 @@ public class EcoreComputedBoundsActionHandler extends ComputedBoundsActionHandle
 
 		for (ElementAndBounds element : computedBoundsAction.getBounds()) {
 			modelState.getIndex().getNotation(element.getElementId(), Shape.class)
-					.ifPresent(notationElement -> changeElementBounds(notationElement, element.getNewSize(), element.getNewPosition()));
+					.ifPresent(notationElement -> changeElementBounds(notationElement, element.getNewSize(),
+							element.getNewPosition()));
 		}
 		synchronized (submissionHandler.getModelLock()) {
 			GModelRoot model = modelState.getRoot();
@@ -51,7 +52,11 @@ public class EcoreComputedBoundsActionHandler extends ComputedBoundsActionHandle
 	}
 
 	private void changeElementBounds(Shape element, GDimension dimension, GPoint position) {
-		element.setPosition(position);
-		element.setSize(dimension);
+		if (position != null) {
+			element.setPosition(position);
+		}
+		if (dimension != null) {
+			element.setSize(dimension);
+		}
 	}
 }
