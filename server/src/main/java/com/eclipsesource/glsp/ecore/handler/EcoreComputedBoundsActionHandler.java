@@ -24,9 +24,9 @@ import com.eclipsesource.glsp.api.types.ElementAndBounds;
 import com.eclipsesource.glsp.api.utils.LayoutUtil;
 import com.eclipsesource.glsp.ecore.enotation.Shape;
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
-import com.eclipsesource.glsp.graph.GBounds;
+import com.eclipsesource.glsp.graph.GDimension;
 import com.eclipsesource.glsp.graph.GModelRoot;
-import com.eclipsesource.glsp.graph.util.GraphUtil;
+import com.eclipsesource.glsp.graph.GPoint;
 import com.eclipsesource.glsp.server.actionhandler.ComputedBoundsActionHandler;
 
 public class EcoreComputedBoundsActionHandler extends ComputedBoundsActionHandler {
@@ -37,12 +37,13 @@ public class EcoreComputedBoundsActionHandler extends ComputedBoundsActionHandle
 
 		for (ElementAndBounds element : computedBoundsAction.getBounds()) {
 			modelState.getIndex().getNotation(element.getElementId(), Shape.class)
-					.ifPresent(notationElement -> changeElementBounds(notationElement, element.getNewBounds()));
+					.ifPresent(notationElement -> changeElementBounds(notationElement, element.getNewSize(),
+							element.getNewPosition()));
 		}
 		synchronized (submissionHandler.getModelLock()) {
 			GModelRoot model = modelState.getRoot();
 			if (model != null && model.getRevision() == computedBoundsAction.getRevision()) {
-				LayoutUtil.applyBounds(model, computedBoundsAction);
+				LayoutUtil.applyBounds(model, computedBoundsAction, graphicalModelState);
 				return submissionHandler.doSubmitModel(false, modelState);
 			}
 		}
@@ -50,8 +51,12 @@ public class EcoreComputedBoundsActionHandler extends ComputedBoundsActionHandle
 
 	}
 
-	private void changeElementBounds(Shape element, GBounds newBounds) {
-		element.setPosition(GraphUtil.point(newBounds.getX(), newBounds.getY()));
-		element.setSize(GraphUtil.dimension(newBounds.getWidth(), newBounds.getHeight()));
+	private void changeElementBounds(Shape element, GDimension dimension, GPoint position) {
+		if (position != null) {
+			element.setPosition(position);
+		}
+		if (dimension != null) {
+			element.setSize(dimension);
+		}
 	}
 }

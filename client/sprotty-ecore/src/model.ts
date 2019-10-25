@@ -15,15 +15,19 @@
  ******************************************************************************/
 import {
     boundsFeature,
+    deletableFeature,
     EditableLabel,
     editLabelFeature,
     fadeFeature,
+    hoverFeedbackFeature,
     isEditableLabel,
     layoutableChildFeature,
     layoutContainerFeature,
     Nameable,
     nameFeature,
+    popupFeature,
     RectangularNode,
+    selectFeature,
     SLabel,
     SShapeElement,
     WithEditableLabel,
@@ -70,5 +74,13 @@ export class Icon extends SShapeElement {
 
     hasFeature(feature: symbol): boolean {
         return feature === boundsFeature || feature === layoutContainerFeature || feature === layoutableChildFeature || feature === fadeFeature;
+    }
+}
+
+export class SLabelNode extends SLabel {
+    hoverFeedback: boolean = false;
+
+    hasFeature(feature: symbol): boolean {
+        return (feature === selectFeature || feature === popupFeature || feature === deletableFeature || feature === hoverFeedbackFeature || super.hasFeature(feature));
     }
 }

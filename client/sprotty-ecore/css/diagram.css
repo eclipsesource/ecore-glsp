@@ -32,6 +32,32 @@ svg {
     stroke-width: 3;
 }
 
+.sprotty-label-node.selected {
+    fill: #000;
+    font-weight: normal;
+    stroke-width: 0;
+    width: inherit;
+}
+
+.sprotty-label-node>.sprotty-label {
+    alignment-baseline: middle;
+}
+
+.sprotty-label-node>.selection-feedback {
+    fill: transparent;
+    stroke: transparent;
+}
+
+.sprotty-label-node.selected>.selection-feedback {
+    stroke: black;
+    stroke-width: 1px;
+}
+
+.sprotty-label-node.mouseover:not(.selected) {
+    fill: #595959;
+    text-decoration: underline;
+}
+
 .sprotty-comp {
     line-height: 3px;
     font-weight: normal;
