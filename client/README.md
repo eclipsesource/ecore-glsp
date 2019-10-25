@@ -22,7 +22,7 @@ Install yarn.
     cd browser-app
     yarn start
 
-Open http://localhost:3000 in the browser.
+Open http://localhost:3000 in the browser. You may use the example workspace in client/workspace to quickly get started.
 
 ## Running the Electron example
 
