@@ -25,7 +25,7 @@ import com.eclipsesource.glsp.api.diagram.DiagramConfiguration;
 import com.eclipsesource.glsp.api.operations.Group;
 import com.eclipsesource.glsp.api.operations.Operation;
 import com.eclipsesource.glsp.api.types.EdgeTypeHint;
-import com.eclipsesource.glsp.api.types.NodeTypeHint;
+import com.eclipsesource.glsp.api.types.ShapeTypeHint;
 import com.eclipsesource.glsp.ecore.util.EcoreConfig.Types;
 import com.eclipsesource.glsp.graph.DefaultTypes;
 import com.eclipsesource.glsp.graph.GraphPackage;
@@ -51,14 +51,16 @@ public class EcoreDiagramConfiguration implements DiagramConfiguration {
 	}
 
 	@Override
-	public List<NodeTypeHint> getNodeTypeHints() {
-		List<NodeTypeHint> hints = new ArrayList<>();
-		hints.add(new NodeTypeHint(Types.ECLASS, true, true, false, List.of(Types.ATTRIBUTE, Types.OPERATION)));
-		hints.add(new NodeTypeHint(Types.ENUM, true, true, false, List.of(Types.ENUMLITERAL)));
-		hints.add(new NodeTypeHint(Types.DATATYPE, true, true, false));
-		hints.add(new NodeTypeHint(Types.ATTRIBUTE, false, true, false));
-		hints.add(new NodeTypeHint(Types.OPERATION, false, true, false));
-		hints.add(new NodeTypeHint(Types.ENUMLITERAL, false, true, false));
+	public List<ShapeTypeHint> getNodeTypeHints() {
+		List<ShapeTypeHint> hints = new ArrayList<>();
+		hints.add(new ShapeTypeHint(DefaultTypes.GRAPH, false, false, false, false,
+				List.of(Types.ECLASS, Types.ABSTRACT, Types.INTERFACE, Types.ENUM)));
+		hints.add(new ShapeTypeHint(Types.ECLASS, true, true, false, false, List.of(Types.ATTRIBUTE, Types.OPERATION)));
+		hints.add(new ShapeTypeHint(Types.ENUM, true, true, false, false, List.of(Types.ENUMLITERAL)));
+		hints.add(new ShapeTypeHint(Types.DATATYPE, true, true, false, true));
+		hints.add(new ShapeTypeHint(Types.ATTRIBUTE, false, true, false, true));
+		hints.add(new ShapeTypeHint(Types.OPERATION, false, true, false, true));
+		hints.add(new ShapeTypeHint(Types.ENUMLITERAL, false, true, false, true));
 		return hints;
 	}
 
