@@ -1,5 +1,5 @@
 # ecore-glsp
-[![Build Status](https://travis-ci.org/eclipsesource/ecore-glsp.svg?branch=master)](https://travis-ci.org/eclipsesource/ecore-glsp)
+[![Build Status](https://travis-ci.org/jonny3576/ecore-glsp.svg?branch=master)](https://travis-ci.org/eclipsesource/ecore-glsp)
 
 Ecore GLSP provides a web-based editor for Ecore Models (including Diagrams), integrated with Eclipse Theia. It contains two components: one [GLSP](https://github.com/eclipsesource/glsp) language server (Server-side, written in Java), and one GLSP client extension to actually present the diagrams (Using [Sprotty](https://github.com/eclipse/sprotty-theia)). 
 
