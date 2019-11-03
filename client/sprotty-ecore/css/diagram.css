@@ -145,6 +145,10 @@ svg {
     margin-bottom: 2px;
 }
 
+.ecore-edge>.triangle.inheritance {
+    fill: white;
+}
+
 .ecore-edge.inheritance {
     stroke: #888888;
 }

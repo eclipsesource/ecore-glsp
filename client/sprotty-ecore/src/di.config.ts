@@ -70,7 +70,7 @@ import { Container, ContainerModule } from "inversify";
 
 import { LabelSelectionFeedback } from "./feedback";
 import { Icon, LabeledNode, SEditableLabel, SLabelNode } from "./model";
-import { ClassNodeView, CompositionEdgeView, IconView, InheritanceEdgeView, LabelNodeView } from "./views";
+import { ArrowEdgeView, ClassNodeView, CompositionEdgeView, IconView, InheritanceEdgeView, LabelNodeView } from "./views";
 
 export default (containerId: string) => {
     const classDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
@@ -95,7 +95,7 @@ export default (containerId: string) => {
         configureModelElement(context, 'html', HtmlRoot, HtmlRootView);
         configureModelElement(context, 'routing-point', SRoutingHandle, SRoutingHandleView);
         configureModelElement(context, 'volatile-routing-point', SRoutingHandle, SRoutingHandleView);
-        configureModelElement(context, 'edge:reference', SEdge, PolylineEdgeView);
+        configureModelElement(context, 'edge:reference', SEdge, ArrowEdgeView);
         configureModelElement(context, 'edge:inheritance', SEdge, InheritanceEdgeView);
         configureModelElement(context, 'edge:composition', SEdge, CompositionEdgeView);
         configureModelElement(context, 'edge', SEdge, PolylineEdgeView);
