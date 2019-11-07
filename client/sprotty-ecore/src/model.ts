@@ -77,10 +77,10 @@ export class Icon extends SShapeElement {
     }
 }
 
-export class SLabelNode extends SLabel {
+export class SLabelNode extends SLabel implements EditableLabel {
     hoverFeedback: boolean = false;
 
     hasFeature(feature: symbol): boolean {
-        return (feature === selectFeature || feature === popupFeature || feature === deletableFeature || feature === hoverFeedbackFeature || super.hasFeature(feature));
+        return (feature === selectFeature || feature === editLabelFeature || feature === popupFeature || feature === deletableFeature || feature === hoverFeedbackFeature || super.hasFeature(feature));
     }
 }
