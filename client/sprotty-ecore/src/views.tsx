@@ -78,14 +78,13 @@ export class ArrowEdgeView extends PolylineEdgeView {
 
 }
 
-
 @injectable()
 export class InheritanceEdgeView extends ArrowEdgeView {
   protected renderAdditionals(edge: SEdge, segments: Point[], context: RenderingContext): VNode[] {
     const p1 = segments[segments.length - 2];
     const p2 = segments[segments.length - 1];
     return [
-      <path class-triangle={true} d="M 10,-8 L 0,0 L 10,8 Z" class-inheritance={true}
+      <path class-sprotty-edge={true} class-triangle={true} d="M 10,-8 L 0,0 L 10,8 Z" class-inheritance={true}
         transform={`rotate(${angle(p2, p1)} ${p2.x} ${p2.y}) translate(${p2.x} ${p2.y})`} />,
     ];
   }
