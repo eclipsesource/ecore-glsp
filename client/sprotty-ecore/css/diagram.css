@@ -98,7 +98,7 @@ svg {
     stroke-width: 2px;
 }
 
-.sprotty-edge {
+.feedback-edge {
     stroke-width: 2px;
     stroke: black;
     fill: none;
@@ -143,6 +143,10 @@ svg {
 
 .sprotty-popup-body>p {
     margin-bottom: 2px;
+}
+
+.ecore-edge>.triangle.inheritance {
+    fill: white;
 }
 
 .ecore-edge.inheritance {
