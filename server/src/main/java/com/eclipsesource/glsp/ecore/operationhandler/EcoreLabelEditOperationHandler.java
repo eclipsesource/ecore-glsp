@@ -58,7 +58,15 @@ public class EcoreLabelEditOperationHandler implements OperationHandler {
 
 		Optional<EObject> callingObject = index.getSemantic(editLabelAction.getLabelId());
 		if (callingObject.isPresent() && callingObject.get() instanceof EAttribute) {
-			((EAttribute) callingObject.get()).setName(editLabelAction.getText());
+			String inputText = editLabelAction.getText();
+			String attributeName;
+			if (inputText.contains(":")) {
+				String[] split = inputText.split(":");
+				attributeName = split[0].trim();
+			} else {
+				attributeName = inputText;
+			}
+			((EAttribute) callingObject.get()).setName(attributeName);
 			// nameChange== uri change so we have to recreate the proxy here
 			shape.setSemanticElement(facade.createProxy(callingObject.get()));
 		} else if (eObject instanceof EClassifier) {

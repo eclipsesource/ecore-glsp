@@ -42,7 +42,7 @@ public class LabelFactory extends AbstractGModelFactory<ENamedElement, GLabel> {
 	}
 
 	public GLabel create(EAttribute eAttribute) {
-		String label = String.format(" - %s : %s", eAttribute.getName(), //
+		String label = String.format(" %s : %s", eAttribute.getName(), //
 				eAttribute.getEAttributeType().getName());
 		return new GLabelBuilder(Types.ATTRIBUTE) //
 				.id(toId(eAttribute))//
