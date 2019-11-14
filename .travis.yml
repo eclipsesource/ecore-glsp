@@ -1,6 +1,14 @@
 branches:
         only:
         - master
+notifications:  
+  email:  
+    if: branch = master
+    recipients: 
+    - cletavernier@eclipsesource.com
+    - tortmayr@eclipsesource.com
+    on_success: change  
+    on_failure: always
 matrix:
   include:
     - language: java
