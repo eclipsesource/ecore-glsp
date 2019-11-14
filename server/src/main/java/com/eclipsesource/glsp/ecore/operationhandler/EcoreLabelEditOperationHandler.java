@@ -17,12 +17,9 @@ package com.eclipsesource.glsp.ecore.operationhandler;
 
 import static com.eclipsesource.glsp.api.jsonrpc.GLSPServerException.getOrThrow;
 
-import java.util.Optional;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EcorePackage;
 
 import com.eclipsesource.glsp.api.action.Action;
 import com.eclipsesource.glsp.api.action.kind.AbstractOperationAction;
@@ -47,32 +44,40 @@ public class EcoreLabelEditOperationHandler implements OperationHandler {
 		ApplyLabelEditOperationAction editLabelAction = (ApplyLabelEditOperationAction) action;
 		EcoreFacade facade = EcoreModelState.getEcoreFacade(graphicalModelState);
 		EcoreModelIndex index = EcoreModelState.getModelState(graphicalModelState).getIndex();
-		GNode node = getOrThrow(index.findElementByClass(editLabelAction.getLabelId(), GNode.class),
-				"No label container for label with id " + editLabelAction.getLabelId() + " found");
 
-		EObject eObject = getOrThrow(index.getSemantic(node),
-				"No semantic element for labelContainer with id " + node.getId() + " found");
-
-		Shape shape = getOrThrow(index.getNotation(eObject), Shape.class,
-				"No shape element for label with id " + editLabelAction.getLabelId() + " found");
-
-		Optional<EObject> callingObject = index.getSemantic(editLabelAction.getLabelId());
-		if (callingObject.isPresent() && callingObject.get() instanceof EAttribute) {
-			String inputText = editLabelAction.getText();
-			String attributeName;
-			if (inputText.contains(":")) {
-				String[] split = inputText.split(":");
-				attributeName = split[0].trim();
-			} else {
-				attributeName = inputText;
+		// If we edit a Label Node (e.g. EAttribute, EEnumLiteral...), eObject will be
+		// defined.
+		// Otherwise, we're editing a Label that isn't a separate semantic element (e.g.
+		// Classifier Name Label),
+		// and we'll need to retrieve the top-level semantic element
+		EObject eObject = index.getSemantic(editLabelAction.getLabelId()).orElse(null);
+		if (eObject != null) { // Label Node (List Item)
+			if (eObject instanceof EAttribute) {
+				String inputText = editLabelAction.getText();
+				String attributeName;
+				if (inputText.contains(":")) {
+					String[] split = inputText.split(":");
+					attributeName = split[0].trim();
+				} else {
+					attributeName = inputText;
+				}
+				((EAttribute) eObject).setName(attributeName);
 			}
-			((EAttribute) callingObject.get()).setName(attributeName);
-			// nameChange== uri change so we have to recreate the proxy here
-			shape.setSemanticElement(facade.createProxy(callingObject.get()));
-		} else if (eObject instanceof EClassifier) {
-			((EClassifier) eObject).setName(editLabelAction.getText());
-			// nameChange== uri change so we have to recreate the proxy here
-			shape.setSemanticElement(facade.createProxy(eObject));
+		} else { // Main Label of a Node
+			GNode node = getOrThrow(index.findElementByClass(editLabelAction.getLabelId(), GNode.class),
+					"No label container for label with id " + editLabelAction.getLabelId() + " found");
+
+			eObject = getOrThrow(index.getSemantic(node),
+					"No semantic element for labelContainer with id " + node.getId() + " found");
+
+			Shape shape = getOrThrow(index.getNotation(eObject), Shape.class,
+					"No shape element for label with id " + editLabelAction.getLabelId() + " found");
+
+			if (eObject instanceof EClassifier) {
+				((EClassifier) eObject).setName(editLabelAction.getText());
+				// nameChange== uri change so we have to recreate the proxy here
+				shape.setSemanticElement(facade.createProxy(eObject));
+			}
 		}
 	}
 
