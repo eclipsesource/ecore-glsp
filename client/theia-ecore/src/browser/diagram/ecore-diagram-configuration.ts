@@ -14,12 +14,11 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 import { registerDefaultTools, TYPES } from "@glsp/sprotty-client/lib";
-import { GLSPTheiaDiagramServer } from "@glsp/theia-integration/lib/browser";
+import { EcoreGLSPTheiaDiagramServer } from "./ecore-glsp-theia-diagram-server";
 import { SelectionService } from "@theia/core";
 import { Container, inject, injectable } from "inversify";
 import { createEcoreDiagramContainer } from "sprotty-ecore/lib";
 import { DiagramConfiguration, TheiaDiagramServer, TheiaSprottySelectionForwarder } from "sprotty-theia/lib";
-
 import { EcoreLanguage } from "../../common/ecore-language";
 
 @injectable()
@@ -29,11 +28,12 @@ export class EcoreDiagramConfiguration implements DiagramConfiguration {
 
     createContainer(widgetId: string): Container {
         const container = createEcoreDiagramContainer(widgetId);
-        container.bind(TYPES.ModelSource).to(GLSPTheiaDiagramServer).inSingletonScope();
-        container.bind(TheiaDiagramServer).toService(GLSPTheiaDiagramServer);
+        container.bind(TYPES.ModelSource).to(EcoreGLSPTheiaDiagramServer).inSingletonScope();
+        container.bind(TheiaDiagramServer).toService(EcoreGLSPTheiaDiagramServer);
         // container.rebind(KeyTool).to(TheiaKeyTool).inSingletonScope()
         container.bind(TYPES.IActionHandlerInitializer).to(TheiaSprottySelectionForwarder);
         container.bind(SelectionService).toConstantValue(this.selectionService);
+
         registerDefaultTools(container);
         return container;
     }
