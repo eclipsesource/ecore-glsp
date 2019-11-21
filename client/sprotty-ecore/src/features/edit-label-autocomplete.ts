@@ -31,18 +31,18 @@ export class ReturnAttributeTypesAction implements ResponseAction {
     kind = ReturnAttributeTypesAction.KIND;
     types: string[];
     constructor(public readonly actions: string[], public readonly responseId: string = '') {
-        this.types = this.types;
+        this.types = actions;
     }
 }
 
 injectable()
 export class EditLabelUIAutocomplete extends EditLabelUI {
 
-    protected showAutocomplete : boolean = false;
-    protected outerDiv : HTMLElement;
-    protected listContainer : HTMLElement;
-    protected currentFocus : number;
-    protected types : string[] = [];
+    protected showAutocomplete: boolean = false;
+    protected outerDiv: HTMLElement;
+    protected listContainer: HTMLElement;
+    protected currentFocus: number;
+    protected types: string[] = [];
 
 
     constructor(@inject(TYPES.IActionDispatcher) protected actionDispatcher: GLSPActionDispatcher) {
@@ -56,7 +56,7 @@ export class EditLabelUIAutocomplete extends EditLabelUI {
         // request possible element types
         this.actionDispatcher.requestUntil(new AttributeTypesAction()).then(response => {
             if (response) {
-                let action : ReturnAttributeTypesAction = <ReturnAttributeTypesAction> response;
+                const action: ReturnAttributeTypesAction = <ReturnAttributeTypesAction> response;
                 this.types = action.types;
             }
         });
@@ -94,7 +94,7 @@ export class EditLabelUIAutocomplete extends EditLabelUI {
             event.preventDefault();
             if (this.currentFocus > -1) {
                 if (this.listContainer) {
-                    var children = this.listContainer.children;
+                    const children = this.listContainer.children;
                     (<HTMLElement>children[this.currentFocus]).click();
                 }
             }
@@ -102,8 +102,8 @@ export class EditLabelUIAutocomplete extends EditLabelUI {
     }
 
     protected createAutocomplete() {
-        let input : String = this.inputElement.value;
-        let val : String = "";
+        const input: String = this.inputElement.value;
+        let val: String = "";
         if (input.includes(":")) {
             val = input.split(":")[1].trim();
         }
@@ -118,14 +118,14 @@ export class EditLabelUIAutocomplete extends EditLabelUI {
 
         // create autocomlete items starting with input
         for (let i = 0; i < this.types.length; i++) {
-            if (this.types[i].substr(0, val.length).toLowerCase() == val.toLowerCase()) {
-                let element = document.createElement("div");
+            if (this.types[i].substr(0, val.length).toLowerCase() === val.toLowerCase()) {
+                const element = document.createElement("div");
                 element.innerHTML = "<strong>" + this.types[i].substr(0, val.length) + "</strong>";
                 element.innerHTML += this.types[i].substr(val.length);
                 element.innerHTML += "<input type='hidden' value='" + this.types[i] + "'>";
                 element.addEventListener("click", e => {
                     // change the type of the label
-                    let name : String = this.inputElement.value;
+                    let name: String = this.inputElement.value;
                     if (name.includes(":")) {
                         name = name.split(":")[0];
                     }
@@ -140,7 +140,7 @@ export class EditLabelUIAutocomplete extends EditLabelUI {
     protected addActive() {
         if (!this.listContainer) return;
         this.removeActive();
-        var children = this.listContainer.children;
+        const children = this.listContainer.children;
         if (children.length > 0) {
             if (this.currentFocus >= children.length) this.currentFocus = 0;
             if (this.currentFocus < 0) this.currentFocus = (children.length - 1);
@@ -149,15 +149,15 @@ export class EditLabelUIAutocomplete extends EditLabelUI {
       }
 
       protected removeActive() {
-        var children = this.listContainer.children;
-        for (var i = 0; i < children.length; i++) {
+        const children = this.listContainer.children;
+        for (let i = 0; i < children.length; i++) {
             children[i].classList.remove("autocomplete-active");
         }
       }
 
       protected closeAllLists() {
-        var x = this.outerDiv.getElementsByClassName("autocomplete-items");
-        for (var i = 0; i < x.length; i++) {
+        const x = this.outerDiv.getElementsByClassName("autocomplete-items");
+        for (let i = 0; i < x.length; i++) {
             this.outerDiv.removeChild(x[i]);
          }
     }

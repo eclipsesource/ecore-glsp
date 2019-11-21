@@ -68,7 +68,7 @@ import {
 } from "@glsp/sprotty-client/lib";
 import executeCommandModule from "@glsp/sprotty-client/lib/features/execute/di.config";
 import { Container, ContainerModule } from "inversify";
-import {EditLabelUIAutocomplete} from "./features/edit-label-autocomplete"
+import {EditLabelUIAutocomplete} from "./features/edit-label-autocomplete";
 import { EditLabelUI } from "sprotty/lib";
 import { LabelSelectionFeedback } from "./feedback";
 import { Icon, LabeledNode, SEditableLabel, SLabelNode } from "./model";
