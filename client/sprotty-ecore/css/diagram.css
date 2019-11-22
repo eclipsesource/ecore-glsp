@@ -196,6 +196,7 @@ svg {
     top: 100%;
     left: 0;
     right: 0;
+    overflow-y: scroll;
   }
   .autocomplete-items div {
     padding: 10px;
@@ -210,3 +211,4 @@ svg {
     background-color: DodgerBlue !important;
     color: #ffffff;
   }
+  

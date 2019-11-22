@@ -13,12 +13,12 @@
  *
  *   SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ******************************************************************************/
-import { RequestAction, ResponseAction, generateRequestId} from "sprotty/lib";
-import { inject, injectable } from "inversify";
+import { RequestAction, ResponseAction, generateRequestId } from "sprotty/lib";
+import { inject } from "inversify";
 import { matchesKeystroke } from "sprotty/lib/utils/keyboard";
 import { EditLabelUI } from "sprotty/lib";
 import { GLSPActionDispatcher } from "@glsp/sprotty-client/lib";
-import {TYPES} from "@glsp/sprotty-client/lib";
+import { TYPES } from "@glsp/sprotty-client/lib";
 
 export class AttributeTypesAction  implements RequestAction<ReturnAttributeTypesAction> {
     static readonly KIND = 'getAttributeTypes';
@@ -35,7 +35,6 @@ export class ReturnAttributeTypesAction implements ResponseAction {
     }
 }
 
-injectable()
 export class EditLabelUIAutocomplete extends EditLabelUI {
 
     protected showAutocomplete: boolean = false;
@@ -134,6 +133,16 @@ export class EditLabelUIAutocomplete extends EditLabelUI {
                 });
                 this.listContainer.appendChild(element);
             }
+        }
+
+        // set max height for scrolling
+        const parent = this.outerDiv.parentElement;
+        if (parent) {
+            const parentHeight = parent.offsetHeight;
+            const parentPosY = parent.offsetTop;
+            const posY = this.outerDiv.offsetTop + this.inputElement.offsetHeight;
+            const maxHeight = parentHeight - (posY - parentPosY);
+            this.listContainer.style.maxHeight = `${maxHeight}px`;
         }
     }
 
