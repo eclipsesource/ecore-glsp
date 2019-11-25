@@ -25,7 +25,10 @@ import com.eclipsesource.glsp.api.factory.ModelFactory;
 import com.eclipsesource.glsp.api.handler.OperationHandler;
 import com.eclipsesource.glsp.api.layout.ILayoutEngine;
 import com.eclipsesource.glsp.api.model.ModelStateProvider;
+import com.eclipsesource.glsp.api.provider.ActionProvider;
+import com.eclipsesource.glsp.ecore.actions.EcoreActionProvider;
 import com.eclipsesource.glsp.ecore.handler.EcoreComputedBoundsActionHandler;
+import com.eclipsesource.glsp.ecore.handler.EcoreGetAttributeTypesActionHandler;
 import com.eclipsesource.glsp.ecore.handler.EcoreOperationActionHandler;
 import com.eclipsesource.glsp.ecore.handler.EcoreSaveModelActionHandler;
 import com.eclipsesource.glsp.ecore.handler.EcoreUndoRedoActionHandler;
@@ -50,6 +53,13 @@ public class EcoreGLSPModule extends DefaultGLSPModule {
 		rebind(ComputedBoundsActionHandler.class, EcoreComputedBoundsActionHandler.class);
 		rebind(OperationActionHandler.class, EcoreOperationActionHandler.class);
 		rebind(UndoRedoActionHandler.class, EcoreUndoRedoActionHandler.class);
+
+		bindActionHandlers().add(EcoreGetAttributeTypesActionHandler.class);
+	}
+
+	@Override
+	protected Class<? extends ActionProvider> bindActionProvider() {
+		return EcoreActionProvider.class; // includes AttributeTypesAction & DefaultActionProvider
 	}
 
 	@Override
