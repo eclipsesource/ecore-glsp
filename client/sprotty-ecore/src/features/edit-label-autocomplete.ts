@@ -13,12 +13,11 @@
  *
  *   SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ******************************************************************************/
-import { RequestAction, ResponseAction, generateRequestId } from "sprotty/lib";
-import { inject } from "inversify";
+import { RequestAction, ResponseAction, generateRequestId, SModelRoot } from "sprotty/lib";
+import { inject, injectable } from "inversify";
 import { matchesKeystroke } from "sprotty/lib/utils/keyboard";
 import { EditLabelUI } from "sprotty/lib";
-import { GLSPActionDispatcher } from "@glsp/sprotty-client/lib";
-import { TYPES } from "@glsp/sprotty-client/lib";
+import { GLSPActionDispatcher, TYPES } from "@glsp/sprotty-client/lib";
 
 export class AttributeTypesAction  implements RequestAction<ReturnAttributeTypesAction> {
     static readonly KIND = 'getAttributeTypes';
@@ -35,6 +34,7 @@ export class ReturnAttributeTypesAction implements ResponseAction {
     }
 }
 
+@injectable()
 export class EditLabelUIAutocomplete extends EditLabelUI {
 
     protected showAutocomplete: boolean = false;
@@ -51,14 +51,6 @@ export class EditLabelUIAutocomplete extends EditLabelUI {
     protected initializeContents(containerElement: HTMLElement) {
         this.outerDiv = containerElement;
         super.initializeContents(containerElement);
-
-        // request possible element types
-        this.actionDispatcher.requestUntil(new AttributeTypesAction()).then(response => {
-            if (response) {
-                const action: ReturnAttributeTypesAction = <ReturnAttributeTypesAction> response;
-                this.types = action.types;
-            }
-        });
     }
 
     protected handleKeyDown(event: KeyboardEvent) {
@@ -169,6 +161,18 @@ export class EditLabelUIAutocomplete extends EditLabelUI {
         for (let i = 0; i < x.length; i++) {
             this.outerDiv.removeChild(x[i]);
          }
+    }
+
+    protected onBeforeShow(containerElement: HTMLElement, root: Readonly<SModelRoot>, ...contextElementIds: string[]) {
+        super.onBeforeShow(containerElement, root, ...contextElementIds);
+
+        // request possible element types
+        this.actionDispatcher.requestUntil(new AttributeTypesAction()).then(response => {
+            if (response) {
+                const action: ReturnAttributeTypesAction = <ReturnAttributeTypesAction> response;
+                this.types = action.types;
+            }
+        });
     }
 
     protected isAutoCompleteEnabled() {
