@@ -55,16 +55,21 @@ public class EcoreProvider {
 			System.exit(-13);
 		}
 
-
-        ResourceSet resourceSet = new ResourceSetImpl();
+		createEcore(name, prefix, uri, workspacePath);
+	}
+	
+	public static void createEcore(String name, String nsPrefix, String nsURI, Path workspacePath) throws IOException {
+		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
 		XMLResource resource = (XMLResource) resourceSet.createResource(URI.createFileURI(workspacePath.toString()));
+
 		EPackage ePackage = EcoreFactory.eINSTANCE.createEPackage();
 		ePackage.setName(name);
-		ePackage.setNsPrefix(prefix);
-		ePackage.setNsURI(uri);
+		ePackage.setNsPrefix(nsPrefix);
+		ePackage.setNsURI(nsURI);
 		resource.setEncoding("UTF-8");
 		resource.getContents().add(ePackage);
 		resource.save(null);
-    }
+	}
+
 }
