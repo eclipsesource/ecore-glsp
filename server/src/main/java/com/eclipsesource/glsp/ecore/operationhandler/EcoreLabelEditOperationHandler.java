@@ -17,9 +17,17 @@ package com.eclipsesource.glsp.ecore.operationhandler;
 
 import static com.eclipsesource.glsp.api.jsonrpc.GLSPServerException.getOrThrow;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EcorePackage;
 
 import com.eclipsesource.glsp.api.action.Action;
 import com.eclipsesource.glsp.api.action.kind.AbstractOperationAction;
@@ -28,6 +36,7 @@ import com.eclipsesource.glsp.api.handler.OperationHandler;
 import com.eclipsesource.glsp.api.model.GraphicalModelState;
 import com.eclipsesource.glsp.ecore.EcoreFacade;
 import com.eclipsesource.glsp.ecore.EcoreModelIndex;
+import com.eclipsesource.glsp.ecore.ResourceManager;
 import com.eclipsesource.glsp.ecore.enotation.Shape;
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
 import com.eclipsesource.glsp.graph.GNode;
@@ -58,10 +67,18 @@ public class EcoreLabelEditOperationHandler implements OperationHandler {
 				if (inputText.contains(":")) {
 					String[] split = inputText.split(":");
 					attributeName = split[0].trim();
+	
+					Optional<EClassifier> type = parseStringToEType(split[1].trim(),
+							EcoreModelState.getResourceManager(graphicalModelState));
+					if (type.isPresent()) {
+						((EAttribute) eObject).setEType(type.get());
+					}
 				} else {
-					attributeName = inputText;
+					attributeName = inputText.trim();
 				}
-				((EAttribute) eObject).setName(attributeName);
+				if (!attributeName.isEmpty()) {
+					((EAttribute) eObject).setName(attributeName);
+				}
 			}
 		} else { // Main Label of a Node
 			GNode node = getOrThrow(index.findElementByClass(editLabelAction.getLabelId(), GNode.class),
@@ -74,11 +91,33 @@ public class EcoreLabelEditOperationHandler implements OperationHandler {
 					"No shape element for label with id " + editLabelAction.getLabelId() + " found");
 
 			if (eObject instanceof EClassifier) {
-				((EClassifier) eObject).setName(editLabelAction.getText());
+				((EClassifier) eObject).setName(editLabelAction.getText().trim());
 				// nameChange== uri change so we have to recreate the proxy here
 				shape.setSemanticElement(facade.createProxy(eObject));
 			}
 		}
+	}
+
+	private Optional<EClassifier> parseStringToEType(String name, ResourceManager resManager) {
+		for (EClassifier type : getAllEAttributeTypes(resManager)) {
+			if (type.getName().toLowerCase().equals(name.toLowerCase())) {
+				return Optional.ofNullable(type);
+			}
+		}
+		return Optional.empty();
+	}
+
+	public static List<EClassifier> getAllEAttributeTypes(ResourceManager resManager) {
+		List<EClassifier> listOfTypes = new ArrayList<>(EcorePackage.eINSTANCE.getEClassifiers());
+		listOfTypes.removeIf(e -> !(e instanceof EDataType));
+		TreeIterator<Notifier> resourceSetContent = resManager.getEditingDomain().getResourceSet().getAllContents();
+		while (resourceSetContent.hasNext()) {
+			Notifier res = resourceSetContent.next();
+			if (res instanceof EDataType) {
+				listOfTypes.add((EClassifier) res);
+			}
+		}
+		return listOfTypes;
 	}
 
 	@Override
