@@ -70,7 +70,7 @@ import executeCommandModule from "@glsp/sprotty-client/lib/features/execute/di.c
 import { Container, ContainerModule } from "inversify";
 
 import { LabelSelectionFeedback } from "./feedback";
-import {ArrowEdge, Icon, LabeledNode, SEditableLabel, SLabelNode} from "./model";
+import {ArrowEdge, CompositionEdge, Icon, InheritanceEdge, LabeledNode, SEditableLabel, SLabelNode} from "./model";
 import { ArrowEdgeView, ClassNodeView, CompositionEdgeView, IconView, InheritanceEdgeView, LabelNodeView } from "./views";
 
 export default (containerId: string) => {
@@ -97,8 +97,8 @@ export default (containerId: string) => {
         configureModelElement(context, 'routing-point', SRoutingHandle, SRoutingHandleView);
         configureModelElement(context, 'volatile-routing-point', SRoutingHandle, SRoutingHandleView);
         configureModelElement(context, 'edge:reference', ArrowEdge, ArrowEdgeView);
-        configureModelElement(context, 'edge:inheritance', SEdge, InheritanceEdgeView);
-        configureModelElement(context, 'edge:composition', SEdge, CompositionEdgeView);
+        configureModelElement(context, 'edge:inheritance', InheritanceEdge, InheritanceEdgeView);
+        configureModelElement(context, 'edge:composition', CompositionEdge, CompositionEdgeView);
         configureModelElement(context, 'edge', SEdge, PolylineEdgeView);
         configureViewerOptions(context, {
             needsClientLayout: true,

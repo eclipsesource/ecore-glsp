@@ -70,12 +70,6 @@ export class ArrowEdgeView extends PolylineEdgeView {
     ];
   }
 
-  static readonly TARGET_CORRECTION = Math.sqrt(1 * 1 + 2.5 * 2.5);
-
-  protected getTargetAnchorCorrection(edge: SEdge): number {
-    return ArrowEdgeView.TARGET_CORRECTION;
-  }
-
 }
 
 @injectable()
@@ -87,12 +81,6 @@ export class InheritanceEdgeView extends ArrowEdgeView {
       <path class-sprotty-edge={true} class-triangle={true} d="M 10,-8 L 0,0 L 10,8 Z" class-inheritance={true}
         transform={`rotate(${angle(p2, p1)} ${p2.x} ${p2.y}) translate(${p2.x} ${p2.y})`} />,
     ];
-  }
-
-  static readonly TARGET_CORRECTION = Math.sqrt(1 * 1 + 2.5 * 2.5);
-
-  protected getTargetAnchorCorrection(edge: SEdge): number {
-    return ArrowEdgeView.TARGET_CORRECTION;
   }
 }
 
@@ -108,12 +96,6 @@ abstract class DiamondEdgeView extends PolylineEdgeView {
       <path class-sprotty-edge={true} class-diamond={true} class-composition={this.isComposition()} d={rhombStr}
         transform={`rotate(${firstEdgeAngle} ${p1.x} ${p1.y}) translate(${p1.x} ${p1.y})`} />
     ];
-  }
-
-  static readonly SOURCE_CORRECTION = Math.sqrt(1 * 1 + 2 * 2);
-
-  protected getSourceAnchorCorrection(edge: SEdge): number {
-    return CompositionEdgeView.SOURCE_CORRECTION;
   }
   protected isComposition(): boolean {
     return false;

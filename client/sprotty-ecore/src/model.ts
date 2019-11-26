@@ -89,3 +89,11 @@ export class SLabelNode extends SLabel implements EditableLabel {
 export class ArrowEdge extends SEdge {
     public readonly targetAnchorCorrection = 3.3;
 }
+
+export class CompositionEdge extends SEdge {
+    public readonly sourceAnchorCorrection = 3.0;
+}
+
+export class InheritanceEdge extends SEdge {
+    public readonly targetAnchorCorrection = 2.3;
+}
