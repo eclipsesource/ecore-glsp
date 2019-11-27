@@ -68,7 +68,8 @@ import {
 } from "@glsp/sprotty-client/lib";
 import executeCommandModule from "@glsp/sprotty-client/lib/features/execute/di.config";
 import { Container, ContainerModule } from "inversify";
-
+import {EditLabelUIAutocomplete} from "./features/edit-label-autocomplete";
+import { EditLabelUI } from "sprotty/lib";
 import { LabelSelectionFeedback } from "./feedback";
 import { Icon, LabeledNode, SEditableLabel, SLabelNode } from "./model";
 import { ArrowEdgeView, ClassNodeView, CompositionEdgeView, IconView, InheritanceEdgeView, LabelNodeView } from "./views";
@@ -77,6 +78,8 @@ export default (containerId: string) => {
     const classDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
         rebind(TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
         rebind(TYPES.LogLevel).toConstantValue(LogLevel.info);
+        rebind(EditLabelUI).to(EditLabelUIAutocomplete);
+
         const context = { bind, unbind, isBound, rebind };
         bind(TYPES.IVNodePostprocessor).to(LabelSelectionFeedback);
         configureModelElement(context, 'graph', GLSPGraph, SGraphView);
