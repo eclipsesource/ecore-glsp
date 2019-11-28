@@ -22,6 +22,7 @@ import * as path from "path";
 
 import { FileGenServer } from "../common/generate-protocol";
 
+const os = require('os');
 
 @injectable()
 export class EcoreFileGenServer implements FileGenServer, BackendApplicationContribution {
@@ -39,13 +40,17 @@ export class EcoreFileGenServer implements FileGenServer, BackendApplicationCont
 
         const command = 'java';
         const args: string[] = [];
+        let platformWorkspacePath = workspacePath;
+        if (os.platform() === 'win32') {
+            platformWorkspacePath = workspacePath.substr(1);
+        }
 
         args.push(
             '-jar', jarPath,
             '-name', name,
             '-prefix', prefix,
             '-uri', uri,
-            '-workspacePath', workspacePath.substr(1)
+            '-workspacePath', platformWorkspacePath
         );
 
         return new Promise(resolve => {
