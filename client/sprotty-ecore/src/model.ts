@@ -31,7 +31,8 @@ import {
     SLabel,
     SShapeElement,
     WithEditableLabel,
-    withEditLabelFeature
+    withEditLabelFeature,
+    SEdge
 } from "sprotty/lib";
 
 
@@ -83,4 +84,16 @@ export class SLabelNode extends SLabel implements EditableLabel {
     hasFeature(feature: symbol): boolean {
         return (feature === selectFeature || feature === editLabelFeature || feature === popupFeature || feature === deletableFeature || feature === hoverFeedbackFeature || super.hasFeature(feature));
     }
+}
+
+export class ArrowEdge extends SEdge {
+    public readonly targetAnchorCorrection = 3.3;
+}
+
+export class CompositionEdge extends SEdge {
+    public readonly sourceAnchorCorrection = 3.0;
+}
+
+export class InheritanceEdge extends SEdge {
+    public readonly targetAnchorCorrection = 2.3;
 }
