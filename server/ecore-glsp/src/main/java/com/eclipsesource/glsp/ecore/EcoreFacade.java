@@ -30,6 +30,7 @@ import com.eclipsesource.glsp.ecore.enotation.EnotationFactory;
 import com.eclipsesource.glsp.ecore.enotation.NotationElement;
 import com.eclipsesource.glsp.ecore.enotation.SemanticProxy;
 import com.eclipsesource.glsp.ecore.enotation.Shape;
+import com.eclipsesource.glsp.ecore.model.EcoreModelState;
 import com.eclipsesource.glsp.graph.GEdge;
 import com.eclipsesource.glsp.graph.GModelElement;
 import com.eclipsesource.glsp.graph.GModelRoot;
@@ -43,6 +44,8 @@ public class EcoreFacade {
 	private final Resource semanticResource;
 	private final Resource notationResource;
 	private final EPackage ePackage;
+
+	private boolean diagramIsNewlyCreated = false;
 
 	private Diagram diagram;
 	private EcoreModelIndex modelIndex;
@@ -94,6 +97,12 @@ public class EcoreFacade {
 		return diagram;
 	}
 
+	public boolean diagramNeedsAutoLayout() {
+		boolean oldValue = this.diagramIsNewlyCreated;
+		this.diagramIsNewlyCreated = false;
+		return oldValue;
+	}
+
 	public Optional<? extends NotationElement> initializeNotationElement(GModelElement gModelElement) {
 		Optional<? extends NotationElement> result = Optional.empty();
 		if (gModelElement instanceof GNode) {
@@ -114,6 +123,7 @@ public class EcoreFacade {
 		Diagram diagram = EnotationFactory.eINSTANCE.createDiagram();
 		diagram.setSemanticElement(createProxy(ePackage));
 		notationResource.getContents().add(diagram);
+		diagramIsNewlyCreated = true;
 		return diagram;
 	}
 
