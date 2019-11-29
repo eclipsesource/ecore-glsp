@@ -58,7 +58,6 @@ export class LabeledNode extends RectangularNode implements WithEditableLabel, N
     hasFeature(feature: symbol) {
         return super.hasFeature(feature) || feature === nameFeature || feature === withEditLabelFeature;
     }
-
 }
 
 export class SEditableLabel extends SLabel implements EditableLabel {
@@ -68,21 +67,39 @@ export class SEditableLabel extends SLabel implements EditableLabel {
 }
 
 export class Icon extends SShapeElement {
-    size = {
-        width: 32,
-        height: 32
-    };
+    iconImageName: string;
 
     hasFeature(feature: symbol): boolean {
         return feature === boundsFeature || feature === layoutContainerFeature || feature === layoutableChildFeature || feature === fadeFeature;
     }
 }
 
+export class IconClass extends Icon {
+    iconImageName = "EClass.svg";
+}
+
+export class IconAbstract extends Icon {
+    iconImageName = "EClass_abstract.svg";
+}
+
+export class IconInterface extends Icon {
+    iconImageName = "EClass_interface.svg";
+}
+
+export class IconEnum extends Icon {
+    iconImageName = "EEnum.svg";
+}
+
+export class IconDataType extends Icon {
+    iconImageName = "EDataType.svg";
+}
+
 export class SLabelNode extends SLabel implements EditableLabel {
     hoverFeedback: boolean = false;
 
     hasFeature(feature: symbol): boolean {
-        return (feature === selectFeature || feature === editLabelFeature || feature === popupFeature || feature === deletableFeature || feature === hoverFeedbackFeature || super.hasFeature(feature));
+        return (feature === selectFeature || feature === editLabelFeature || feature === popupFeature || feature === deletableFeature || 
+            feature === hoverFeedbackFeature || super.hasFeature(feature));
     }
 }
 

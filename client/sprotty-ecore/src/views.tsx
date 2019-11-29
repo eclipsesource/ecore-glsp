@@ -26,7 +26,8 @@ import {
   SEdge,
   setAttr,
   SLabelView,
-  toDegrees
+  toDegrees,
+  SLabel,
 } from "sprotty/lib";
 
 import { Icon, LabeledNode, SLabelNode } from "./model";
@@ -36,29 +37,39 @@ const JSX = { createElement: snabbdom.svg };
 @injectable()
 export class ClassNodeView extends RectangularNodeView {
   render(node: LabeledNode, context: RenderingContext): VNode {
+
+    const rhombStr = "M 0,38  L " + node.bounds.width + ",38";
+
     return <g class-node={true}>
+      <defs>
+        <filter id="dropShadow">
+          <feDropShadow dx="0.5" dy="0.5" stdDeviation="0.4" />
+        </filter>
+      </defs>
+
       <rect class-sprotty-node={true} class-selected={node.selected} class-mouseover={node.hoverFeedback}
-        x={0} y={0} rx={10} ry={10}
+        x={0} y={0} rx={6} ry={6}
         width={Math.max(0, node.bounds.width)} height={Math.max(0, node.bounds.height)} />
       {context.renderChildren(node)}
+      {(node.children[1] && node.children[1].children.length > 0) ?
+        <path class-sprotty-edge={true} d={rhombStr}></path> : ''}
+    }
     </g>;
   }
 }
+
 @injectable()
 export class IconView implements IView {
-
   render(element: Icon, context: RenderingContext): VNode {
-    const radius = this.getRadius();
+    const image = require("../images/" + element.iconImageName);
+
     return <g>
-      <circle class-sprotty-icon={true} r={radius} cx={radius} cy={radius}></circle>
+      <image class-sprotty-icon={true} href={image} x={-2} y={-1} width={20} height={20}></image>
       {context.renderChildren(element)}
     </g>;
   }
-
-  getRadius() {
-    return 16;
-  }
 }
+
 @injectable()
 export class ArrowEdgeView extends PolylineEdgeView {
   protected renderAdditionals(edge: SEdge, segments: Point[], context: RenderingContext): VNode[] {
@@ -69,7 +80,6 @@ export class ArrowEdgeView extends PolylineEdgeView {
         transform={`rotate(${angle(p2, p1)} ${p2.x} ${p2.y}) translate(${p2.x} ${p2.y})`} />,
     ];
   }
-
 }
 
 @injectable()
@@ -122,13 +132,34 @@ export class AggregationEdgeView extends DiamondEdgeView {
 @injectable()
 export class LabelNodeView extends SLabelView {
   render(labelNode: Readonly<SLabelNode>, context: RenderingContext): VNode {
+    const image = require("../images/EAttribute.svg");
+
     const vnode = (
       <g
         class-selected={labelNode.selected}
         class-mouseover={labelNode.hoverFeedback}
         class-sprotty-label-node={true}
       >
-        <text class-sprotty-label={true}>{labelNode.text}</text>
+        <image class-sprotty-icon={true} href={image} y={-4} width={13} height={8}></image>
+        <text class-sprotty-label={true} x={20}>{labelNode.text}</text>
+      </g>
+    );
+
+    const subType = getSubType(labelNode);
+    if (subType) setAttr(vnode, "class", subType);
+    return vnode;
+  }
+}
+
+@injectable()
+export class EcoreSLabelView extends SLabelView {
+  render(labelNode: Readonly<SLabel>, context: RenderingContext): VNode {
+    const image = require("../images/EEnumLiteral.svg");
+
+    const vnode = (
+      <g class-sprotty-label-node={true}>
+        <image class-sprotty-icon={true} href={image} y={-4} width={13} height={8}></image>
+        <text x={20} class-sprotty-label={true}>{labelNode.text}</text>
       </g>
     );
 

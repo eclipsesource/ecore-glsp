@@ -26,7 +26,6 @@ import org.eclipse.emf.ecore.EObject;
 
 import com.eclipsesource.glsp.ecore.enotation.Shape;
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
-import com.eclipsesource.glsp.ecore.util.EcoreBuilder;
 import com.eclipsesource.glsp.ecore.util.EcoreConfig.CSS;
 import com.eclipsesource.glsp.ecore.util.EcoreConfig.Types;
 import com.eclipsesource.glsp.graph.GCompartment;
@@ -127,8 +126,7 @@ public class ClassifierNodeFactory extends AbstractGModelFactory<EClassifier, GN
 	private GCompartment buildHeader(EClassifier classifier) {
 		return new GCompartmentBuilder(Types.COMP_HEADER) //
 				.layout("hbox") //
-				.add(new EcoreBuilder.IconBuilder() //
-						.label(Character.toString(getIconChar(classifier))) //
+				.add(new GCompartmentBuilder(getType(classifier)) //
 						.build()) //
 				.add(new GLabelBuilder(Types.LABEL_NAME) //
 						.text(classifier.getName()) //
@@ -149,21 +147,22 @@ public class ClassifierNodeFactory extends AbstractGModelFactory<EClassifier, GN
 				.build();
 	}
 
-	public static char getIconChar(EClassifier classifier) {
+
+	public static String getType(EClassifier classifier) {
 		if (classifier instanceof EClass) {
 			EClass eClass = (EClass) classifier;
 			if (eClass.isAbstract()) {
-				return 'A';
+				return Types.ICON_ABSTRACT;
 			} else if (eClass.isInterface()) {
-				return 'I';
+				return Types.ICON_INTERFACE;
 			}
-			return 'C';
+			return Types.ICON_CLASS;
 		} else if (classifier instanceof EEnum) {
-			return 'E';
+			return Types.ICON_ENUM;
 		} else if (classifier instanceof EDataType) {
-			return 'D';
+			return Types.ICON_DATATYPE;
 		}
 
-		return '?';
+		return "Classifier not found";
 	}
 }

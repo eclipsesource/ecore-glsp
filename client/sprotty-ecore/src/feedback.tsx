@@ -29,7 +29,7 @@ const JSX = { createElement: snabbdom.svg };
 export class LabelSelectionFeedback implements IVNodePostprocessor {
   decorate(vnode: VNode, element: SModelElement): VNode {
     if (element instanceof SLabelNode && element.selected) {
-      const vPadding = 3;
+      const vPadding = 1;
       const hPadding = 5;
 
       const feedback: VNode = (

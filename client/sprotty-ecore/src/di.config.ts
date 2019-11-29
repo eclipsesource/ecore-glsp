@@ -71,8 +71,8 @@ import { Container, ContainerModule } from "inversify";
 import {EditLabelUIAutocomplete} from "./features/edit-label-autocomplete";
 import { EditLabelUI } from "sprotty/lib";
 import { LabelSelectionFeedback } from "./feedback";
-import {ArrowEdge, CompositionEdge, Icon, InheritanceEdge, LabeledNode, SEditableLabel, SLabelNode} from "./model";
-import { ArrowEdgeView, ClassNodeView, CompositionEdgeView, IconView, InheritanceEdgeView, LabelNodeView } from "./views";
+import {ArrowEdge, CompositionEdge, InheritanceEdge, LabeledNode, SEditableLabel, SLabelNode, IconDataType, IconEnum, IconInterface, IconAbstract, IconClass} from "./model";
+import { ArrowEdgeView, ClassNodeView, CompositionEdgeView, IconView, InheritanceEdgeView, LabelNodeView, EcoreSLabelView } from "./views";
 
 export default (containerId: string) => {
     const classDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
@@ -89,12 +89,16 @@ export default (containerId: string) => {
         configureModelElement(context, 'label:name', SEditableLabel, SLabelView);
         configureModelElement(context, 'label:edge', SLabel, SLabelView);
         configureModelElement(context, 'node:attribute', SLabelNode, LabelNodeView);
-        configureModelElement(context, 'node:enumliteral', SNode, RectangularNodeView);
+        configureModelElement(context, 'node:enumliteral', SLabel, EcoreSLabelView);
         configureModelElement(context, 'node:operation', SNode, RectangularNodeView);
         configureModelElement(context, 'label:text', SLabel, SLabelView);
         configureModelElement(context, 'comp:comp', SCompartment, SCompartmentView);
         configureModelElement(context, 'comp:header', SCompartment, SCompartmentView);
-        configureModelElement(context, 'icon', Icon, IconView);
+        configureModelElement(context, 'icon:class', IconClass, IconView);
+        configureModelElement(context, 'icon:abstract', IconAbstract, IconView);
+        configureModelElement(context, 'icon:interface', IconInterface, IconView);
+        configureModelElement(context, 'icon:enum', IconEnum, IconView);
+        configureModelElement(context, 'icon:datatype', IconDataType, IconView);
         configureModelElement(context, 'label:icon', SLabel, SLabelView);
         configureModelElement(context, 'html', HtmlRoot, HtmlRootView);
         configureModelElement(context, 'routing-point', SRoutingHandle, SRoutingHandleView);

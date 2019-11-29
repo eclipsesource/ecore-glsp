@@ -24,9 +24,12 @@ public final class EcoreConfig {
 		public static final String LABEL_EDGE = "label:edge";
 		public static final String COMP = "comp:comp";
 		public static final String COMP_HEADER = "comp:header";
-		public static final String ICON = "icon";
+		public static final String ICON_CLASS = "icon:class";
+		public static final String ICON_ABSTRACT = "icon:abstract";
+		public static final String ICON_INTERFACE = "icon:interface";
+		public static final String ICON_ENUM = "icon:enum";
+		public static final String ICON_DATATYPE = "icon:datatype";
 		public static final String LABEL_ICON = "label:icon";
-
 		public static final String ECLASS = "node:class";
 		public static final String ENUM = "node:enum";
 		public static final String DATATYPE = "node:datatype";
