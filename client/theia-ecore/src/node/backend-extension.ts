@@ -13,11 +13,22 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
+import { ConnectionHandler, JsonRpcConnectionHandler } from "@theia/core";
+import { BackendApplicationContribution } from "@theia/core/lib/node";
 import { LanguageServerContribution } from "@theia/languages/lib/node";
 import { ContainerModule } from "inversify";
 
+import { FILEGEN_SERVICE_PATH, FileGenServer } from "../common/generate-protocol";
+import { EcoreFileGenServer } from "./ecore-file-generation";
 import { EcoreGLServerContribution } from "./ecore-glsp-server-contribution";
+
 
 export default new ContainerModule(bind => {
     bind(LanguageServerContribution).to(EcoreGLServerContribution).inSingletonScope();
+    bind(EcoreFileGenServer).toSelf().inSingletonScope();
+    bind(BackendApplicationContribution).toService(EcoreFileGenServer);
+    bind(ConnectionHandler).toDynamicValue(ctx =>
+        new JsonRpcConnectionHandler(FILEGEN_SERVICE_PATH, () =>
+            ctx.container.get<FileGenServer>(EcoreFileGenServer))
+    ).inSingletonScope();
 });

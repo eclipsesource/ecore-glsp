@@ -14,22 +14,28 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 import { GLSPClientContribution } from "@glsp/theia-integration/lib/browser";
-import { FrontendApplicationContribution, OpenHandler, WidgetFactory } from "@theia/core/lib/browser";
+import { CommandContribution } from "@theia/core";
+import {
+    FrontendApplicationContribution,
+    OpenHandler,
+    WebSocketConnectionProvider,
+    WidgetFactory
+} from "@theia/core/lib/browser";
 import { ContainerModule, interfaces } from "inversify";
 import { DiagramConfiguration, DiagramManager, DiagramManagerProvider } from "sprotty-theia/lib";
 
+import { FILEGEN_SERVICE_PATH, FileGenServer } from "../common/generate-protocol";
 import { EcoreDiagramConfiguration } from "./diagram/ecore-diagram-configuration";
 import { EcoreDiagramManager } from "./diagram/ecore-diagram-manager.";
 import { EcoreGLSPDiagramClient } from "./diagram/ecore-glsp-diagram-client";
 import { EcoreGLSPClientContribution } from "./ecore-glsp--contribution";
+import { EcoreCommandContribution } from "./EcoreCommandContribution";
 
 
 export default new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind, isBound: interfaces.IsBound, rebind: interfaces.Rebind) => {
     bind(EcoreGLSPClientContribution).toSelf().inSingletonScope();
     bind(GLSPClientContribution).toService(EcoreGLSPClientContribution);
-
     bind(EcoreGLSPDiagramClient).toSelf().inSingletonScope();
-
     bind(DiagramConfiguration).to(EcoreDiagramConfiguration).inSingletonScope();
     bind(EcoreDiagramManager).toSelf().inSingletonScope();
     bind(FrontendApplicationContribution).toService(EcoreDiagramManager);
@@ -43,4 +49,9 @@ export default new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Un
             });
         };
     });
+    bind(CommandContribution).to(EcoreCommandContribution);
+    bind(FileGenServer).toDynamicValue(ctx => {
+        const connection = ctx.container.get(WebSocketConnectionProvider);
+        return connection.createProxy<FileGenServer>(FILEGEN_SERVICE_PATH);
+    }).inSingletonScope();
 });
