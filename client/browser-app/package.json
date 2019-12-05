@@ -23,8 +23,8 @@
   },
   "scripts": {
     "prepare": "theia build --mode development",
-    "start": "theia start --ECORE_GLSP=5007",
-    "start:debug": "theia start --ECORE_GLSP=5007 --loglevel=debug --root=../workspace",
+    "start": "theia start",
+    "start:debug": "theia start --loglevel=debug --root=../workspace",
     "watch": "theia build --watch --mode development"
   },
   "theia": {

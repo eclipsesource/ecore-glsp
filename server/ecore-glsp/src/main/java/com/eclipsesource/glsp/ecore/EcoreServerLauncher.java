@@ -21,12 +21,23 @@ import com.eclipsesource.glsp.server.launch.GLSPServerLauncher;
 public class EcoreServerLauncher {
 
 	public static void main(String[] args) {
+		int port = getPort(args);
+		
 		EcorePackage.eINSTANCE.eClass();
 		ElkLayoutEngine.initialize(new LayeredMetaDataProvider());
 		BasicConfigurator.configure();
+		
 		GLSPServerLauncher launcher = new DefaultGLSPServerLauncher(new EcoreGLSPModule());
+		launcher.start("localhost", port);
+		
+	}
 
-		launcher.start("localhost", 5007);
-
+	private static int getPort(String[] args) {
+		for (int i = 0; i < args.length; i++) {
+			if ("--port".contentEquals(args[i])) {
+				return Integer.parseInt(args[i+1]);
+			}
+		}
+		throw new IllegalArgumentException("No port is defined for ECORE-GLSP. Specify a port as a command line argument with '--port <portnumber>'");
 	}
 }

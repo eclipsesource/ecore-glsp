@@ -15,27 +15,19 @@
  ********************************************************************************/
 import { BaseGLSPServerContribution } from "@glsp/theia-integration/lib/node";
 import { IConnection } from "@theia/languages/lib/node";
-import { injectable } from "inversify";
+import { injectable, inject, optional} from "inversify";
 import * as net from "net";
 import { createSocketConnection } from "vscode-ws-jsonrpc/lib/server";
 
 import { EcoreLanguage } from "../common/ecore-language";
+import {GLSPLaunchOptions, GLSPLaunchOptionsSymb} from "./glsp-server-launcher";
 
-function getPort(): number | undefined {
-    const arg = process.argv.filter(a => a.startsWith('--ECORE_GLSP='))[0];
-    if (!arg) {
-        return undefined;
-    } else {
-        return Number.parseInt(arg.substring('--ECORE_GLSP='.length), 10);
-    }
-}
 @injectable()
 export class EcoreGLServerContribution extends BaseGLSPServerContribution {
+
     readonly id = EcoreLanguage.Id;
     readonly name = EcoreLanguage.Name;
-
     serverStarted = false;
-
     readonly description = {
         id: 'ecore',
         name: 'Ecore',
@@ -44,9 +36,10 @@ export class EcoreGLServerContribution extends BaseGLSPServerContribution {
             '**/*.ecorediagram'
         ]
     };
+    @inject(GLSPLaunchOptionsSymb) @optional() protected readonly launchOptions: GLSPLaunchOptions;
 
     start(clientConnection: IConnection): void {
-        const socketPort = getPort();
+        const socketPort = this.launchOptions.serverPort;
         if (socketPort) {
             const socket = new net.Socket();
             const serverConnection = createSocketConnection(socket, socket, () => {

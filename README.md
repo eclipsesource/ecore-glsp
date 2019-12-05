@@ -15,7 +15,21 @@ Note: to build and run the Ecore GLSP Server, you need Java with version >= 11.
   * mvn install -U
 
 * Run:
-  * Execute the Java main class: com.eclipsesource.glsp.ecore.EcoreServerLauncher
+  * Start the client as it is described in [client readme](https://github.com/eclipsesource/ecore-glsp/blob/master/client/README.md). The backend is automatically launched by the project theia-glsp-server
+  * If you want to start the backend manually - execute the Java main class: com.eclipsesource.glsp.ecore.EcoreServerLauncher
+  	For this to work with the client, you have to remove the dependency on theia-glsp-server in the browser-app's package.json
 
-Client
- * Follow instructions on /client [Readme file](https://github.com/eclipsesource/ecore-glsp/blob/master/client/README.md)
+## Building and deploying via Docker
+The client repo contains a [Dockerfile](https://github.com/eclipsesource/ecore-glsp/blob/master/client/README.md), that builds the entire client application. The image listens on 0.0.0.0:3000 for incoming requests from a browser.
+
+For installing docker locally please consult [docker's installation description](https://docs.docker.com/install/) for your OS.
+
+**The glsp-server needs to be build locally before you build the image**
+
+**Building**
+`docker build -t <imagename>:<tagname> .` 
+
+**Running**
+`docker run -it -p 3000:3000 --rm <imagename>:<tagname>`
+
+After that you should be able to connect with your browser at localhost:3000.	
