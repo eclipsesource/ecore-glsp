@@ -50,9 +50,9 @@ public class LabelFactory extends AbstractGModelFactory<ENamedElement, GLabel> {
 	}
 
 	public GLabel create(EEnumLiteral eEnumLiteral) {
-		String label = " - " + eEnumLiteral.getLiteral();
+		String label = eEnumLiteral.getLiteral();
 
-		return new GLabelBuilder(Types.LABEL_TEXT) //
+		return new GLabelBuilder(Types.ENUMLITERAL) //
 				.id(toId(eEnumLiteral)) //
 				.text(label) //
 				.build();

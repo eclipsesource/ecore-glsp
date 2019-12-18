@@ -103,7 +103,11 @@ public class EcoreDiagramConfiguration implements DiagramConfiguration {
 		mappings.put(Types.COMP, GraphPackage.Literals.GCOMPARTMENT);
 		mappings.put(Types.COMP_HEADER, GraphPackage.Literals.GCOMPARTMENT);
 		mappings.put(Types.LABEL_ICON, GraphPackage.Literals.GCOMPARTMENT);
-		mappings.put(Types.ICON, GraphPackage.Literals.GCOMPARTMENT);
+		mappings.put(Types.ICON_CLASS, GraphPackage.Literals.GCOMPARTMENT);
+		mappings.put(Types.ICON_ABSTRACT, GraphPackage.Literals.GCOMPARTMENT);
+		mappings.put(Types.ICON_INTERFACE, GraphPackage.Literals.GCOMPARTMENT);
+		mappings.put(Types.ICON_ENUM, GraphPackage.Literals.GCOMPARTMENT);
+		mappings.put(Types.ICON_DATATYPE, GraphPackage.Literals.GCOMPARTMENT);
 
 		// ecore stuff
 		mappings.put(Types.ECLASS, GraphPackage.Literals.GNODE);

@@ -29,10 +29,11 @@ svg {
 }
 
 .ecore-node {
-    fill: #fffcdb;
+    fill: #fffcdf;
     stroke: black;
     stroke-width: 1;
     font-weight: bold;
+    filter: url(#dropShadow);
 }
 
 .sprotty-node.selected {
@@ -51,7 +52,7 @@ svg {
 }
 
 .sprotty-label-node>.sprotty-label {
-    alignment-baseline: middle;
+    alignment-baseline: middle;	
 }
 
 .sprotty-label-node>.selection-feedback {
@@ -90,7 +91,6 @@ svg {
 }
 
 .sprotty-icon {
-    fill: #debe5b;
     stroke-width: 0;
 }
 
@@ -190,7 +190,7 @@ svg {
 }
 
 .ecore-node.enum {
-    fill: #e7f2da;
+    fill: #fffcdf;
 }
 
 .italic {
