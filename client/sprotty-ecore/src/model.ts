@@ -96,11 +96,20 @@ export class IconDataType extends Icon {
 
 export class SLabelNode extends SLabel implements EditableLabel {
     hoverFeedback: boolean = false;
+    imageName: string;
 
     hasFeature(feature: symbol): boolean {
         return (feature === selectFeature || feature === editLabelFeature || feature === popupFeature || feature === deletableFeature || 
             feature === hoverFeedbackFeature || super.hasFeature(feature));
     }
+}
+
+export class SLabelNodeAttribute extends SLabelNode {
+    imageName = "EAttribute.svg";
+}
+
+export class SLabelNodeLiteral extends SLabelNode {
+    imageName = "EEnumLiteral.svg";
 }
 
 export class ArrowEdge extends SEdge {

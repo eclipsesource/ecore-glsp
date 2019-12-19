@@ -26,6 +26,7 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 
@@ -78,6 +79,12 @@ public class EcoreLabelEditOperationHandler implements OperationHandler {
 				}
 				if (!attributeName.isEmpty()) {
 					((EAttribute) eObject).setName(attributeName);
+				}
+			} else if (eObject instanceof EEnumLiteral) {
+				String inputText = editLabelAction.getText().trim();
+
+				if (!inputText.isEmpty()) {
+					((EEnumLiteral) eObject).setName(inputText);
 				}
 			}
 		} else { // Main Label of a Node
