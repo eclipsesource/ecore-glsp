@@ -27,7 +27,6 @@ import {
   setAttr,
   SLabelView,
   toDegrees,
-  SLabel,
 } from "sprotty/lib";
 
 import { Icon, LabeledNode, SLabelNode } from "./model";
@@ -132,7 +131,7 @@ export class AggregationEdgeView extends DiamondEdgeView {
 @injectable()
 export class LabelNodeView extends SLabelView {
   render(labelNode: Readonly<SLabelNode>, context: RenderingContext): VNode {
-    const image = require("../images/EAttribute.svg");
+    const image = require("../images/" + labelNode.imageName);
 
     const vnode = (
       <g
@@ -142,24 +141,6 @@ export class LabelNodeView extends SLabelView {
       >
         <image class-sprotty-icon={true} href={image} y={-4} width={13} height={8}></image>
         <text class-sprotty-label={true} x={20}>{labelNode.text}</text>
-      </g>
-    );
-
-    const subType = getSubType(labelNode);
-    if (subType) setAttr(vnode, "class", subType);
-    return vnode;
-  }
-}
-
-@injectable()
-export class EcoreSLabelView extends SLabelView {
-  render(labelNode: Readonly<SLabel>, context: RenderingContext): VNode {
-    const image = require("../images/EEnumLiteral.svg");
-
-    const vnode = (
-      <g class-sprotty-label-node={true}>
-        <image class-sprotty-icon={true} href={image} y={-4} width={13} height={8}></image>
-        <text x={20} class-sprotty-label={true}>{labelNode.text}</text>
       </g>
     );
 
