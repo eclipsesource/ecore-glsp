@@ -100,9 +100,9 @@ export class EcoreCommandContribution implements CommandContribution {
                         this.quickOpenService.open(quickOpenModel, this.getOptions(hint, false));
                     };
 
-                    showInput("Name", "Name of Ecore ", (nameOfEcore) => {
+                    showInput("Name", "Name of Ecore", (nameOfEcore) => {
                         showInput("Prefix", "Prefix", (prefix) => {
-                            showInput("URI", "URI:", (ecore_uri) => {
+                            showInput("URI", "URI", (ecore_uri) => {
                                 createEcore(nameOfEcore, prefix, ecore_uri);
                             });
                         });
