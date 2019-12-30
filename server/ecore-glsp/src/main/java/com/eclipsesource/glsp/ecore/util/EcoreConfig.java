@@ -42,6 +42,7 @@ public final class EcoreConfig {
 		public static final String INHERITANCE = "edge:inheritance";
 		public static final String ABSTRACT = "node:class:abstract";
 		public static final String INTERFACE = "node:class:interface";
+		public static final String LABEL_INSTANCE = "label:instancename";
 
 		private Types() {
 		};

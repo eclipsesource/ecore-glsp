@@ -102,8 +102,9 @@ public class ClassifierNodeFactory extends AbstractGModelFactory<EClassifier, GN
 								.hAlign(GConstants.HAlign.CENTER) //
 								.resizeContainer(true) //
 								.build()) //
-						.add(new GLabelBuilder(Types.LABEL_TEXT) //
-								.addCssClass(CSS.ITALIC).id(toId(eDataType) + "_typeLabel")//
+						.add(new GLabelBuilder(Types.LABEL_INSTANCE) //
+								.addCssClass(CSS.ITALIC)//
+								.id(toId(eDataType) + Types.LABEL_INSTANCE)//
 								.text(eDataType.getInstanceClassName()) //
 								.build())
 						.build());
