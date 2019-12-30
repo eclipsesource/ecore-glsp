@@ -71,7 +71,21 @@ import { Container, ContainerModule } from "inversify";
 import {EditLabelUIAutocomplete} from "./features/edit-label-autocomplete";
 import { EditLabelUI } from "sprotty/lib";
 import { LabelSelectionFeedback } from "./feedback";
-import {ArrowEdge, CompositionEdge, InheritanceEdge, LabeledNode, SEditableLabel, IconDataType, IconEnum, IconInterface, IconAbstract, IconClass, SLabelNodeAttribute, SLabelNodeLiteral} from "./model";
+import {
+    ArrowEdge,
+    CompositionEdge,
+    InheritanceEdge,
+    LabeledNode,
+    SEditableLabel,
+    IconDataType,
+    IconEnum,
+    IconInterface,
+    IconAbstract,
+    IconClass,
+    SLabelNodeAttribute,
+    SLabelNodeLiteral,
+    SLabelNode
+} from "./model";
 import { ArrowEdgeView, ClassNodeView, CompositionEdgeView, IconView, InheritanceEdgeView, LabelNodeView } from "./views";
 
 export default (containerId: string) => {
@@ -89,6 +103,7 @@ export default (containerId: string) => {
         configureModelElement(context, 'label:name', SEditableLabel, SLabelView);
         configureModelElement(context, 'label:edge-name', SEditableLabel, SLabelView);
         configureModelElement(context, 'label:edge-multiplicity', SEditableLabel, SLabelView);
+        configureModelElement(context, 'label:instancename', SLabelNode, LabelNodeView);
         configureModelElement(context, 'node:attribute', SLabelNodeAttribute, LabelNodeView);
         configureModelElement(context, 'node:enumliteral', SLabelNodeLiteral, LabelNodeView);
         configureModelElement(context, 'node:operation', SNode, RectangularNodeView);

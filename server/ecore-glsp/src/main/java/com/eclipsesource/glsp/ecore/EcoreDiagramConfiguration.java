@@ -54,7 +54,7 @@ public class EcoreDiagramConfiguration implements DiagramConfiguration {
 	public List<ShapeTypeHint> getNodeTypeHints() {
 		List<ShapeTypeHint> hints = new ArrayList<>();
 		hints.add(new ShapeTypeHint(DefaultTypes.GRAPH, false, false, false, false,
-				List.of(Types.ECLASS, Types.ABSTRACT, Types.INTERFACE, Types.ENUM)));
+				List.of(Types.ECLASS, Types.ABSTRACT, Types.INTERFACE, Types.ENUM, Types.DATATYPE)));
 		hints.add(new ShapeTypeHint(Types.ECLASS, true, true, false, false, List.of(Types.ATTRIBUTE, Types.OPERATION)));
 		hints.add(new ShapeTypeHint(Types.ENUM, true, true, false, false, List.of(Types.ENUMLITERAL)));
 		hints.add(new ShapeTypeHint(Types.DATATYPE, true, true, false, true));
@@ -120,6 +120,7 @@ public class EcoreDiagramConfiguration implements DiagramConfiguration {
 		mappings.put(Types.ATTRIBUTE, GraphPackage.Literals.GLABEL);
 		mappings.put(Types.OPERATION, GraphPackage.Literals.GLABEL);
 		mappings.put(Types.ENUMLITERAL, GraphPackage.Literals.GLABEL);
+		mappings.put(Types.LABEL_INSTANCE, GraphPackage.Literals.GLABEL);
 		return mappings;
 	}
 

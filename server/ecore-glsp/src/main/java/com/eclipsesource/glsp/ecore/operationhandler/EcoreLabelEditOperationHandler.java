@@ -61,7 +61,6 @@ public class EcoreLabelEditOperationHandler implements OperationHandler {
 		ApplyLabelEditOperationAction editLabelAction = (ApplyLabelEditOperationAction) action;
 		EcoreFacade facade = EcoreModelState.getEcoreFacade(graphicalModelState);
 		EcoreModelIndex index = EcoreModelState.getModelState(graphicalModelState).getIndex();
-
 		Optional<String> type = index.findElementByClass(editLabelAction.getLabelId(), GModelElement.class).map(e -> e.getType());
 		if (type.isPresent()) {
 			switch (type.get()) {
@@ -81,7 +80,16 @@ public class EcoreLabelEditOperationHandler implements OperationHandler {
 							shape.setSemanticElement(facade.createProxy(node_semantic));
 						}
 					break;
+				case Types.LABEL_INSTANCE:
+					node = getOrThrow(index.findElementByClass(editLabelAction.getLabelId(), GNode.class), 
+							"No parent Node for element with id " + editLabelAction.getLabelId() + " found");
 
+					node_semantic = getOrThrow(index.getSemantic(node),
+							"No semantic element for labelContainer with id " + node.getId() + " found");
+					if (node_semantic instanceof EClassifier) {
+						((EClassifier) node_semantic).setInstanceClassName(editLabelAction.getText().trim());
+					}
+					break;
 				case Types.ATTRIBUTE:
 					EAttribute attribute_semantic = (EAttribute) getOrThrow(index.getSemantic(editLabelAction.getLabelId()),
 						"No semantic element for label with id " + editLabelAction.getLabelId() + " found");
@@ -138,7 +146,6 @@ public class EcoreLabelEditOperationHandler implements OperationHandler {
 							throw new GLSPServerException("Multiplicity of reference with id " + editLabelAction.getLabelId() + " has a wrong input format", new IllegalArgumentException());
 						}
 					break;
-
 			}
 		}
 	}
