@@ -102,8 +102,10 @@ public class GModelFactory extends AbstractGModelFactory<EObject, GModelElement>
 	}
 
 	public GEdge create(EReference eReference) {
-		String label = String.format("[%s..%s] %s", eReference.getLowerBound(),
-				eReference.getUpperBound() == -1 ? "*" : eReference.getUpperBound(), eReference.getName());
+		String labelMultiplicity = String.format("[%s..%s]", eReference.getLowerBound(),
+				eReference.getUpperBound() == -1 ? "*" : eReference.getUpperBound());
+		String labelName = eReference.getName();
+
 		String source = toId(eReference.getEContainingClass());
 
 		String target = toId(eReference.getEReferenceType());
@@ -113,15 +115,24 @@ public class GModelFactory extends AbstractGModelFactory<EObject, GModelElement>
 				.id(id) //
 				.addCssClass(CSS.ECORE_EDGE) //
 				.addCssClass(eReference.isContainment() ? CSS.COMPOSITION : null) //
-				.add(new GLabelBuilder(Types.LABEL_EDGE) //
+				.add(new GLabelBuilder(Types.LABEL_EDGE_MULTIPLICITY) //
 						.edgePlacement(new GEdgePlacementBuilder()//
-								.side(GConstants.EdgeSide.TOP)//
+								.side(GConstants.EdgeSide.BOTTOM)//
 								.position(0.5d)//
-								.offset(0) //
+								.offset(2d) //
 								.rotate(false) //
 								.build())//
-						.id(id + "_label") //
-						.text(label).build())
+						.id(id + "_label_multiplicity") //
+						.text(labelMultiplicity).build())
+				.add(new GLabelBuilder(Types.LABEL_EDGE_NAME) //
+					.edgePlacement(new GEdgePlacementBuilder()//
+							.side(GConstants.EdgeSide.TOP)//
+							.position(0.5d)//
+							.offset(2d) //
+							.rotate(false) //
+							.build())//
+					.id(id + "_label_name") //
+					.text(labelName).build())
 				.sourceId(source) //
 				.targetId(target) //
 				.routerKind(GConstants.RouterKind.MANHATTAN)//
