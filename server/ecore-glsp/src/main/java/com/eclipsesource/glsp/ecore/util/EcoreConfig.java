@@ -21,7 +21,8 @@ public final class EcoreConfig {
 
 		public static final String LABEL_NAME = "label:name";
 		public static final String LABEL_TEXT = "label:text";
-		public static final String LABEL_EDGE = "label:edge";
+		public static final String LABEL_EDGE_NAME = "label:edge-name";
+		public static final String LABEL_EDGE_MULTIPLICITY = "label:edge-multiplicity";
 		public static final String COMP = "comp:comp";
 		public static final String COMP_HEADER = "comp:header";
 		public static final String ICON_CLASS = "icon:class";

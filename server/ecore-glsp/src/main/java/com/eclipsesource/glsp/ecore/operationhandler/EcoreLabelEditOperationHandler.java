@@ -20,6 +20,8 @@ import static com.eclipsesource.glsp.api.jsonrpc.GLSPServerException.getOrThrow;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.TreeIterator;
@@ -28,19 +30,24 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 
 import com.eclipsesource.glsp.api.action.Action;
 import com.eclipsesource.glsp.api.action.kind.AbstractOperationAction;
 import com.eclipsesource.glsp.api.action.kind.ApplyLabelEditOperationAction;
 import com.eclipsesource.glsp.api.handler.OperationHandler;
+import com.eclipsesource.glsp.api.jsonrpc.GLSPServerException;
 import com.eclipsesource.glsp.api.model.GraphicalModelState;
 import com.eclipsesource.glsp.ecore.EcoreFacade;
 import com.eclipsesource.glsp.ecore.EcoreModelIndex;
 import com.eclipsesource.glsp.ecore.ResourceManager;
 import com.eclipsesource.glsp.ecore.enotation.Shape;
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
+import com.eclipsesource.glsp.graph.GEdge;
+import com.eclipsesource.glsp.graph.GModelElement;
 import com.eclipsesource.glsp.graph.GNode;
+import com.eclipsesource.glsp.ecore.util.EcoreConfig.Types;
 
 public class EcoreLabelEditOperationHandler implements OperationHandler {
 
@@ -55,52 +62,83 @@ public class EcoreLabelEditOperationHandler implements OperationHandler {
 		EcoreFacade facade = EcoreModelState.getEcoreFacade(graphicalModelState);
 		EcoreModelIndex index = EcoreModelState.getModelState(graphicalModelState).getIndex();
 
-		// If we edit a Label Node (e.g. EAttribute, EEnumLiteral...), eObject will be
-		// defined.
-		// Otherwise, we're editing a Label that isn't a separate semantic element (e.g.
-		// Classifier Name Label),
-		// and we'll need to retrieve the top-level semantic element
-		EObject eObject = index.getSemantic(editLabelAction.getLabelId()).orElse(null);
-		if (eObject != null) { // Label Node (List Item)
-			if (eObject instanceof EAttribute) {
-				String inputText = editLabelAction.getText();
-				String attributeName;
-				if (inputText.contains(":")) {
-					String[] split = inputText.split(":");
-					attributeName = split[0].trim();
-	
-					Optional<EClassifier> type = parseStringToEType(split[1].trim(),
-							EcoreModelState.getResourceManager(graphicalModelState));
-					if (type.isPresent()) {
-						((EAttribute) eObject).setEType(type.get());
+		Optional<String> type = index.findElementByClass(editLabelAction.getLabelId(), GModelElement.class).map(e -> e.getType());
+		if (type.isPresent()) {
+			switch (type.get()) {
+				case Types.LABEL_NAME:
+						GNode node = getOrThrow(index.findElementByClass(editLabelAction.getLabelId(), GNode.class), 
+							"No parent Node for element with id " + editLabelAction.getLabelId() + " found");
+						
+						EObject node_semantic = getOrThrow(index.getSemantic(node),
+							"No semantic element for labelContainer with id " + node.getId() + " found");
+		
+						Shape shape = getOrThrow(index.getNotation(node_semantic), Shape.class,
+								"No shape element for label with id " + editLabelAction.getLabelId() + " found");
+		
+						if (node_semantic instanceof EClassifier) {
+							((EClassifier) node_semantic).setName(editLabelAction.getText().trim());
+							// nameChange== uri change so we have to recreate the proxy here
+							shape.setSemanticElement(facade.createProxy(node_semantic));
+						}
+					break;
+
+				case Types.ATTRIBUTE:
+					EAttribute attribute_semantic = (EAttribute) getOrThrow(index.getSemantic(editLabelAction.getLabelId()),
+						"No semantic element for label with id " + editLabelAction.getLabelId() + " found");
+
+					String inputText = editLabelAction.getText();
+					String attributeName;
+					if (inputText.contains(":")) {
+						String[] split = inputText.split(":");
+						attributeName = split[0].trim();
+		
+						Optional<EClassifier> datatype = parseStringToEType(split[1].trim(),
+								EcoreModelState.getResourceManager(graphicalModelState));
+						if (datatype.isPresent()) {
+							attribute_semantic.setEType(datatype.get());
+						}
+					} else {
+						attributeName = inputText.trim();
 					}
-				} else {
-					attributeName = inputText.trim();
-				}
-				if (!attributeName.isEmpty()) {
-					((EAttribute) eObject).setName(attributeName);
-				}
-			} else if (eObject instanceof EEnumLiteral) {
-				String inputText = editLabelAction.getText().trim();
+					if (!inputText.isEmpty()) {
+						attribute_semantic.setName(attributeName);
+					}
+					break;
 
-				if (!inputText.isEmpty()) {
-					((EEnumLiteral) eObject).setName(inputText);
-				}
-			}
-		} else { // Main Label of a Node
-			GNode node = getOrThrow(index.findElementByClass(editLabelAction.getLabelId(), GNode.class),
-					"No label container for label with id " + editLabelAction.getLabelId() + " found");
+				case Types.ENUMLITERAL:
+					EEnumLiteral literal_semantic = (EEnumLiteral) getOrThrow(index.getSemantic(editLabelAction.getLabelId()),
+						"No semantic element for label with id " + editLabelAction.getLabelId() + " found");
+					String text = editLabelAction.getText().trim();
+					if (!text.isEmpty()) {
+						literal_semantic.setName(text);
+					}
+					break;
 
-			eObject = getOrThrow(index.getSemantic(node),
-					"No semantic element for labelContainer with id " + node.getId() + " found");
+				case Types.LABEL_EDGE_NAME:
+					GEdge edge = getOrThrow(index.findElementByClass(editLabelAction.getLabelId(), GEdge.class),
+						"No edge for label with id " + editLabelAction.getLabelId() + " found");
+					EReference reference_semantic = (EReference) getOrThrow(index.getSemantic(edge),
+						"No semantic element for labelContainer with id " + edge.getId() + " found");
+					reference_semantic.setName(editLabelAction.getText().trim());
+					break;
 
-			Shape shape = getOrThrow(index.getNotation(eObject), Shape.class,
-					"No shape element for label with id " + editLabelAction.getLabelId() + " found");
+				case Types.LABEL_EDGE_MULTIPLICITY:
+					edge = getOrThrow(index.findElementByClass(editLabelAction.getLabelId(), GEdge.class),
+						"No edge for label with id " + editLabelAction.getLabelId() + " found");
+					reference_semantic = (EReference) getOrThrow(index.getSemantic(edge),
+						"No semantic element for labelContainer with id " + edge.getId() + " found");
+					Pattern pattern = Pattern.compile("\\s*\\[\\s*(\\d+)\\s*\\.+\\s*(\\*|\\d+|\\-1)\\s*\\]\\s*");
+						Matcher matcher = pattern.matcher(editLabelAction.getText());
+						if (matcher.matches()) {
+							String lowerBound = matcher.group(1);
+							String upperBound = matcher.group(2);
+							reference_semantic.setLowerBound((lowerBound.equals("*")) ? -1 : Integer.valueOf(lowerBound));
+							reference_semantic.setUpperBound((upperBound.equals("*")) ? -1 : Integer.valueOf(upperBound));
+						} else {
+							throw new GLSPServerException("Multiplicity of reference with id " + editLabelAction.getLabelId() + " has a wrong input format", new IllegalArgumentException());
+						}
+					break;
 
-			if (eObject instanceof EClassifier) {
-				((EClassifier) eObject).setName(editLabelAction.getText().trim());
-				// nameChange== uri change so we have to recreate the proxy here
-				shape.setSemanticElement(facade.createProxy(eObject));
 			}
 		}
 	}
@@ -131,5 +169,4 @@ public class EcoreLabelEditOperationHandler implements OperationHandler {
 	public String getLabel(AbstractOperationAction action) {
 		return "Apply label";
 	}
-
 }
