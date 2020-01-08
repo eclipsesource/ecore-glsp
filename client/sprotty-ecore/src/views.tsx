@@ -82,6 +82,22 @@ export class ArrowEdgeView extends PolylineEdgeView {
 }
 
 @injectable()
+export class BidirectionalEdgeView extends ArrowEdgeView {
+    protected renderAdditionals(edge: SEdge, segments: Point[], context: RenderingContext): VNode[] {
+        const source1 = segments[0];
+        const source2 = segments[1];
+        const target1 = segments[segments.length - 2];
+        const target2 = segments[segments.length - 1];
+        return [
+            <path class-sprotty-edge={true} d="M 10,-4 L 0,0 L 10,4"
+                  transform={`rotate(${angle(target2, target1)} ${target2.x} ${target2.y}) translate(${target2.x} ${target2.y})`} />,
+            <path class-sprotty-edge={true} d="M 10,-4 L 0,0 L 10,4"
+                  transform={`rotate(${angle(source1, source2)} ${source1.x} ${source1.y}) translate(${source1.x} ${source1.y})`} />,
+        ];
+    }
+}
+
+@injectable()
 export class InheritanceEdgeView extends ArrowEdgeView {
   protected renderAdditionals(edge: SEdge, segments: Point[], context: RenderingContext): VNode[] {
     const p1 = segments[segments.length - 2];

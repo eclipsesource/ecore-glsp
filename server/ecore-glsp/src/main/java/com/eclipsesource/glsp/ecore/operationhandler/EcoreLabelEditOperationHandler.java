@@ -48,6 +48,7 @@ import com.eclipsesource.glsp.graph.GEdge;
 import com.eclipsesource.glsp.graph.GModelElement;
 import com.eclipsesource.glsp.graph.GNode;
 import com.eclipsesource.glsp.ecore.util.EcoreConfig.Types;
+import com.eclipsesource.glsp.ecore.util.EcoreEdgeUtil;
 
 public class EcoreLabelEditOperationHandler implements OperationHandler {
 
@@ -123,18 +124,18 @@ public class EcoreLabelEditOperationHandler implements OperationHandler {
 					break;
 
 				case Types.LABEL_EDGE_NAME:
-					GEdge edge = getOrThrow(index.findElementByClass(editLabelAction.getLabelId(), GEdge.class),
-						"No edge for label with id " + editLabelAction.getLabelId() + " found");
-					EReference reference_semantic = (EReference) getOrThrow(index.getSemantic(edge),
-						"No semantic element for labelContainer with id " + edge.getId() + " found");
+					String edgeId = EcoreEdgeUtil.getEdgeId(editLabelAction.getLabelId());
+					EReference reference_semantic = (EReference) getOrThrow(
+						index.getSemantic(edgeId),
+						"No semantic element for labelContainer with id " + edgeId + " found");
 					reference_semantic.setName(editLabelAction.getText().trim());
 					break;
 
 				case Types.LABEL_EDGE_MULTIPLICITY:
-					edge = getOrThrow(index.findElementByClass(editLabelAction.getLabelId(), GEdge.class),
-						"No edge for label with id " + editLabelAction.getLabelId() + " found");
-					reference_semantic = (EReference) getOrThrow(index.getSemantic(edge),
-						"No semantic element for labelContainer with id " + edge.getId() + " found");
+					edgeId = EcoreEdgeUtil.getEdgeId(editLabelAction.getLabelId());
+					reference_semantic = (EReference) getOrThrow(
+						index.getSemantic(edgeId),
+						"No semantic element for labelContainer with id " + edgeId + " found");
 					Pattern pattern = Pattern.compile("\\s*\\[\\s*(\\d+)\\s*\\.+\\s*(\\*|\\d+|\\-1)\\s*\\]\\s*");
 						Matcher matcher = pattern.matcher(editLabelAction.getText());
 						if (matcher.matches()) {

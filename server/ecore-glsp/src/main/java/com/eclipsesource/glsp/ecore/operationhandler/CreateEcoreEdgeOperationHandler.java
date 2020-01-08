@@ -38,7 +38,7 @@ import com.google.common.collect.Lists;
 
 public class CreateEcoreEdgeOperationHandler implements OperationHandler {
 	private List<String> handledElementTypeIds = Lists.newArrayList(Types.REFERENCE, Types.COMPOSITION,
-			Types.INHERITANCE);
+			Types.INHERITANCE, Types.BIDIRECTIONAL_REFERENCE, Types.BIDIRECTIONAL_COMPOSITION);
 
 	public CreateEcoreEdgeOperationHandler() {
 
@@ -69,8 +69,15 @@ public class CreateEcoreEdgeOperationHandler implements OperationHandler {
 		if (elementTypeId.equals(Types.INHERITANCE)) {
 			sourceEclass.getESuperTypes().add(targetEClass);
 		} else {
-			EReference reference = createReference(sourceEclass, targetEClass, elementTypeId);
-
+			EReference reference = createReference(sourceEclass, targetEClass, 
+					elementTypeId.equals(Types.BIDIRECTIONAL_COMPOSITION) ? Types.COMPOSITION :elementTypeId);
+			
+			if (elementTypeId.equals(Types.BIDIRECTIONAL_REFERENCE) 
+					|| elementTypeId.equals(Types.BIDIRECTIONAL_COMPOSITION)) {
+				EReference opposite = createReference(targetEClass, sourceEclass, elementTypeId);
+				reference.setEOpposite(opposite);
+				opposite.setEOpposite(reference);
+			}
 			GEdge edge = getOrThrow(context.getGModelFactory().create(reference, GEdge.class),
 					" No viewmodel factory found for element: " + reference);
 			Diagram diagram = facade.getDiagram();
@@ -89,7 +96,7 @@ public class CreateEcoreEdgeOperationHandler implements OperationHandler {
 		return reference;
 
 	}
-
+	
 	@Override
 	public String getLabel(AbstractOperationAction action) {
 		return "Create ecore edge";
