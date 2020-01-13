@@ -33,7 +33,7 @@ export class EcoreFileGenServer implements FileGenServer, BackendApplicationCont
 
     generateEcore(name: string, prefix: string, uri: string, workspacePath: string): Promise<string> {
         const jarPath = path.resolve(__dirname, '..', '..',
-            'src/server', 'ecore-backend-server-1.0-SNAPSHOT-jar-with-dependencies.jar');
+            'server', 'ecore-backend-server-1.0-SNAPSHOT-jar-with-dependencies.jar');
         if (jarPath.length === 0) {
             throw new Error('The EcoreGeneration.jar is not found. ');
         }
