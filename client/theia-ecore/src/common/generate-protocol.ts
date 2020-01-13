@@ -20,4 +20,6 @@ export const FILEGEN_SERVICE_PATH = '/services/codegen';
 
 export interface FileGenServer extends JsonRpcServer<undefined> {
     generateEcore(name: string, prefix: string, uri: string, path: string): Promise<string>
+    // @Leo hier ist das Interface. Parameter müssen hier wahrscheinlich noch angepasst werden.
+    generateCode(): Promise<String>
 }

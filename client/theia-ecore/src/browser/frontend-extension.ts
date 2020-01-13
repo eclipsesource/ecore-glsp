@@ -30,6 +30,7 @@ import { EcoreDiagramManager } from "./diagram/ecore-diagram-manager.";
 import { EcoreGLSPDiagramClient } from "./diagram/ecore-glsp-diagram-client";
 import { EcoreGLSPClientContribution } from "./ecore-glsp--contribution";
 import { EcoreCommandContribution } from "./EcoreCommandContribution";
+import { GenerateCodeCommandContribution } from "./GenerateCodeCommandContribution";
 
 
 export default new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Unbind, isBound: interfaces.IsBound, rebind: interfaces.Rebind) => {
@@ -54,4 +55,5 @@ export default new ContainerModule((bind: interfaces.Bind, unbind: interfaces.Un
         const connection = ctx.container.get(WebSocketConnectionProvider);
         return connection.createProxy<FileGenServer>(FILEGEN_SERVICE_PATH);
     }).inSingletonScope();
+    bind(CommandContribution).to(GenerateCodeCommandContribution);
 });

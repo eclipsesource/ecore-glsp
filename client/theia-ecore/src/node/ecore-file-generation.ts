@@ -75,6 +75,12 @@ export class EcoreFileGenServer implements FileGenServer, BackendApplicationCont
         });
     }
 
+    generateCode(): Promise<String> {
+        // @Leo hier wird die Methode dann implementiert. Wie du ne Jar findest und aufrufst ist ein
+        // Beispiel in der Methode drüber. Die Jars sollen in theia-ecore/server liegen.
+        throw new Error("Method not implemented.");
+    }
+
     onStop(app?: Application): void {
         this.dispose();
     }
