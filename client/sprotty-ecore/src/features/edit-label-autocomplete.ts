@@ -185,6 +185,7 @@ export class EditLabelUIAutocomplete extends EditLabelUI {
     public hide() {
         super.hide();
         this.showAutocomplete = false;
+        this.currentFocus = -1;
         this.closeAllLists();
     }
 }
