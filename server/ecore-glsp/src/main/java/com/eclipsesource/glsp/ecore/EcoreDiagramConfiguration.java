@@ -99,7 +99,8 @@ public class EcoreDiagramConfiguration implements DiagramConfiguration {
 
 		mappings.put(Types.LABEL_NAME, GraphPackage.Literals.GLABEL);
 		mappings.put(Types.LABEL_TEXT, GraphPackage.Literals.GLABEL);
-		mappings.put(Types.LABEL_EDGE, GraphPackage.Literals.GLABEL);
+		mappings.put(Types.LABEL_EDGE_NAME, GraphPackage.Literals.GLABEL);
+		mappings.put(Types.LABEL_EDGE_MULTIPLICITY, GraphPackage.Literals.GLABEL);
 		mappings.put(Types.COMP, GraphPackage.Literals.GCOMPARTMENT);
 		mappings.put(Types.COMP_HEADER, GraphPackage.Literals.GCOMPARTMENT);
 		mappings.put(Types.LABEL_ICON, GraphPackage.Literals.GCOMPARTMENT);
