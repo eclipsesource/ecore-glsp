@@ -41,7 +41,10 @@ public class EcoreDiagramConfiguration implements DiagramConfiguration {
 	@Override
 	public List<EdgeTypeHint> getEdgeTypeHints() {
 		return Lists.newArrayList(createDefaultEdgeTypeHint(Types.REFERENCE),
-				createDefaultEdgeTypeHint(Types.COMPOSITION), createDefaultEdgeTypeHint(Types.INHERITANCE));
+				createDefaultEdgeTypeHint(Types.COMPOSITION), 
+				createDefaultEdgeTypeHint(Types.INHERITANCE), 
+				createDefaultEdgeTypeHint(Types.BIDIRECTIONAL_REFERENCE) , 
+				createDefaultEdgeTypeHint(Types.BIDIRECTIONAL_COMPOSITION));
 	}
 
 	@Override
@@ -77,9 +80,13 @@ public class EcoreDiagramConfiguration implements DiagramConfiguration {
 		Group relationGroup = new Group("ecore.relation", "Relation");
 		Operation createEcoreEdge = new Operation("Reference", Types.REFERENCE, Operation.Kind.CREATE_CONNECTION,
 				relationGroup);
-		Operation createComposition = new Operation("Composition", Types.COMPOSITION, Operation.Kind.CREATE_CONNECTION,
+		Operation createComposition = new Operation("Containment", Types.COMPOSITION, Operation.Kind.CREATE_CONNECTION,
 				relationGroup);
 		Operation createInheritance = new Operation("Inheritance", Types.INHERITANCE, Operation.Kind.CREATE_CONNECTION,
+				relationGroup);
+		Operation createBiReference = new Operation("Bi-Directional Reference", Types.BIDIRECTIONAL_REFERENCE, Operation.Kind.CREATE_CONNECTION,
+				relationGroup);
+		Operation createBiComposition = new Operation("Bi-Directional Containment", Types.BIDIRECTIONAL_COMPOSITION, Operation.Kind.CREATE_CONNECTION,
 				relationGroup);
 
 		Group featureGroup = new Group("ecore.feature", "Feature");
@@ -89,7 +96,7 @@ public class EcoreDiagramConfiguration implements DiagramConfiguration {
 				featureGroup);
 		List<Operation> operations = Lists.newArrayList(createEClass, createAbstract, createInterface, createEnum,
 				createDataType, createAttributeOperation, createEnumLiteral, createEcoreEdge, createComposition,
-				createInheritance);
+				createInheritance, createBiReference, createBiComposition);
 		return operations;
 	}
 
@@ -117,6 +124,8 @@ public class EcoreDiagramConfiguration implements DiagramConfiguration {
 		mappings.put(Types.REFERENCE, GraphPackage.Literals.GEDGE);
 		mappings.put(Types.INHERITANCE, GraphPackage.Literals.GEDGE);
 		mappings.put(Types.COMPOSITION, GraphPackage.Literals.GEDGE);
+		mappings.put(Types.BIDIRECTIONAL_REFERENCE, GraphPackage.Literals.GEDGE);
+		mappings.put(Types.BIDIRECTIONAL_COMPOSITION, GraphPackage.Literals.GEDGE);
 		mappings.put(Types.ATTRIBUTE, GraphPackage.Literals.GLABEL);
 		mappings.put(Types.OPERATION, GraphPackage.Literals.GLABEL);
 		mappings.put(Types.ENUMLITERAL, GraphPackage.Literals.GLABEL);

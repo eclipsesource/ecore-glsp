@@ -84,9 +84,18 @@ import {
     IconClass,
     SLabelNodeAttribute,
     SLabelNodeLiteral,
-    SLabelNode
+    SLabelNode,
+    BidirectionalArrowEdge
 } from "./model";
-import { ArrowEdgeView, ClassNodeView, CompositionEdgeView, IconView, InheritanceEdgeView, LabelNodeView } from "./views";
+import {
+    ArrowEdgeView,
+    BidirectionalEdgeView,
+    ClassNodeView,
+    CompositionEdgeView,
+    IconView,
+    InheritanceEdgeView,
+    LabelNodeView
+} from "./views";
 
 export default (containerId: string) => {
     const classDiagramModule = new ContainerModule((bind, unbind, isBound, rebind) => {
@@ -120,6 +129,8 @@ export default (containerId: string) => {
         configureModelElement(context, 'routing-point', SRoutingHandle, SRoutingHandleView);
         configureModelElement(context, 'volatile-routing-point', SRoutingHandle, SRoutingHandleView);
         configureModelElement(context, 'edge:reference', ArrowEdge, ArrowEdgeView);
+        configureModelElement(context, 'edge:bidirectional_reference', BidirectionalArrowEdge, BidirectionalEdgeView);
+        configureModelElement(context, 'edge:bidirectional_composition', CompositionEdge, CompositionEdgeView);
         configureModelElement(context, 'edge:inheritance', InheritanceEdge, InheritanceEdgeView);
         configureModelElement(context, 'edge:composition', CompositionEdge, CompositionEdgeView);
         configureModelElement(context, 'edge', SEdge, PolylineEdgeView);

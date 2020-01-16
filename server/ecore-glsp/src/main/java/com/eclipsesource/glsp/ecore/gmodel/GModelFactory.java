@@ -17,6 +17,8 @@ package com.eclipsesource.glsp.ecore.gmodel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
@@ -26,12 +28,14 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
+import com.eclipsesource.glsp.ecore.util.EcoreEdgeUtil;
 import com.eclipsesource.glsp.api.jsonrpc.GLSPServerException;
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
 import com.eclipsesource.glsp.ecore.util.EcoreConfig.CSS;
 import com.eclipsesource.glsp.ecore.util.EcoreConfig.Types;
 import com.eclipsesource.glsp.graph.GEdge;
 import com.eclipsesource.glsp.graph.GGraph;
+import com.eclipsesource.glsp.graph.GLabel;
 import com.eclipsesource.glsp.graph.GModelElement;
 import com.eclipsesource.glsp.graph.GModelRoot;
 import com.eclipsesource.glsp.graph.builder.impl.GEdgeBuilder;
@@ -39,6 +43,7 @@ import com.eclipsesource.glsp.graph.builder.impl.GEdgePlacementBuilder;
 import com.eclipsesource.glsp.graph.builder.impl.GGraphBuilder;
 import com.eclipsesource.glsp.graph.builder.impl.GLabelBuilder;
 import com.eclipsesource.glsp.graph.util.GConstants;
+import com.eclipsesource.glsp.server.operationhandler.DeleteOperationHandler;
 
 public class GModelFactory extends AbstractGModelFactory<EObject, GModelElement> {
 
@@ -95,48 +100,85 @@ public class GModelFactory extends AbstractGModelFactory<EObject, GModelElement>
 	private List<GModelElement> createEdges(EClass eClass) {
 		List<GModelElement> children = new ArrayList<>();
 		// create reference edges
-		eClass.getEReferences().stream().map(this::create).forEach(children::add);
+		eClass.getEReferences().stream().map(this::create).filter(Objects::nonNull).forEach(children::add);
 		// create inheritance edges
 		eClass.getESuperTypes().stream().map(s -> create(eClass, s)).forEach(children::add);
 		return children;
 	}
 
 	public GEdge create(EReference eReference) {
-		String labelMultiplicity = String.format("[%s..%s]", eReference.getLowerBound(),
-				eReference.getUpperBound() == -1 ? "*" : eReference.getUpperBound());
-		String labelName = eReference.getName();
-
 		String source = toId(eReference.getEContainingClass());
-
 		String target = toId(eReference.getEReferenceType());
-
 		String id = toId(eReference);
-		return new GEdgeBuilder().type(eReference.isContainment() ? Types.COMPOSITION : Types.REFERENCE) //
-				.id(id) //
+
+		GEdgeBuilder builder = new GEdgeBuilder().id(id) //
 				.addCssClass(CSS.ECORE_EDGE) //
 				.addCssClass(eReference.isContainment() ? CSS.COMPOSITION : null) //
-				.add(new GLabelBuilder(Types.LABEL_EDGE_MULTIPLICITY) //
-						.edgePlacement(new GEdgePlacementBuilder()//
-								.side(GConstants.EdgeSide.BOTTOM)//
-								.position(0.5d)//
-								.offset(2d) //
-								.rotate(false) //
-								.build())//
-						.id(id + "_label_multiplicity") //
-						.text(labelMultiplicity).build())
-				.add(new GLabelBuilder(Types.LABEL_EDGE_NAME) //
-					.edgePlacement(new GEdgePlacementBuilder()//
-							.side(GConstants.EdgeSide.TOP)//
-							.position(0.5d)//
-							.offset(2d) //
-							.rotate(false) //
-							.build())//
-					.id(id + "_label_name") //
-					.text(labelName).build())
 				.sourceId(source) //
 				.targetId(target) //
-				.routerKind(GConstants.RouterKind.MANHATTAN)//
+				.routerKind(GConstants.RouterKind.MANHATTAN);
+
+		if (eReference.getEOpposite() != null) {
+			return createBidirectionalEdge(eReference, builder);
+		}
+
+		String labelMultiplicity = createMultiplicity(eReference);
+		String labelName = eReference.getName();
+		return builder.type(eReference.isContainment() ? Types.COMPOSITION : Types.REFERENCE) //
+				.add(createEdgeMultiplicityLabel(labelMultiplicity, id + "_label_multiplicity", 0.5d))
+				.add(createEdgeNameLabel(labelName, id + "_label_name", 0.5d)).build();
+	}
+
+	private GEdge createBidirectionalEdge(EReference eReference, GEdgeBuilder builder) {
+		Set<String> referenceSet = this.modelState.getIndex().getBidirectionalReferences();
+
+		if (!eReference.isContainment()
+				&& referenceSet.contains(EcoreEdgeUtil.getStringId(eReference.getEOpposite()))) {
+			return null;
+		}
+
+		referenceSet.add(EcoreEdgeUtil.getStringId(eReference));
+
+		String targetLabelMultiplicity = createMultiplicity(eReference.getEOpposite());
+		String targetLabelName = eReference.getEOpposite().getName();
+		String targetId = toId(eReference.getEOpposite());
+
+		String sourceLabelMultiplicity = createMultiplicity(eReference);
+		String sourceLabelName = eReference.getName();
+		String sourceId = toId(eReference);
+
+		return builder
+				.type(eReference.isContainment() ? Types.BIDIRECTIONAL_COMPOSITION : Types.BIDIRECTIONAL_REFERENCE) //
+				.add(createEdgeMultiplicityLabel(sourceLabelMultiplicity, sourceId + "_sourcelabel_multiplicity", 0.9d))//
+				.add(createEdgeNameLabel(sourceLabelName, sourceId + "_sourcelabel_name", 0.9d))//
+				.add(createEdgeMultiplicityLabel(targetLabelMultiplicity, targetId + "_targetlabel_multiplicity", 0.1d))//
+				.add(createEdgeNameLabel(targetLabelName, targetId + "_targetlabel_name", 0.1d))//
 				.build();
+	}
+
+	private String createMultiplicity(EReference eReference) {
+		return String.format("[%s..%s]", eReference.getLowerBound(),
+				eReference.getUpperBound() == -1 ? "*" : eReference.getUpperBound());
+	}
+
+	private GLabel createEdgeMultiplicityLabel(String value, String id, double position) {
+		return createEdgeLabel(value, position, id, Types.LABEL_EDGE_MULTIPLICITY, GConstants.EdgeSide.BOTTOM);
+	}
+
+	private GLabel createEdgeNameLabel(String name, String id, double position) {
+		return createEdgeLabel(name, position, id, Types.LABEL_EDGE_NAME, GConstants.EdgeSide.TOP);
+	}
+
+	private GLabel createEdgeLabel(String name, double position, String id, String type, String side) {
+		return new GLabelBuilder(type) //
+				.edgePlacement(new GEdgePlacementBuilder()//
+						.side(side)//
+						.position(position)//
+						.offset(2d) //
+						.rotate(false) //
+						.build())//
+				.id(id) //
+				.text(name).build();
 	}
 
 	public GEdge create(EClass baseClass, EClass superClass) {

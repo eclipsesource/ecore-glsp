@@ -16,11 +16,14 @@
 package com.eclipsesource.glsp.ecore;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import com.eclipsesource.glsp.ecore.enotation.Diagram;
@@ -33,11 +36,13 @@ import com.google.common.collect.HashBiMap;
 public class EcoreModelIndex extends GModelIndexImpl {
 	private BiMap<String, EObject> semanticIndex;
 	private Map<EObject, NotationElement> notationIndex;
+	private Set<String> bidirectionalReferences;
 
 	private EcoreModelIndex(EObject target) {
 		super(target);
 		semanticIndex = HashBiMap.create();
 		notationIndex = new HashMap<>();
+		bidirectionalReferences = new HashSet<>();
 	}
 
 	public static EcoreModelIndex get(GModelElement element) {
@@ -149,5 +154,9 @@ public class EcoreModelIndex extends GModelIndexImpl {
 			return;
 		}
 		semanticIndex.inverse().remove(eObject);
+	}
+	
+	public Set<String> getBidirectionalReferences() {
+		return bidirectionalReferences;
 	}
 }

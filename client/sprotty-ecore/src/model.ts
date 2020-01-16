@@ -116,6 +116,10 @@ export class ArrowEdge extends SEdge {
     public readonly targetAnchorCorrection = 3.3;
 }
 
+export class BidirectionalArrowEdge extends ArrowEdge {
+    public readonly sourceAnchorCorrection = this.targetAnchorCorrection;
+}
+
 export class CompositionEdge extends SEdge {
     public readonly sourceAnchorCorrection = 3.0;
 }
