@@ -76,3 +76,19 @@ Create a npm user and login to the npm registry, [more on npm publishing](https:
 Publish packages with lerna to update versions properly across local packages, [more on publishing with lerna](https://github.com/lerna/lerna#publish).
 
     npx lerna publish
+
+## Running the testcafe tests
+
+Build the Server
+
+    mvn install -U
+
+Start client, server and the tests. (Client and Server will shutdown after the execution of the tests).
+
+    yarn e2etest
+
+Start the tests if client and server are already running.
+
+    yarn testcafe:start
+
+Please keep the mouse focus on the Testcafe window during the tests. Losing focus will cause tests to fail.
