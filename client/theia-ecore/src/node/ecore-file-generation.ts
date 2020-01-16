@@ -81,6 +81,14 @@ export class EcoreFileGenServer implements FileGenServer, BackendApplicationCont
         throw new Error("Method not implemented.");
     }
 
+    generateGenModel(): Promise<String> {
+        throw new Error("Method not implemented.");
+    }
+
+    createNewProject(): Promise<String> {
+        throw new Error("Method not implemented.");
+    }
+
     onStop(app?: Application): void {
         this.dispose();
     }
