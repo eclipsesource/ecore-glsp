@@ -14,9 +14,9 @@ import org.apache.log4j.BasicConfigurator;
 import org.eclipse.elk.alg.layered.options.LayeredMetaDataProvider;
 import org.eclipse.emf.ecore.EcorePackage;
 
-import com.eclipsesource.glsp.layout.ElkLayoutEngine;
-import com.eclipsesource.glsp.server.launch.DefaultGLSPServerLauncher;
-import com.eclipsesource.glsp.server.launch.GLSPServerLauncher;
+import org.eclipse.glsp.layout.ElkLayoutEngine;
+import org.eclipse.glsp.server.launch.DefaultGLSPServerLauncher;
+import org.eclipse.glsp.server.launch.GLSPServerLauncher;
 
 public class EcoreServerLauncher {
 

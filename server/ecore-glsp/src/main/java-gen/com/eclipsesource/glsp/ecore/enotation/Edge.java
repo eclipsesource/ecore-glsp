@@ -16,7 +16,7 @@
  */
 package com.eclipsesource.glsp.ecore.enotation;
 
-import com.eclipsesource.glsp.graph.GPoint;
+import org.eclipse.glsp.graph.GPoint;
 
 import org.eclipse.emf.common.util.EList;
 

@@ -28,14 +28,14 @@ import com.eclipsesource.glsp.ecore.enotation.Shape;
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
 import com.eclipsesource.glsp.ecore.util.EcoreConfig.CSS;
 import com.eclipsesource.glsp.ecore.util.EcoreConfig.Types;
-import com.eclipsesource.glsp.graph.GCompartment;
-import com.eclipsesource.glsp.graph.GNode;
-import com.eclipsesource.glsp.graph.builder.impl.GCompartmentBuilder;
-import com.eclipsesource.glsp.graph.builder.impl.GLabelBuilder;
-import com.eclipsesource.glsp.graph.builder.impl.GLayoutOptionsBuilder;
-import com.eclipsesource.glsp.graph.builder.impl.GNodeBuilder;
-import com.eclipsesource.glsp.graph.util.GConstants;
-import com.eclipsesource.glsp.graph.util.GraphUtil;
+import org.eclipse.glsp.graph.GCompartment;
+import org.eclipse.glsp.graph.GNode;
+import org.eclipse.glsp.graph.builder.impl.GCompartmentBuilder;
+import org.eclipse.glsp.graph.builder.impl.GLabelBuilder;
+import org.eclipse.glsp.graph.builder.impl.GLayoutOptionsBuilder;
+import org.eclipse.glsp.graph.builder.impl.GNodeBuilder;
+import org.eclipse.glsp.graph.util.GConstants;
+import org.eclipse.glsp.graph.util.GraphUtil;
 
 public class ClassifierNodeFactory extends AbstractGModelFactory<EClassifier, GNode> {
 

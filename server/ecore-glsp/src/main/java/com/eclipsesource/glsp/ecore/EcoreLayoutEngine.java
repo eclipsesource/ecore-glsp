@@ -20,13 +20,13 @@ import org.eclipse.elk.alg.layered.options.LayeredOptions;
 import org.eclipse.elk.core.options.EdgeLabelPlacement;
 import org.eclipse.elk.graph.ElkGraphElement;
 
-import com.eclipsesource.glsp.api.model.GraphicalModelState;
+import org.eclipse.glsp.api.model.GraphicalModelState;
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
-import com.eclipsesource.glsp.graph.DefaultTypes;
-import com.eclipsesource.glsp.graph.GGraph;
-import com.eclipsesource.glsp.graph.GModelElement;
-import com.eclipsesource.glsp.layout.ElkLayoutEngine;
-import com.eclipsesource.glsp.layout.GLSPLayoutConfigurator;
+import org.eclipse.glsp.graph.DefaultTypes;
+import org.eclipse.glsp.graph.GGraph;
+import org.eclipse.glsp.graph.GModelElement;
+import org.eclipse.glsp.layout.ElkLayoutEngine;
+import org.eclipse.glsp.layout.GLSPLayoutConfigurator;
 
 public class EcoreLayoutEngine extends ElkLayoutEngine {
 

@@ -13,13 +13,14 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-import { registerDefaultTools, TYPES } from "@glsp/sprotty-client/lib";
-import { EcoreGLSPTheiaDiagramServer } from "./ecore-glsp-theia-diagram-server";
+import { registerDefaultTools, TYPES } from "@eclipse-glsp/client/lib";
 import { SelectionService } from "@theia/core";
 import { Container, inject, injectable } from "inversify";
 import { createEcoreDiagramContainer } from "sprotty-ecore/lib";
 import { DiagramConfiguration, TheiaDiagramServer, TheiaSprottySelectionForwarder } from "sprotty-theia/lib";
+
 import { EcoreLanguage } from "../../common/ecore-language";
+import { EcoreGLSPTheiaDiagramServer } from "./ecore-glsp-theia-diagram-server";
 
 @injectable()
 export class EcoreDiagramConfiguration implements DiagramConfiguration {

@@ -28,8 +28,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import com.eclipsesource.glsp.ecore.enotation.Diagram;
 import com.eclipsesource.glsp.ecore.enotation.NotationElement;
-import com.eclipsesource.glsp.graph.GModelElement;
-import com.eclipsesource.glsp.graph.impl.GModelIndexImpl;
+import org.eclipse.glsp.graph.GModelElement;
+import org.eclipse.glsp.graph.impl.GModelIndexImpl;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 

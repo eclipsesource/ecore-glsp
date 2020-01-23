@@ -19,13 +19,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.eclipsesource.glsp.api.configuration.ServerConfiguration;
-import com.eclipsesource.glsp.api.diagram.DiagramConfiguration;
-import com.eclipsesource.glsp.api.factory.ModelFactory;
-import com.eclipsesource.glsp.api.handler.OperationHandler;
-import com.eclipsesource.glsp.api.layout.ILayoutEngine;
-import com.eclipsesource.glsp.api.model.ModelStateProvider;
-import com.eclipsesource.glsp.api.provider.ActionProvider;
+import org.eclipse.glsp.api.configuration.ServerConfiguration;
+import org.eclipse.glsp.api.diagram.DiagramConfiguration;
+import org.eclipse.glsp.api.factory.ModelFactory;
+import org.eclipse.glsp.api.handler.OperationHandler;
+import org.eclipse.glsp.api.layout.ILayoutEngine;
+import org.eclipse.glsp.api.model.ModelStateProvider;
+import org.eclipse.glsp.api.provider.ActionProvider;
 import com.eclipsesource.glsp.ecore.actions.EcoreActionProvider;
 import com.eclipsesource.glsp.ecore.handler.EcoreComputedBoundsActionHandler;
 import com.eclipsesource.glsp.ecore.handler.EcoreGetAttributeTypesActionHandler;
@@ -40,11 +40,11 @@ import com.eclipsesource.glsp.ecore.operationhandler.CreateEcoreEdgeOperationHan
 import com.eclipsesource.glsp.ecore.operationhandler.EcoreChangeBoundsOperationHandler;
 import com.eclipsesource.glsp.ecore.operationhandler.EcoreDeleteOperationHandler;
 import com.eclipsesource.glsp.ecore.operationhandler.EcoreLabelEditOperationHandler;
-import com.eclipsesource.glsp.server.actionhandler.ComputedBoundsActionHandler;
-import com.eclipsesource.glsp.server.actionhandler.OperationActionHandler;
-import com.eclipsesource.glsp.server.actionhandler.SaveModelActionHandler;
-import com.eclipsesource.glsp.server.actionhandler.UndoRedoActionHandler;
-import com.eclipsesource.glsp.server.di.DefaultGLSPModule;
+import org.eclipse.glsp.server.actionhandler.ComputedBoundsActionHandler;
+import org.eclipse.glsp.server.actionhandler.OperationActionHandler;
+import org.eclipse.glsp.server.actionhandler.SaveModelActionHandler;
+import org.eclipse.glsp.server.actionhandler.UndoRedoActionHandler;
+import org.eclipse.glsp.server.di.DefaultGLSPModule;
 
 public class EcoreGLSPModule extends DefaultGLSPModule {
 

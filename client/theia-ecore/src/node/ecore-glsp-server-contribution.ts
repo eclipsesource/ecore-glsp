@@ -13,14 +13,14 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-import { BaseGLSPServerContribution } from "@glsp/theia-integration/lib/node";
+import { BaseGLSPServerContribution } from "@eclipse-glsp/theia-integration/lib/node";
 import { IConnection } from "@theia/languages/lib/node";
-import { injectable, inject, optional} from "inversify";
+import { inject, injectable, optional } from "inversify";
 import * as net from "net";
 import { createSocketConnection } from "vscode-ws-jsonrpc/lib/server";
 
 import { EcoreLanguage } from "../common/ecore-language";
-import {GLSPLaunchOptions, GLSPLaunchOptionsSymb} from "./glsp-server-launcher";
+import { GLSPLaunchOptions, GLSPLaunchOptionsSymb } from "./glsp-server-launcher";
 
 @injectable()
 export class EcoreGLServerContribution extends BaseGLSPServerContribution {

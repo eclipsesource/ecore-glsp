@@ -21,7 +21,7 @@ import java.util.UUID;
 import org.eclipse.emf.ecore.EObject;
 
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
-import com.eclipsesource.glsp.graph.GModelElement;
+import org.eclipse.glsp.graph.GModelElement;
 
 public abstract class AbstractGModelFactory<T extends EObject, E extends GModelElement> {
 

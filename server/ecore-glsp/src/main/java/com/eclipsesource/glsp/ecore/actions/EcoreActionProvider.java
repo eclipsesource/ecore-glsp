@@ -18,8 +18,8 @@ package com.eclipsesource.glsp.ecore.actions;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.eclipsesource.glsp.server.provider.DefaultActionProvider;
-import com.eclipsesource.glsp.api.action.Action;
+import org.eclipse.glsp.server.provider.DefaultActionProvider;
+import org.eclipse.glsp.api.action.Action;
 
 
 public class EcoreActionProvider extends DefaultActionProvider {

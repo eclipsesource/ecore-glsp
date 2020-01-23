@@ -18,7 +18,7 @@
     "url": "https://github.com/eclipsesource/ecore-glsp.git"
   },
   "dependencies": {
-    "@glsp/sprotty-client": "next"
+    "@eclipse-glsp/client": "next"
   },
   "devDependencies": {
     "css-loader": "^1.0.1",

@@ -13,8 +13,8 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-import { ActionHandlerRegistry } from "@glsp/sprotty-client/lib";
-import { GLSPTheiaDiagramServer } from "@glsp/theia-integration/lib/browser";
+import { ActionHandlerRegistry } from "@eclipse-glsp/client/lib";
+import { GLSPTheiaDiagramServer } from "@eclipse-glsp/theia-integration/lib/browser";
 import { injectable } from "inversify";
 import { AttributeTypesAction, ReturnAttributeTypesAction } from "sprotty-ecore/lib/features/edit-label-autocomplete";
 

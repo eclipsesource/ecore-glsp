@@ -15,15 +15,15 @@
  ********************************************************************************/
 package com.eclipsesource.glsp.ecore.model;
 
-import com.eclipsesource.glsp.api.action.kind.RequestModelAction;
-import com.eclipsesource.glsp.api.factory.ModelFactory;
-import com.eclipsesource.glsp.api.model.GraphicalModelState;
+import org.eclipse.glsp.api.action.kind.RequestModelAction;
+import org.eclipse.glsp.api.factory.ModelFactory;
+import org.eclipse.glsp.api.model.GraphicalModelState;
 import com.eclipsesource.glsp.ecore.EcoreEditorContext;
 import com.eclipsesource.glsp.ecore.EcoreFacade;
 import com.eclipsesource.glsp.ecore.enotation.Diagram;
-import com.eclipsesource.glsp.graph.DefaultTypes;
-import com.eclipsesource.glsp.graph.GModelRoot;
-import com.eclipsesource.glsp.graph.builder.impl.GGraphBuilder;
+import org.eclipse.glsp.graph.DefaultTypes;
+import org.eclipse.glsp.graph.GModelRoot;
+import org.eclipse.glsp.graph.builder.impl.GGraphBuilder;
 
 public class EcoreModelFactory implements ModelFactory {
 	private static final String ROOT_ID = "sprotty";

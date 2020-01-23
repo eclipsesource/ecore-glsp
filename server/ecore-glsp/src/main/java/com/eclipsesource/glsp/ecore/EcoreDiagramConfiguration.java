@@ -21,14 +21,14 @@ import java.util.Map;
 
 import org.eclipse.emf.ecore.EClass;
 
-import com.eclipsesource.glsp.api.diagram.DiagramConfiguration;
-import com.eclipsesource.glsp.api.operations.Group;
-import com.eclipsesource.glsp.api.operations.Operation;
-import com.eclipsesource.glsp.api.types.EdgeTypeHint;
-import com.eclipsesource.glsp.api.types.ShapeTypeHint;
+import org.eclipse.glsp.api.diagram.DiagramConfiguration;
+import org.eclipse.glsp.api.operations.Group;
+import org.eclipse.glsp.api.operations.Operation;
+import org.eclipse.glsp.api.types.EdgeTypeHint;
+import org.eclipse.glsp.api.types.ShapeTypeHint;
 import com.eclipsesource.glsp.ecore.util.EcoreConfig.Types;
-import com.eclipsesource.glsp.graph.DefaultTypes;
-import com.eclipsesource.glsp.graph.GraphPackage;
+import org.eclipse.glsp.graph.DefaultTypes;
+import org.eclipse.glsp.graph.GraphPackage;
 import com.google.common.collect.Lists;
 
 public class EcoreDiagramConfiguration implements DiagramConfiguration {

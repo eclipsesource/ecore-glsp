@@ -13,7 +13,7 @@
  *
  *   SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ******************************************************************************/
-import "@glsp/sprotty-client/css/glsp-sprotty.css";
+import "@eclipse-glsp/client/css/glsp-sprotty.css";
 import "sprotty/css/edit-label.css";
 
 import {
@@ -65,27 +65,28 @@ import {
     validationModule,
     viewportModule,
     zorderModule
-} from "@glsp/sprotty-client/lib";
-import executeCommandModule from "@glsp/sprotty-client/lib/features/execute/di.config";
+} from "@eclipse-glsp/client/lib";
+import executeCommandModule from "@eclipse-glsp/client/lib/features/execute/di.config";
 import { Container, ContainerModule } from "inversify";
-import {EditLabelUIAutocomplete} from "./features/edit-label-autocomplete";
 import { EditLabelUI } from "sprotty/lib";
+
+import { EditLabelUIAutocomplete } from "./features/edit-label-autocomplete";
 import { LabelSelectionFeedback } from "./feedback";
 import {
     ArrowEdge,
+    BidirectionalArrowEdge,
     CompositionEdge,
-    InheritanceEdge,
-    LabeledNode,
-    SEditableLabel,
+    IconAbstract,
+    IconClass,
     IconDataType,
     IconEnum,
     IconInterface,
-    IconAbstract,
-    IconClass,
-    SLabelNodeAttribute,
-    SLabelNodeLiteral,
+    InheritanceEdge,
+    LabeledNode,
+    SEditableLabel,
     SLabelNode,
-    BidirectionalArrowEdge
+    SLabelNodeAttribute,
+    SLabelNodeLiteral
 } from "./model";
 import {
     ArrowEdgeView,

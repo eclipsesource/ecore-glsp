@@ -15,12 +15,13 @@
  ********************************************************************************/
 package com.eclipsesource.glsp.ecore.model;
 
-import com.eclipsesource.glsp.api.model.GraphicalModelState;
+import org.eclipse.emf.common.command.BasicCommandStack;
+import org.eclipse.glsp.api.model.GraphicalModelState;
 import com.eclipsesource.glsp.ecore.EcoreEditorContext;
 import com.eclipsesource.glsp.ecore.EcoreFacade;
 import com.eclipsesource.glsp.ecore.EcoreModelIndex;
 import com.eclipsesource.glsp.ecore.ResourceManager;
-import com.eclipsesource.glsp.server.model.ModelStateImpl;
+import org.eclipse.glsp.server.model.ModelStateImpl;
 
 public class EcoreModelState extends ModelStateImpl implements GraphicalModelState {
 
@@ -51,7 +52,7 @@ public class EcoreModelState extends ModelStateImpl implements GraphicalModelSta
 
 	public void setEditorContext(EcoreEditorContext editorContext) {
 		this.editorContext = editorContext;
-		setCommandStack(editorContext.getResourceManager().getEditingDomain().getCommandStack());
+		setCommandStack((BasicCommandStack) editorContext.getResourceManager().getEditingDomain().getCommandStack());
 	}
 
 	@Override

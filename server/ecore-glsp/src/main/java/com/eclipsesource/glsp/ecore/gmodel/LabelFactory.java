@@ -21,8 +21,8 @@ import org.eclipse.emf.ecore.ENamedElement;
 
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
 import com.eclipsesource.glsp.ecore.util.EcoreConfig.Types;
-import com.eclipsesource.glsp.graph.GLabel;
-import com.eclipsesource.glsp.graph.builder.impl.GLabelBuilder;
+import org.eclipse.glsp.graph.GLabel;
+import org.eclipse.glsp.graph.builder.impl.GLabelBuilder;
 
 public class LabelFactory extends AbstractGModelFactory<ENamedElement, GLabel> {
 

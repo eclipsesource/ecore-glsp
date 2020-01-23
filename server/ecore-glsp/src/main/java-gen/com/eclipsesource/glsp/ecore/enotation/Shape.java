@@ -16,8 +16,8 @@
  */
 package com.eclipsesource.glsp.ecore.enotation;
 
-import com.eclipsesource.glsp.graph.GDimension;
-import com.eclipsesource.glsp.graph.GPoint;
+import org.eclipse.glsp.graph.GDimension;
+import org.eclipse.glsp.graph.GPoint;
 
 /**
  * <!-- begin-user-doc -->

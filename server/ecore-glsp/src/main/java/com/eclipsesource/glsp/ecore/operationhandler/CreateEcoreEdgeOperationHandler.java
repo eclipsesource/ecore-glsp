@@ -15,7 +15,7 @@
  ********************************************************************************/
 package com.eclipsesource.glsp.ecore.operationhandler;
 
-import static com.eclipsesource.glsp.api.jsonrpc.GLSPServerException.getOrThrow;
+import static org.eclipse.glsp.api.jsonrpc.GLSPServerException.getOrThrow;
 
 import java.util.List;
 
@@ -23,17 +23,17 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcoreFactory;
 
-import com.eclipsesource.glsp.api.action.kind.AbstractOperationAction;
-import com.eclipsesource.glsp.api.action.kind.CreateConnectionOperationAction;
-import com.eclipsesource.glsp.api.handler.OperationHandler;
-import com.eclipsesource.glsp.api.model.GraphicalModelState;
+import org.eclipse.glsp.api.action.kind.AbstractOperationAction;
+import org.eclipse.glsp.api.action.kind.CreateConnectionOperationAction;
+import org.eclipse.glsp.api.handler.OperationHandler;
+import org.eclipse.glsp.api.model.GraphicalModelState;
 import com.eclipsesource.glsp.ecore.EcoreEditorContext;
 import com.eclipsesource.glsp.ecore.EcoreFacade;
 import com.eclipsesource.glsp.ecore.EcoreModelIndex;
 import com.eclipsesource.glsp.ecore.enotation.Diagram;
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
 import com.eclipsesource.glsp.ecore.util.EcoreConfig.Types;
-import com.eclipsesource.glsp.graph.GEdge;
+import org.eclipse.glsp.graph.GEdge;
 import com.google.common.collect.Lists;
 
 public class CreateEcoreEdgeOperationHandler implements OperationHandler {

@@ -15,24 +15,25 @@
  ********************************************************************************/
 package com.eclipsesource.glsp.ecore.handler;
 
+import java.util.List;
 import java.util.Optional;
 
-import com.eclipsesource.glsp.api.action.Action;
-import com.eclipsesource.glsp.api.action.kind.AbstractOperationAction;
-import com.eclipsesource.glsp.api.action.kind.RequestBoundsAction;
-import com.eclipsesource.glsp.api.handler.OperationHandler;
-import com.eclipsesource.glsp.api.model.GraphicalModelState;
+import org.eclipse.glsp.api.action.Action;
+import org.eclipse.glsp.api.action.kind.AbstractOperationAction;
+import org.eclipse.glsp.api.action.kind.RequestBoundsAction;
+import org.eclipse.glsp.api.handler.OperationHandler;
+import org.eclipse.glsp.api.model.GraphicalModelState;
 import com.eclipsesource.glsp.ecore.EcoreEditorContext;
 import com.eclipsesource.glsp.ecore.EcoreRecordingCommand;
 import com.eclipsesource.glsp.ecore.gmodel.GModelFactory;
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
-import com.eclipsesource.glsp.graph.GModelRoot;
-import com.eclipsesource.glsp.server.actionhandler.OperationActionHandler;
+import org.eclipse.glsp.graph.GModelRoot;
+import org.eclipse.glsp.server.actionhandler.OperationActionHandler;
 
 public class EcoreOperationActionHandler extends OperationActionHandler {
 
 	@Override
-	public Optional<Action> doHandle(AbstractOperationAction action, GraphicalModelState graphicalModelState) {
+	public List<Action> doHandle(AbstractOperationAction action, GraphicalModelState graphicalModelState) {
 		EcoreModelState modelState = EcoreModelState.getModelState(graphicalModelState);
 		EcoreEditorContext context = modelState.getEditorContext();
 
@@ -44,9 +45,9 @@ public class EcoreOperationActionHandler extends OperationActionHandler {
 			modelState.execute(command);
 			GModelRoot newRoot = new GModelFactory(modelState).create();
 
-			return Optional.of(new RequestBoundsAction(newRoot));
+			return List.of(new RequestBoundsAction(newRoot));
 		}
-		return Optional.empty();
+		return List.of();
 	}
 
 }
