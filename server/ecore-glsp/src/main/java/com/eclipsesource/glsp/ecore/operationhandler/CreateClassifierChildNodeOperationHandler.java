@@ -15,7 +15,7 @@
  ******************************************************************************/
 package com.eclipsesource.glsp.ecore.operationhandler;
 
-import static com.eclipsesource.glsp.api.jsonrpc.GLSPServerException.getOrThrow;
+import static org.eclipse.glsp.api.jsonrpc.GLSPServerException.getOrThrow;
 
 import java.util.List;
 import java.util.function.Function;
@@ -29,13 +29,13 @@ import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 
-import com.eclipsesource.glsp.api.action.kind.AbstractOperationAction;
-import com.eclipsesource.glsp.api.action.kind.CreateNodeOperationAction;
-import com.eclipsesource.glsp.api.handler.OperationHandler;
-import com.eclipsesource.glsp.api.model.GraphicalModelState;
+import org.eclipse.glsp.api.action.kind.AbstractOperationAction;
+import org.eclipse.glsp.api.action.kind.CreateNodeOperationAction;
+import org.eclipse.glsp.api.handler.OperationHandler;
+import org.eclipse.glsp.api.model.GraphicalModelState;
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
 import com.eclipsesource.glsp.ecore.util.EcoreConfig.Types;
-import com.eclipsesource.glsp.graph.GraphPackage;
+import org.eclipse.glsp.graph.GraphPackage;
 import com.google.common.base.Preconditions;
 
 public class CreateClassifierChildNodeOperationHandler implements OperationHandler {

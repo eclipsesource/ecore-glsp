@@ -20,13 +20,13 @@
     "url": "https://github.com/eclipsesource/ecore-glsp.git"
   },
   "dependencies": {
-    "@theia/core": "^0.11.0",
+    "@theia/core": "latest",
     "sprotty-ecore": "0.2.0",
-    "@glsp/theia-integration": "next"
+    "@eclipse-glsp/theia-integration": "next"
   },
   "devDependencies": {
     "rimraf": "latest",
-    "typescript": "^2.9.0"
+    "typescript": "~3.5.3"
   },
   "scripts": {
     "prepare": "yarn run clean && yarn run build",

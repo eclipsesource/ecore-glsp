@@ -19,7 +19,7 @@ package com.eclipsesource.glsp.ecore.enotation.impl;
 import com.eclipsesource.glsp.ecore.enotation.Edge;
 import com.eclipsesource.glsp.ecore.enotation.EnotationPackage;
 
-import com.eclipsesource.glsp.graph.GPoint;
+import org.eclipse.glsp.graph.GPoint;
 
 import java.util.Collection;
 

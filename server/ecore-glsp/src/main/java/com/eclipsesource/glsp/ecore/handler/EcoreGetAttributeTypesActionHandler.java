@@ -20,14 +20,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import com.eclipsesource.glsp.api.action.Action;
-import com.eclipsesource.glsp.api.model.GraphicalModelState;
+import org.eclipse.glsp.api.action.Action;
+import org.eclipse.glsp.api.model.GraphicalModelState;
 import com.eclipsesource.glsp.ecore.ResourceManager;
 import com.eclipsesource.glsp.ecore.actions.AttributeTypesAction;
 import com.eclipsesource.glsp.ecore.actions.ReturnAttributeTypesAction;
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
 import com.eclipsesource.glsp.ecore.operationhandler.EcoreLabelEditOperationHandler;
-import com.eclipsesource.glsp.server.actionhandler.AbstractActionHandler;
+import org.eclipse.glsp.server.actionhandler.AbstractActionHandler;
 
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
@@ -40,11 +40,11 @@ public class EcoreGetAttributeTypesActionHandler extends AbstractActionHandler {
     }
 
     @Override
-	protected Optional<Action> execute(Action action, GraphicalModelState modelState) {
+	protected List<Action> execute(Action action, GraphicalModelState modelState) {
 		List<String> types = getEAttributeTypeList(EcoreModelState.getResourceManager(modelState));
         Collections.sort(types);
 
-		return Optional.of(new ReturnAttributeTypesAction(types));
+		return List.of(new ReturnAttributeTypesAction(types));
     }
     
 	private List<String> getEAttributeTypeList(ResourceManager resManager) {

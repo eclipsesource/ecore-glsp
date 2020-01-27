@@ -18,11 +18,11 @@ package com.eclipsesource.glsp.ecore.operationhandler;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import com.eclipsesource.glsp.api.model.GraphicalModelState;
+import org.eclipse.glsp.api.model.GraphicalModelState;
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
 import com.eclipsesource.glsp.ecore.util.EcoreEdgeUtil;
-import com.eclipsesource.glsp.graph.GModelIndex;
-import com.eclipsesource.glsp.server.operationhandler.DeleteOperationHandler;
+import org.eclipse.glsp.graph.GModelIndex;
+import org.eclipse.glsp.server.operationhandler.DeleteOperationHandler;
 
 public class EcoreDeleteOperationHandler extends DeleteOperationHandler {
 	@Override

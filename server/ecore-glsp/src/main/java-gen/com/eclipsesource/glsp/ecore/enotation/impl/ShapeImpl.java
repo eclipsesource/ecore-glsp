@@ -19,8 +19,8 @@ package com.eclipsesource.glsp.ecore.enotation.impl;
 import com.eclipsesource.glsp.ecore.enotation.EnotationPackage;
 import com.eclipsesource.glsp.ecore.enotation.Shape;
 
-import com.eclipsesource.glsp.graph.GDimension;
-import com.eclipsesource.glsp.graph.GPoint;
+import org.eclipse.glsp.graph.GDimension;
+import org.eclipse.glsp.graph.GPoint;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;

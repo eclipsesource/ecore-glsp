@@ -31,12 +31,12 @@ import com.eclipsesource.glsp.ecore.enotation.NotationElement;
 import com.eclipsesource.glsp.ecore.enotation.SemanticProxy;
 import com.eclipsesource.glsp.ecore.enotation.Shape;
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
-import com.eclipsesource.glsp.graph.GEdge;
-import com.eclipsesource.glsp.graph.GModelElement;
-import com.eclipsesource.glsp.graph.GModelRoot;
-import com.eclipsesource.glsp.graph.GNode;
-import com.eclipsesource.glsp.graph.GShapeElement;
-import com.eclipsesource.glsp.graph.util.GraphUtil;
+import org.eclipse.glsp.graph.GEdge;
+import org.eclipse.glsp.graph.GModelElement;
+import org.eclipse.glsp.graph.GModelRoot;
+import org.eclipse.glsp.graph.GNode;
+import org.eclipse.glsp.graph.GShapeElement;
+import org.eclipse.glsp.graph.util.GraphUtil;
 import com.google.common.base.Preconditions;
 
 public class EcoreFacade {

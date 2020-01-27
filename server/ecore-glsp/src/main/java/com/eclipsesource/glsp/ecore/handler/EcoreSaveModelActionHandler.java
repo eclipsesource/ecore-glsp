@@ -15,13 +15,14 @@
  ********************************************************************************/
 package com.eclipsesource.glsp.ecore.handler;
 
+import java.util.List;
 import java.util.Optional;
 
-import com.eclipsesource.glsp.api.action.Action;
-import com.eclipsesource.glsp.api.action.kind.SaveModelAction;
-import com.eclipsesource.glsp.api.model.GraphicalModelState;
+import org.eclipse.glsp.api.action.Action;
+import org.eclipse.glsp.api.action.kind.SaveModelAction;
+import org.eclipse.glsp.api.model.GraphicalModelState;
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
-import com.eclipsesource.glsp.server.actionhandler.AbstractActionHandler;
+import org.eclipse.glsp.server.actionhandler.AbstractActionHandler;
 
 public class EcoreSaveModelActionHandler extends AbstractActionHandler {
 
@@ -31,11 +32,11 @@ public class EcoreSaveModelActionHandler extends AbstractActionHandler {
 	}
 
 	@Override
-	protected Optional<Action> execute(Action action, GraphicalModelState modelState) {
+	protected List<Action> execute(Action action, GraphicalModelState modelState) {
 		if (action instanceof SaveModelAction) {
 			EcoreModelState.getResourceManager(modelState).save();
 		}
-		return Optional.empty();
+		return List.of();
 	}
 
 }

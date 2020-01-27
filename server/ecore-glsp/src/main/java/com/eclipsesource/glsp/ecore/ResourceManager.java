@@ -30,8 +30,8 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
-import com.eclipsesource.glsp.api.jsonrpc.GLSPServerException;
-import com.eclipsesource.glsp.api.utils.ClientOptions;
+import org.eclipse.glsp.api.jsonrpc.GLSPServerException;
+import org.eclipse.glsp.api.utils.ClientOptions;
 import com.eclipsesource.glsp.ecore.enotation.EnotationPackage;
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
 

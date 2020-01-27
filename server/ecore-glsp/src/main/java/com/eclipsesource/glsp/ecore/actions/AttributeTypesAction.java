@@ -15,7 +15,7 @@
  ******************************************************************************/
 package com.eclipsesource.glsp.ecore.actions;
 
-import com.eclipsesource.glsp.api.action.RequestAction;
+import org.eclipse.glsp.api.action.kind.RequestAction;
 
 public class AttributeTypesAction extends RequestAction<ReturnAttributeTypesAction> {
 

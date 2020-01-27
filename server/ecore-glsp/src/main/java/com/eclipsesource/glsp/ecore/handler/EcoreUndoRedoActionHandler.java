@@ -15,20 +15,21 @@
  ********************************************************************************/
 package com.eclipsesource.glsp.ecore.handler;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.log4j.Logger;
 
-import com.eclipsesource.glsp.api.action.Action;
-import com.eclipsesource.glsp.api.action.kind.RedoAction;
-import com.eclipsesource.glsp.api.action.kind.RequestBoundsAction;
-import com.eclipsesource.glsp.api.action.kind.UndoAction;
-import com.eclipsesource.glsp.api.model.GraphicalModelState;
+import org.eclipse.glsp.api.action.Action;
+import org.eclipse.glsp.api.action.kind.RedoAction;
+import org.eclipse.glsp.api.action.kind.RequestBoundsAction;
+import org.eclipse.glsp.api.action.kind.UndoAction;
+import org.eclipse.glsp.api.model.GraphicalModelState;
 import com.eclipsesource.glsp.ecore.EcoreEditorContext;
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
-import com.eclipsesource.glsp.graph.GModelRoot;
-import com.eclipsesource.glsp.server.actionhandler.AbstractActionHandler;
-import com.eclipsesource.glsp.server.actionhandler.UndoRedoActionHandler;
+import org.eclipse.glsp.graph.GModelRoot;
+import org.eclipse.glsp.server.actionhandler.AbstractActionHandler;
+import org.eclipse.glsp.server.actionhandler.UndoRedoActionHandler;
 
 public class EcoreUndoRedoActionHandler extends AbstractActionHandler {
 	private static final Logger LOG = Logger.getLogger(UndoRedoActionHandler.class);
@@ -39,15 +40,15 @@ public class EcoreUndoRedoActionHandler extends AbstractActionHandler {
 	}
 
 	@Override
-	public Optional<Action> execute(Action action, GraphicalModelState modelState) {
+	public List<Action> execute(Action action, GraphicalModelState modelState) {
 		EcoreEditorContext context = EcoreModelState.getEditorContext(modelState);
 		boolean success = executeOperation(action, modelState);
 		if (success) {
 			GModelRoot newRoot = context.getGModelFactory().create();
-			return Optional.of(new RequestBoundsAction(newRoot));
+			return List.of(new RequestBoundsAction(newRoot));
 		}
 		LOG.warn("Cannot undo or redo");
-		return Optional.empty();
+		return List.of();
 	}
 
 	private boolean executeOperation(Action action, GraphicalModelState modelState) {

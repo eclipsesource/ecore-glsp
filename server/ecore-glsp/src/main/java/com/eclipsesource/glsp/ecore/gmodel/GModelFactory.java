@@ -29,21 +29,21 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
 import com.eclipsesource.glsp.ecore.util.EcoreEdgeUtil;
-import com.eclipsesource.glsp.api.jsonrpc.GLSPServerException;
+import org.eclipse.glsp.api.jsonrpc.GLSPServerException;
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
 import com.eclipsesource.glsp.ecore.util.EcoreConfig.CSS;
 import com.eclipsesource.glsp.ecore.util.EcoreConfig.Types;
-import com.eclipsesource.glsp.graph.GEdge;
-import com.eclipsesource.glsp.graph.GGraph;
-import com.eclipsesource.glsp.graph.GLabel;
-import com.eclipsesource.glsp.graph.GModelElement;
-import com.eclipsesource.glsp.graph.GModelRoot;
-import com.eclipsesource.glsp.graph.builder.impl.GEdgeBuilder;
-import com.eclipsesource.glsp.graph.builder.impl.GEdgePlacementBuilder;
-import com.eclipsesource.glsp.graph.builder.impl.GGraphBuilder;
-import com.eclipsesource.glsp.graph.builder.impl.GLabelBuilder;
-import com.eclipsesource.glsp.graph.util.GConstants;
-import com.eclipsesource.glsp.server.operationhandler.DeleteOperationHandler;
+import org.eclipse.glsp.graph.GEdge;
+import org.eclipse.glsp.graph.GGraph;
+import org.eclipse.glsp.graph.GLabel;
+import org.eclipse.glsp.graph.GModelElement;
+import org.eclipse.glsp.graph.GModelRoot;
+import org.eclipse.glsp.graph.builder.impl.GEdgeBuilder;
+import org.eclipse.glsp.graph.builder.impl.GEdgePlacementBuilder;
+import org.eclipse.glsp.graph.builder.impl.GGraphBuilder;
+import org.eclipse.glsp.graph.builder.impl.GLabelBuilder;
+import org.eclipse.glsp.graph.util.GConstants;
+import org.eclipse.glsp.server.operationhandler.DeleteOperationHandler;
 
 public class GModelFactory extends AbstractGModelFactory<EObject, GModelElement> {
 
@@ -154,6 +154,7 @@ public class GModelFactory extends AbstractGModelFactory<EObject, GModelElement>
 				.add(createEdgeMultiplicityLabel(targetLabelMultiplicity, targetId + "_targetlabel_multiplicity", 0.1d))//
 				.add(createEdgeNameLabel(targetLabelName, targetId + "_targetlabel_name", 0.1d))//
 				.build();
+				
 	}
 
 	private String createMultiplicity(EReference eReference) {

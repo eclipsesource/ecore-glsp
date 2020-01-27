@@ -13,13 +13,12 @@
  *
  *   SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ******************************************************************************/
-import { RequestAction, ResponseAction, generateRequestId, SModelRoot } from "sprotty/lib";
+import { GLSPActionDispatcher, TYPES } from "@eclipse-glsp/client/lib";
 import { inject, injectable } from "inversify";
+import { EditLabelUI, generateRequestId, RequestAction, ResponseAction, SModelRoot } from "sprotty/lib";
 import { matchesKeystroke } from "sprotty/lib/utils/keyboard";
-import { EditLabelUI } from "sprotty/lib";
-import { GLSPActionDispatcher, TYPES } from "@glsp/sprotty-client/lib";
 
-export class AttributeTypesAction  implements RequestAction<ReturnAttributeTypesAction> {
+export class AttributeTypesAction implements RequestAction<ReturnAttributeTypesAction> {
     static readonly KIND = 'getAttributeTypes';
     kind = AttributeTypesAction.KIND;
     constructor(public readonly requestId: string = generateRequestId()) { }
@@ -147,20 +146,20 @@ export class EditLabelUIAutocomplete extends EditLabelUI {
             if (this.currentFocus < 0) this.currentFocus = (children.length - 1);
             children[this.currentFocus].classList.add("autocomplete-active");
         }
-      }
+    }
 
-      protected removeActive() {
+    protected removeActive() {
         const children = this.listContainer.children;
         for (let i = 0; i < children.length; i++) {
             children[i].classList.remove("autocomplete-active");
         }
-      }
+    }
 
-      protected closeAllLists() {
+    protected closeAllLists() {
         const x = this.outerDiv.getElementsByClassName("autocomplete-items");
         for (let i = 0; i < x.length; i++) {
             this.outerDiv.removeChild(x[i]);
-         }
+        }
     }
 
     protected onBeforeShow(containerElement: HTMLElement, root: Readonly<SModelRoot>, ...contextElementIds: string[]) {
@@ -169,7 +168,7 @@ export class EditLabelUIAutocomplete extends EditLabelUI {
         // request possible element types
         this.actionDispatcher.requestUntil(new AttributeTypesAction()).then(response => {
             if (response) {
-                const action: ReturnAttributeTypesAction = <ReturnAttributeTypesAction> response;
+                const action: ReturnAttributeTypesAction = <ReturnAttributeTypesAction>response;
                 this.types = action.types;
             }
         });

@@ -15,7 +15,7 @@
  ********************************************************************************/
 package com.eclipsesource.glsp.ecore.model;
 
-import com.eclipsesource.glsp.server.model.DefaultModelStateProvider;
+import org.eclipse.glsp.server.model.DefaultModelStateProvider;
 import com.google.inject.Singleton;
 
 @Singleton

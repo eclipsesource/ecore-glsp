@@ -15,16 +15,16 @@
  ********************************************************************************/
 package com.eclipsesource.glsp.ecore.operationhandler;
 
-import com.eclipsesource.glsp.api.action.kind.AbstractOperationAction;
-import com.eclipsesource.glsp.api.action.kind.ChangeBoundsOperationAction;
-import com.eclipsesource.glsp.api.handler.OperationHandler;
-import com.eclipsesource.glsp.api.model.GraphicalModelState;
-import com.eclipsesource.glsp.api.types.ElementAndBounds;
+import org.eclipse.glsp.api.action.kind.AbstractOperationAction;
+import org.eclipse.glsp.api.action.kind.ChangeBoundsOperationAction;
+import org.eclipse.glsp.api.handler.OperationHandler;
+import org.eclipse.glsp.api.model.GraphicalModelState;
+import org.eclipse.glsp.api.types.ElementAndBounds;
 import com.eclipsesource.glsp.ecore.EcoreModelIndex;
 import com.eclipsesource.glsp.ecore.enotation.Shape;
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
-import com.eclipsesource.glsp.graph.GDimension;
-import com.eclipsesource.glsp.graph.GPoint;
+import org.eclipse.glsp.graph.GDimension;
+import org.eclipse.glsp.graph.GPoint;
 
 public class EcoreChangeBoundsOperationHandler implements OperationHandler {
 

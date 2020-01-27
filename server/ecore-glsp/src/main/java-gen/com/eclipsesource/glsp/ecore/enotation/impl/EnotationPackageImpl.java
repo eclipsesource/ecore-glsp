@@ -24,7 +24,7 @@ import com.eclipsesource.glsp.ecore.enotation.NotationElement;
 import com.eclipsesource.glsp.ecore.enotation.SemanticProxy;
 import com.eclipsesource.glsp.ecore.enotation.Shape;
 
-import com.eclipsesource.glsp.graph.GraphPackage;
+import org.eclipse.glsp.graph.GraphPackage;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;

@@ -15,8 +15,8 @@
  ********************************************************************************/
 package com.eclipsesource.glsp.ecore;
 
-import com.eclipsesource.glsp.api.configuration.ServerConfiguration;
-import com.eclipsesource.glsp.api.layout.ServerLayoutKind;
+import org.eclipse.glsp.api.configuration.ServerConfiguration;
+import org.eclipse.glsp.api.layout.ServerLayoutKind;
 
 public class EcoreServerConfiguration implements ServerConfiguration {
 

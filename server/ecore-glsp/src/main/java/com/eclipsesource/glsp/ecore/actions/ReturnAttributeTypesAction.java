@@ -17,7 +17,7 @@ package com.eclipsesource.glsp.ecore.actions;
 
 import java.util.List;
 
-import com.eclipsesource.glsp.api.action.ResponseAction;
+import org.eclipse.glsp.api.action.kind.ResponseAction;
 
 public class ReturnAttributeTypesAction extends ResponseAction {
 

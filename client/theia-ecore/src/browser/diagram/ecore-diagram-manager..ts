@@ -13,13 +13,13 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-import { RequestOperationsAction, RequestTypeHintsAction } from "@glsp/sprotty-client/lib";
+import { RequestOperationsAction, RequestTypeHintsAction } from "@eclipse-glsp/client/lib";
 import {
     GLSPDiagramManager,
     GLSPDiagramWidget,
     GLSPTheiaDiagramServer,
     GLSPTheiaSprottyConnector
-} from "@glsp/theia-integration/lib/browser";
+} from "@eclipse-glsp/theia-integration/lib/browser";
 import { MessageService } from "@theia/core";
 import { WidgetManager } from "@theia/core/lib/browser";
 import { EditorManager } from "@theia/editor/lib/browser";

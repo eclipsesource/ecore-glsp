@@ -15,22 +15,23 @@
  ********************************************************************************/
 package com.eclipsesource.glsp.ecore.handler;
 
+import java.util.List;
 import java.util.Optional;
 
-import com.eclipsesource.glsp.api.action.Action;
-import com.eclipsesource.glsp.api.action.ActionMessage;
-import com.eclipsesource.glsp.api.action.ActionProcessor;
-import com.eclipsesource.glsp.api.action.kind.ComputedBoundsAction;
-import com.eclipsesource.glsp.api.action.kind.LayoutAction;
-import com.eclipsesource.glsp.api.model.GraphicalModelState;
-import com.eclipsesource.glsp.api.types.ElementAndBounds;
-import com.eclipsesource.glsp.api.utils.LayoutUtil;
+import org.eclipse.glsp.api.action.Action;
+import org.eclipse.glsp.api.action.ActionMessage;
+import org.eclipse.glsp.api.action.ActionProcessor;
+import org.eclipse.glsp.api.action.kind.ComputedBoundsAction;
+import org.eclipse.glsp.api.action.kind.LayoutAction;
+import org.eclipse.glsp.api.model.GraphicalModelState;
+import org.eclipse.glsp.api.types.ElementAndBounds;
+import org.eclipse.glsp.api.utils.LayoutUtil;
 import com.eclipsesource.glsp.ecore.enotation.Shape;
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
-import com.eclipsesource.glsp.graph.GDimension;
-import com.eclipsesource.glsp.graph.GModelRoot;
-import com.eclipsesource.glsp.graph.GPoint;
-import com.eclipsesource.glsp.server.actionhandler.ComputedBoundsActionHandler;
+import org.eclipse.glsp.graph.GDimension;
+import org.eclipse.glsp.graph.GModelRoot;
+import org.eclipse.glsp.graph.GPoint;
+import org.eclipse.glsp.server.actionhandler.ComputedBoundsActionHandler;
 import com.google.inject.Inject;
 
 public class EcoreComputedBoundsActionHandler extends ComputedBoundsActionHandler {
@@ -39,7 +40,7 @@ public class EcoreComputedBoundsActionHandler extends ComputedBoundsActionHandle
 	private ActionProcessor actionProcessor;
 
 	@Override
-	public Optional<Action> execute(Action action, GraphicalModelState graphicalModelState) {
+	public List<Action> execute(Action action, GraphicalModelState graphicalModelState) {
 		ComputedBoundsAction computedBoundsAction = (ComputedBoundsAction) action;
 		EcoreModelState modelState = EcoreModelState.getModelState(graphicalModelState);
 
@@ -59,7 +60,7 @@ public class EcoreComputedBoundsActionHandler extends ComputedBoundsActionHandle
 				return submissionHandler.doSubmitModel(false, modelState);
 			}
 		}
-		return Optional.empty();
+		return List.of();
 
 	}
 
