@@ -30,6 +30,9 @@ import org.eclipse.emf.ecore.EReference;
 
 import com.eclipsesource.glsp.ecore.util.EcoreEdgeUtil;
 import org.eclipse.glsp.api.jsonrpc.GLSPServerException;
+
+import com.eclipsesource.glsp.ecore.enotation.Edge;
+import org.eclipse.glsp.graph.GPoint;
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
 import com.eclipsesource.glsp.ecore.util.EcoreConfig.CSS;
 import com.eclipsesource.glsp.ecore.util.EcoreConfig.Types;
@@ -43,6 +46,7 @@ import org.eclipse.glsp.graph.builder.impl.GEdgePlacementBuilder;
 import org.eclipse.glsp.graph.builder.impl.GGraphBuilder;
 import org.eclipse.glsp.graph.builder.impl.GLabelBuilder;
 import org.eclipse.glsp.graph.util.GConstants;
+import org.eclipse.glsp.graph.util.GraphUtil;
 import org.eclipse.glsp.server.operationhandler.DeleteOperationHandler;
 
 public class GModelFactory extends AbstractGModelFactory<EObject, GModelElement> {
@@ -119,22 +123,35 @@ public class GModelFactory extends AbstractGModelFactory<EObject, GModelElement>
 				.routerKind(GConstants.RouterKind.MANHATTAN);
 
 		if (eReference.getEOpposite() != null) {
-			return createBidirectionalEdge(eReference, builder);
+			if (!createBidirectionalEdge(eReference, builder)) {
+				return null;
+			}
+		} else {
+
+			String labelMultiplicity = createMultiplicity(eReference);
+			String labelName = eReference.getName();
+			builder.type(eReference.isContainment() ? Types.COMPOSITION : Types.REFERENCE) //
+					.add(createEdgeMultiplicityLabel(labelMultiplicity, id + "_label_multiplicity", 0.5d))
+					.add(createEdgeNameLabel(labelName, id + "_label_name", 0.5d));
 		}
 
-		String labelMultiplicity = createMultiplicity(eReference);
-		String labelName = eReference.getName();
-		return builder.type(eReference.isContainment() ? Types.COMPOSITION : Types.REFERENCE) //
-				.add(createEdgeMultiplicityLabel(labelMultiplicity, id + "_label_multiplicity", 0.5d))
-				.add(createEdgeNameLabel(labelName, id + "_label_name", 0.5d)).build();
+		modelState.getIndex().getNotation(eReference, Edge.class).ifPresent(edge -> {
+
+			if (edge.getBendPoints() != null) {
+				ArrayList<GPoint> gPoints = new ArrayList<>();
+				edge.getBendPoints().forEach(p -> gPoints.add(GraphUtil.copy(p)));
+				builder.addRoutingPoints(gPoints);
+			}
+		});
+		return builder.build();
 	}
 
-	private GEdge createBidirectionalEdge(EReference eReference, GEdgeBuilder builder) {
+	private boolean createBidirectionalEdge(EReference eReference, GEdgeBuilder builder) {
 		Set<String> referenceSet = this.modelState.getIndex().getBidirectionalReferences();
 
-		if (!eReference.isContainment()
-				&& referenceSet.contains(EcoreEdgeUtil.getStringId(eReference.getEOpposite()))) {
-			return null;
+		if ((!eReference.isContainment() && referenceSet.contains(EcoreEdgeUtil.getStringId(eReference.getEOpposite())))
+				|| eReference.isContainer()) {
+			return false;
 		}
 
 		referenceSet.add(EcoreEdgeUtil.getStringId(eReference));
@@ -147,14 +164,13 @@ public class GModelFactory extends AbstractGModelFactory<EObject, GModelElement>
 		String sourceLabelName = eReference.getName();
 		String sourceId = toId(eReference);
 
-		return builder
-				.type(eReference.isContainment() ? Types.BIDIRECTIONAL_COMPOSITION : Types.BIDIRECTIONAL_REFERENCE) //
-				.add(createEdgeMultiplicityLabel(sourceLabelMultiplicity, sourceId + "_sourcelabel_multiplicity", 0.9d))//
-				.add(createEdgeNameLabel(sourceLabelName, sourceId + "_sourcelabel_name", 0.9d))//
-				.add(createEdgeMultiplicityLabel(targetLabelMultiplicity, targetId + "_targetlabel_multiplicity", 0.1d))//
-				.add(createEdgeNameLabel(targetLabelName, targetId + "_targetlabel_name", 0.1d))//
-				.build();
-				
+		builder.type(eReference.isContainment() ? Types.BIDIRECTIONAL_COMPOSITION : Types.BIDIRECTIONAL_REFERENCE) //
+				.add(createEdgeMultiplicityLabel(sourceLabelMultiplicity, sourceId + "_sourcelabel_multiplicity", 0.1d))//
+				.add(createEdgeNameLabel(sourceLabelName, sourceId + "_sourcelabel_name", 0.1d))//
+				.add(createEdgeMultiplicityLabel(targetLabelMultiplicity, targetId + "_targetlabel_multiplicity", 0.9d))//
+				.add(createEdgeNameLabel(targetLabelName, targetId + "_targetlabel_name", 0.9d));
+		return true;
+
 	}
 
 	private String createMultiplicity(EReference eReference) {

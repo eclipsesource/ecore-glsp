@@ -31,6 +31,7 @@ import com.eclipsesource.glsp.ecore.EcoreEditorContext;
 import com.eclipsesource.glsp.ecore.EcoreFacade;
 import com.eclipsesource.glsp.ecore.EcoreModelIndex;
 import com.eclipsesource.glsp.ecore.enotation.Diagram;
+import com.eclipsesource.glsp.ecore.enotation.NotationElement;
 import com.eclipsesource.glsp.ecore.model.EcoreModelState;
 import com.eclipsesource.glsp.ecore.util.EcoreConfig.Types;
 import org.eclipse.glsp.graph.GEdge;
@@ -66,21 +67,37 @@ public class CreateEcoreEdgeOperationHandler implements OperationHandler {
 		EClass targetEClass = getOrThrow(modelIndex.getSemantic(action.getTargetElementId(), EClass.class),
 				"No semantic EClass found for target element with id" + action.getTargetElementId());
 
+		Diagram diagram = facade.getDiagram();
+
 		if (elementTypeId.equals(Types.INHERITANCE)) {
 			sourceEclass.getESuperTypes().add(targetEClass);
 		} else {
-			EReference reference = createReference(sourceEclass, targetEClass, 
-					elementTypeId.equals(Types.BIDIRECTIONAL_COMPOSITION) ? Types.COMPOSITION :elementTypeId);
-			
-			if (elementTypeId.equals(Types.BIDIRECTIONAL_REFERENCE) 
+			EReference reference = createReference(sourceEclass, targetEClass,
+					elementTypeId.equals(Types.BIDIRECTIONAL_COMPOSITION) ? Types.COMPOSITION : elementTypeId);
+
+			if (elementTypeId.equals(Types.BIDIRECTIONAL_REFERENCE)
 					|| elementTypeId.equals(Types.BIDIRECTIONAL_COMPOSITION)) {
 				EReference opposite = createReference(targetEClass, sourceEclass, elementTypeId);
 				reference.setEOpposite(opposite);
 				opposite.setEOpposite(reference);
+
+				if (elementTypeId.equals(Types.BIDIRECTIONAL_REFERENCE)) {
+					NotationElement sourceNotationElement = modelIndex.getNotation(sourceEclass).get();
+					NotationElement targeNotationElement = modelIndex.getNotation(targetEClass).get();
+
+					for (NotationElement element : diagram.getElements()) {
+						if (element.equals(sourceNotationElement)) {
+							break;
+						}
+						if (element.equals(targeNotationElement)) {
+							reference = reference.getEOpposite();
+							break;
+						}
+					}
+				}
 			}
 			GEdge edge = getOrThrow(context.getGModelFactory().create(reference, GEdge.class),
 					" No viewmodel factory found for element: " + reference);
-			Diagram diagram = facade.getDiagram();
 			diagram.getElements().add(facade.initializeEdge(reference, edge));
 		}
 	}
@@ -96,7 +113,7 @@ public class CreateEcoreEdgeOperationHandler implements OperationHandler {
 		return reference;
 
 	}
-	
+
 	@Override
 	public String getLabel(AbstractOperationAction action) {
 		return "Create ecore edge";

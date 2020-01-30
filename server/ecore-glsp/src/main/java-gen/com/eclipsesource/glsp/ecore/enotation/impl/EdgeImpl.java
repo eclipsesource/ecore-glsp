@@ -162,4 +162,10 @@ public class EdgeImpl extends NotationElementImpl implements Edge {
 		return super.eIsSet(featureID);
 	}
 
+	@Override
+	public void setBendPoints(EList<GPoint> newPoints) {
+		this.getBendPoints().clear();
+		this.getBendPoints().addAll(newPoints);
+	}
+
 } //EdgeImpl
