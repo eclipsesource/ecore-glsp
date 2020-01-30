@@ -127,21 +127,17 @@ public class ClassifierNodeFactory extends AbstractGModelFactory<EClassifier, GN
 	private GCompartment buildHeader(EClassifier classifier) {
 		return new GCompartmentBuilder(Types.COMP_HEADER) //
 				.layout("hbox") //
-				.id(toId(classifier)+"_header")
-				.add(new GCompartmentBuilder(getType(classifier)) //
-						.id(toId(classifier)+"_header_icon")
-						.build()) //
+				.id(toId(classifier) + "_header").add(new GCompartmentBuilder(getType(classifier)) //
+						.id(toId(classifier) + "_header_icon").build()) //
 				.add(new GLabelBuilder(Types.LABEL_NAME) //
-						.id(toId(classifier)+"_header_label")
-						.text(classifier.getName()) //
+						.id(toId(classifier) + "_header_label").text(classifier.getName()) //
 						.build()) //
 				.build();
 	}
 
-	private GCompartment createLabeledChildrenCompartment(Collection<? extends EObject> children,EClassifier parent) {
+	private GCompartment createLabeledChildrenCompartment(Collection<? extends EObject> children, EClassifier parent) {
 		return new GCompartmentBuilder(Types.COMP) //
-				.id(toId(parent)+"_childCompartment")
-				.layout(GConstants.Layout.VBOX) //
+				.id(toId(parent) + "_childCompartment").layout(GConstants.Layout.VBOX) //
 				.layoutOptions(new GLayoutOptionsBuilder() //
 						.hAlign(GConstants.HAlign.LEFT) //
 						.resizeContainer(true) //
@@ -151,7 +147,6 @@ public class ClassifierNodeFactory extends AbstractGModelFactory<EClassifier, GN
 						.collect(Collectors.toList()))
 				.build();
 	}
-
 
 	public static String getType(EClassifier classifier) {
 		if (classifier instanceof EClass) {

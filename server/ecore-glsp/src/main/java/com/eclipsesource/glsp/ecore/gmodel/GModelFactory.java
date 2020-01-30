@@ -115,30 +115,28 @@ public class GModelFactory extends AbstractGModelFactory<EObject, GModelElement>
 		String target = toId(eReference.getEReferenceType());
 		String id = toId(eReference);
 
-		GEdgeBuilder builder = new GEdgeBuilder()
-			.id(id) //
-			.addCssClass(CSS.ECORE_EDGE) //
-			.addCssClass(eReference.isContainment() ? CSS.COMPOSITION : null) //
-			.sourceId(source) //
-			.targetId(target) //
-			.routerKind(GConstants.RouterKind.MANHATTAN);
+		GEdgeBuilder builder = new GEdgeBuilder().id(id) //
+				.addCssClass(CSS.ECORE_EDGE) //
+				.addCssClass(eReference.isContainment() ? CSS.COMPOSITION : null) //
+				.sourceId(source) //
+				.targetId(target) //
+				.routerKind(GConstants.RouterKind.MANHATTAN);
 
 		if (eReference.getEOpposite() != null) {
-			if (! createBidirectionalEdge(eReference, builder)) {
+			if (!createBidirectionalEdge(eReference, builder)) {
 				return null;
 			}
-	   } else {
+		} else {
 
-		String labelMultiplicity = createMultiplicity(eReference);
-		String labelName = eReference.getName();
-		builder
-			.type(eReference.isContainment() ? Types.COMPOSITION : Types.REFERENCE) //
-			.add(createEdgeMultiplicityLabel(labelMultiplicity, id + "_label_multiplicity", 0.5d))
-			.add(createEdgeNameLabel(labelName, id + "_label_name", 0.5d));
+			String labelMultiplicity = createMultiplicity(eReference);
+			String labelName = eReference.getName();
+			builder.type(eReference.isContainment() ? Types.COMPOSITION : Types.REFERENCE) //
+					.add(createEdgeMultiplicityLabel(labelMultiplicity, id + "_label_multiplicity", 0.5d))
+					.add(createEdgeNameLabel(labelName, id + "_label_name", 0.5d));
 		}
-			
+
 		modelState.getIndex().getNotation(eReference, Edge.class).ifPresent(edge -> {
-				
+
 			if (edge.getBendPoints() != null) {
 				ArrayList<GPoint> gPoints = new ArrayList<>();
 				edge.getBendPoints().forEach(p -> gPoints.add(GraphUtil.copy(p)));
@@ -151,10 +149,10 @@ public class GModelFactory extends AbstractGModelFactory<EObject, GModelElement>
 	private boolean createBidirectionalEdge(EReference eReference, GEdgeBuilder builder) {
 		Set<String> referenceSet = this.modelState.getIndex().getBidirectionalReferences();
 
-		if ((!eReference.isContainment() && referenceSet.contains(EcoreEdgeUtil.getStringId(eReference.getEOpposite()))) ||
-				eReference.isContainer()) {
-            return false;
-        }
+		if ((!eReference.isContainment() && referenceSet.contains(EcoreEdgeUtil.getStringId(eReference.getEOpposite())))
+				|| eReference.isContainer()) {
+			return false;
+		}
 
 		referenceSet.add(EcoreEdgeUtil.getStringId(eReference));
 
@@ -166,14 +164,13 @@ public class GModelFactory extends AbstractGModelFactory<EObject, GModelElement>
 		String sourceLabelName = eReference.getName();
 		String sourceId = toId(eReference);
 
-		builder
-			.type(eReference.isContainment() ? Types.BIDIRECTIONAL_COMPOSITION : Types.BIDIRECTIONAL_REFERENCE) //
-			.add(createEdgeMultiplicityLabel(sourceLabelMultiplicity, sourceId + "_sourcelabel_multiplicity", 0.1d))//
-			.add(createEdgeNameLabel(sourceLabelName, sourceId + "_sourcelabel_name", 0.1d))//
-			.add(createEdgeMultiplicityLabel(targetLabelMultiplicity, targetId + "_targetlabel_multiplicity", 0.9d))//
-			.add(createEdgeNameLabel(targetLabelName, targetId + "_targetlabel_name", 0.9d));
+		builder.type(eReference.isContainment() ? Types.BIDIRECTIONAL_COMPOSITION : Types.BIDIRECTIONAL_REFERENCE) //
+				.add(createEdgeMultiplicityLabel(sourceLabelMultiplicity, sourceId + "_sourcelabel_multiplicity", 0.1d))//
+				.add(createEdgeNameLabel(sourceLabelName, sourceId + "_sourcelabel_name", 0.1d))//
+				.add(createEdgeMultiplicityLabel(targetLabelMultiplicity, targetId + "_targetlabel_multiplicity", 0.9d))//
+				.add(createEdgeNameLabel(targetLabelName, targetId + "_targetlabel_name", 0.9d));
 		return true;
-				
+
 	}
 
 	private String createMultiplicity(EReference eReference) {

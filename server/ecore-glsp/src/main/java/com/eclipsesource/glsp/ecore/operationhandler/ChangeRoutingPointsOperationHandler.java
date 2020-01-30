@@ -50,15 +50,16 @@ public class ChangeRoutingPointsOperationHandler implements OperationHandler {
     }
 
     private void rerouteEdge(ChangeRoutingPointsOperationAction action, EcoreModelIndex index) {
-        for(ElementAndRoutingPoints element : action.getNewRoutingPoints()){
+        for (ElementAndRoutingPoints element : action.getNewRoutingPoints()) {
             index.getNotation(element.getElementId(), Edge.class)
-                .ifPresent(notationElement -> changeEdgePoints(notationElement, element.getNewRoutingPoints()));
+                    .ifPresent(notationElement -> changeEdgePoints(notationElement, element.getNewRoutingPoints()));
         };
     }
 
     private void changeEdgePoints(Edge element, List<GPoint> points) {
         EList<GPoint> ePoints = new BasicEList<GPoint>(points);
-        if(points != null) element.setBendPoints(ePoints);
+        if (points != null)
+            element.setBendPoints(ePoints);
     }
 
     @Override

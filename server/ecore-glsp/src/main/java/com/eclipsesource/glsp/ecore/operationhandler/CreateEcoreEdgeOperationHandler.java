@@ -72,29 +72,29 @@ public class CreateEcoreEdgeOperationHandler implements OperationHandler {
 		if (elementTypeId.equals(Types.INHERITANCE)) {
 			sourceEclass.getESuperTypes().add(targetEClass);
 		} else {
-			EReference reference = createReference(sourceEclass, targetEClass, 
-					elementTypeId.equals(Types.BIDIRECTIONAL_COMPOSITION) ? Types.COMPOSITION :elementTypeId);
-			
-			if (elementTypeId.equals(Types.BIDIRECTIONAL_REFERENCE)||
-					elementTypeId.equals(Types.BIDIRECTIONAL_COMPOSITION)) {
+			EReference reference = createReference(sourceEclass, targetEClass,
+					elementTypeId.equals(Types.BIDIRECTIONAL_COMPOSITION) ? Types.COMPOSITION : elementTypeId);
+
+			if (elementTypeId.equals(Types.BIDIRECTIONAL_REFERENCE)
+					|| elementTypeId.equals(Types.BIDIRECTIONAL_COMPOSITION)) {
 				EReference opposite = createReference(targetEClass, sourceEclass, elementTypeId);
 				reference.setEOpposite(opposite);
 				opposite.setEOpposite(reference);
 
-			if(elementTypeId.equals(Types.BIDIRECTIONAL_REFERENCE))	{
-				NotationElement sourceNotationElement = modelIndex.getNotation(sourceEclass).get();
-                NotationElement targeNotationElement = modelIndex.getNotation(targetEClass).get();
-				
-				for(NotationElement element : diagram.getElements()){
-                	if(element.equals(sourceNotationElement)){
-                		break;
-                   	}
-                	if(element.equals(targeNotationElement)){
-                    	reference = reference.getEOpposite();
-                    	break;
-                	}
+				if (elementTypeId.equals(Types.BIDIRECTIONAL_REFERENCE)) {
+					NotationElement sourceNotationElement = modelIndex.getNotation(sourceEclass).get();
+					NotationElement targeNotationElement = modelIndex.getNotation(targetEClass).get();
+
+					for (NotationElement element : diagram.getElements()) {
+						if (element.equals(sourceNotationElement)) {
+							break;
+						}
+						if (element.equals(targeNotationElement)) {
+							reference = reference.getEOpposite();
+							break;
+						}
+					}
 				}
-			}
 			}
 			GEdge edge = getOrThrow(context.getGModelFactory().create(reference, GEdge.class),
 					" No viewmodel factory found for element: " + reference);
@@ -113,7 +113,7 @@ public class CreateEcoreEdgeOperationHandler implements OperationHandler {
 		return reference;
 
 	}
-	
+
 	@Override
 	public String getLabel(AbstractOperationAction action) {
 		return "Create ecore edge";
