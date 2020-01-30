@@ -208,8 +208,8 @@ public class EcoreFacade {
 		edge.getBendPoints().clear();
 		if (gEdge.getRoutingPoints() != null) {
 			ArrayList<GPoint> gPoints = new ArrayList<>();
-            gEdge.getRoutingPoints().forEach(p -> gPoints.add(GraphUtil.copy(p)));
-            edge.getBendPoints().addAll(gPoints);
+			gEdge.getRoutingPoints().forEach(p -> gPoints.add(GraphUtil.copy(p)));
+			edge.getBendPoints().addAll(gPoints);
 		}
 	}
 

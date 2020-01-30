@@ -65,7 +65,7 @@ public class ClassifierNodeFactory extends AbstractGModelFactory<EClassifier, GN
 				.layout(GConstants.Layout.VBOX) //
 				.addCssClass(CSS.NODE) //
 				.add(buildHeader(eClass))//
-				.add(createLabeledChildrenCompartment(eClass.getEAttributes(),eClass));
+				.add(createLabeledChildrenCompartment(eClass.getEAttributes(), eClass));
 
 		if (eClass.isAbstract()) {
 			b.addCssClass(CSS.ABSTRACT);
@@ -83,7 +83,7 @@ public class ClassifierNodeFactory extends AbstractGModelFactory<EClassifier, GN
 				.layoutOptions(new GLayoutOptionsBuilder().resizeContainer(true).build()) //
 				.addCssClass(CSS.NODE) //
 				.add(buildHeader(eEnum))//
-				.add(createLabeledChildrenCompartment(eEnum.getELiterals(),eEnum));
+				.add(createLabeledChildrenCompartment(eEnum.getELiterals(), eEnum));
 		applyShapeData(eEnum, b);
 
 		return b.build();
