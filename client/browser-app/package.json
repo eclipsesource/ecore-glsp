@@ -5,6 +5,7 @@
   "dependencies": {
     "@theia/core": "latest",
     "@theia/filesystem": "latest",
+    "@theia/callhierarchy": "latest",
     "@theia/workspace": "latest",
     "@theia/preferences": "latest",
     "@theia/navigator": "latest",
@@ -14,8 +15,11 @@
     "@theia/languages": "latest",
     "@theia/markers": "latest",
     "@theia/monaco": "latest",
-    "@theia/typescript": "latest",
     "@theia/messages": "latest",
+    "@theia/plugin-dev": "latest",
+    "@theia/plugin-ext": "latest",
+    "@theia/plugin-ext-vscode": "latest",
+    "@theia/typehierarchy": "latest",
     "theia-ecore": "0.2.0"
   },
   "devDependencies": {
@@ -23,7 +27,7 @@
   },
   "scripts": {
     "prepare": "theia build --mode development",
-    "start": "theia start",
+    "start": "theia start --plugins=local-dir:../plugins",
     "start:debug": "theia start --loglevel=debug --root=../workspace",
     "watch": "theia build --watch --mode development"
   },
