@@ -13,7 +13,11 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-import { FrontendApplication, OpenerService, QuickOpenOptions, QuickOpenService } from "@theia/core/lib/browser";
+
+import {
+    open
+} from "@theia/core/lib/browser";
+import { FrontendApplication, OpenerService, QuickOpenService } from "@theia/core/lib/browser";
 import { Command, CommandContribution, CommandRegistry } from "@theia/core/lib/common/command";
 import { MessageService } from "@theia/core/lib/common/message-service";
 import { ProgressService } from "@theia/core/lib/common/progress-service";
@@ -30,11 +34,8 @@ import { inject, injectable } from "inversify";
 import { FileGenServer } from "../common/generate-protocol";
 
 
-
 export const EXAMPLE_NAVIGATOR = [...NAVIGATOR_CONTEXT_MENU, 'example'];
 export const EXAMPLE_EDITOR = [...EDITOR_CONTEXT_MENU, 'example'];
-
-
 
 export const GENERATE_GENMODEL: Command = {
     id: 'file.generateGenModel',
@@ -55,17 +56,18 @@ export class GenerateGenModelCommandContribution implements CommandContribution 
     @inject(ProgressService) protected readonly progressService: ProgressService;
     @inject(QuickOpenService) protected readonly quickOpenService: QuickOpenService;
     @inject(FileGenServer) private readonly fileGenServer: FileGenServer;
-
+    
     registerCommands(registry: CommandRegistry): void {
         registry.registerCommand(GENERATE_GENMODEL, this.newWorkspaceRootUriAwareCommandHandler({
             execute: uri => this.getDirectory(uri).then(parent => {
                 if (parent) {
                     const parentUri = new URI(parent.uri);
-                    // @Leo hier wird die Methode zum generieren aufgerufen.
-                    // Die Variable uri ist das aktuell markierte Element
-                    // und parentUri ist dann dementsprechend der Ordner darüber(wrsl der Workspace)
-                    this.fileGenServer.generateGenModel().then(() => {
-                        // @Leo hier kannst du die files nachdem sie generiert wurden öffnen
+
+                    this.fileGenServer.generateGenModel(uri.path.toString()).then(() => {
+                        const extensionStart = uri.displayName.lastIndexOf('.');
+                        const genmodelPath = parentUri.toString() + '/' + uri.displayName.substring(0, extensionStart) + '.genmodel';
+                        const fileUri = new URI(genmodelPath);
+                        open(this.openerService, fileUri);
                     });
                 }
             })
@@ -98,15 +100,6 @@ export class GenerateGenModelCommandContribution implements CommandContribution 
 
     protected getParent(candidate: URI): Promise<FileStat | undefined> {
         return this.fileSystem.getFileStat(candidate.parent.toString());
-    }
-
-    private getOptions(placeholder: string, fuzzyMatchLabel: boolean = true, onClose: (canceled: boolean) => void = () => { }): QuickOpenOptions {
-        return QuickOpenOptions.resolve({
-            placeholder,
-            fuzzyMatchLabel,
-            fuzzySort: false,
-            onClose
-        });
     }
 }
 

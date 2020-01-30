@@ -75,14 +75,76 @@ export class EcoreFileGenServer implements FileGenServer, BackendApplicationCont
         });
     }
 
-    generateCode(): Promise<String> {
-        // @Leo hier wird die Methode dann implementiert. Wie du ne Jar findest und aufrufst ist ein
-        // Beispiel in der Methode drüber. Die Jars sollen in theia-ecore/server liegen.
-        throw new Error("Method not implemented.");
+    generateCode(genmodelPath: string, outputFolder: string, ecoreName: string): Promise<String> {
+        const jarPath = path.resolve(__dirname, '..', '..',
+            'server', 'eclipse', 'plugins', 'org.eclipse.equinox.launcher_1.5.500.v20190715-1310.jar');
+        if (jarPath.length === 0) {
+            throw new Error('The eclipse.equinox.launcher is not found. ');
+        }
+
+        const command = 'java';
+        const args: string[] = [];
+        
+        args.push(
+            '-jar', jarPath,
+            '-application', 'org.eclipse.emf.codegen.ecore.Generator',
+            '-data', outputFolder,
+            '-nosplash', genmodelPath,
+            outputFolder + '/' + ecoreName + '/code'
+        );
+
+        return new Promise(resolve => {
+            const process = this.spawnProcess(command, args);
+            if (process === undefined || process.process === undefined || process === null || process.process === null) {
+                resolve('Process not spawned');
+                return;
+            }
+
+            process.process.on('exit', (code: any) => {
+                switch (code) {
+                    case 0: resolve('OK'); break;
+                    default: resolve('UNKNOWN ERROR ' + code); break;
+                }
+            });
+        });
     }
 
-    generateGenModel(): Promise<String> {
-        throw new Error("Method not implemented.");
+    generateGenModel(ecorePath: string): Promise<String> {
+        const jarPath = path.resolve(__dirname, '..', '..',
+        'server', 'ecore2GenModel.jar');
+        if (jarPath.length === 0) {
+            throw new Error('The EcoreGeneration.jar is not found. ');
+        }
+
+        const laucherPath = path.resolve(__dirname, '..', '..',
+            'server', 'eclipse', 'plugins', 'org.eclipse.equinox.launcher_1.5.500.v20190715-1310.jar');
+        if (laucherPath.length === 0) {
+            throw new Error('The eclipse.equinox.launcher is not found. ');
+        }        
+
+        const command = 'java';
+        const args: string[] = [];
+
+        args.push(
+            '-jar', jarPath,
+            '-ecore', ecorePath,
+            '-launcher', laucherPath
+        );
+
+        return new Promise(resolve => {
+            const process = this.spawnProcess(command, args);
+            if (process === undefined || process.process === undefined || process === null || process.process === null) {
+                resolve('Process not spawned');
+                return;
+            }
+
+            process.process.on('exit', (code: any) => {
+                switch (code) {
+                    case 0: resolve('OK'); break;
+                    default: resolve('UNKNOWN ERROR ' + code); break;
+                }
+            });
+        });
     }
 
     createNewProject(): Promise<String> {
@@ -104,6 +166,7 @@ export class EcoreFileGenServer implements FileGenServer, BackendApplicationCont
     private spawnProcess(command: string, args?: string[]): RawProcess | undefined {
         const rawProcess = this.processFactory({ command, args });
         if (rawProcess.process === undefined) {
+            this.logError("Error creating process");
             return undefined;
         }
         rawProcess.process.on('error', this.onDidFailSpawnProcess.bind(this));

@@ -13,7 +13,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-import { FrontendApplication, OpenerService, QuickOpenOptions, QuickOpenService } from "@theia/core/lib/browser";
+import { FrontendApplication, OpenerService, /* QuickOpenOptions, */ QuickOpenService } from "@theia/core/lib/browser";
 import { Command, CommandContribution, CommandRegistry } from "@theia/core/lib/common/command";
 import { MessageService } from "@theia/core/lib/common/message-service";
 import { ProgressService } from "@theia/core/lib/common/progress-service";
@@ -60,7 +60,7 @@ export class CreateProjectCommandContribution implements CommandContribution {
         registry.registerCommand(CREATE_NEW_PROJECT, this.newWorkspaceRootUriAwareCommandHandler({
             execute: uri => this.getDirectory(uri).then(parent => {
                 if (parent) {
-                    const parentUri = new URI(parent.uri);
+                    //const parentUri = new URI(parent.uri);
                     // @Leo hier wird die Methode zum generieren aufgerufen.
                     // Die Variable uri ist das aktuell markierte Element
                     // und parentUri ist dann dementsprechend der Ordner darüber(wrsl der Workspace)
@@ -100,6 +100,7 @@ export class CreateProjectCommandContribution implements CommandContribution {
         return this.fileSystem.getFileStat(candidate.parent.toString());
     }
 
+    /*
     private getOptions(placeholder: string, fuzzyMatchLabel: boolean = true, onClose: (canceled: boolean) => void = () => { }): QuickOpenOptions {
         return QuickOpenOptions.resolve({
             placeholder,
@@ -108,6 +109,7 @@ export class CreateProjectCommandContribution implements CommandContribution {
             onClose
         });
     }
+    */
 }
 
 export class WorkspaceRootUriAwareCommandHandler extends UriAwareCommandHandler<URI> {

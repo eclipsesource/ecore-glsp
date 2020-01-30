@@ -13,16 +13,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-import {
-    FrontendApplication,
-    open,
-    OpenerService,
-    QuickOpenItem,
-    QuickOpenMode,
-    QuickOpenModel,
-    QuickOpenOptions,
-    QuickOpenService
-} from "@theia/core/lib/browser";
+import { FrontendApplication, open, OpenerService, QuickOpenItem, QuickOpenMode, QuickOpenModel, QuickOpenOptions, QuickOpenService } from "@theia/core/lib/browser";
 import { Command, CommandContribution, CommandRegistry } from "@theia/core/lib/common/command";
 import { MessageService } from "@theia/core/lib/common/message-service";
 import { ProgressService } from "@theia/core/lib/common/progress-service";
@@ -35,8 +26,8 @@ import { FileStat, FileSystem } from "@theia/filesystem/lib/common/filesystem";
 import { NAVIGATOR_CONTEXT_MENU } from "@theia/navigator/lib/browser/navigator-contribution";
 import { WorkspaceService } from "@theia/workspace/lib/browser";
 import { inject, injectable } from "inversify";
-
 import { FileGenServer } from "../common/generate-protocol";
+
 
 
 

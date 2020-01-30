@@ -13,7 +13,12 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-import { FrontendApplication, OpenerService, QuickOpenOptions, QuickOpenService } from "@theia/core/lib/browser";
+import {
+    QuickOpenItem,
+    QuickOpenMode,
+    QuickOpenModel
+} from "@theia/core/lib/browser";
+import { open, FrontendApplication, OpenerService, QuickOpenOptions,  QuickOpenService } from "@theia/core/lib/browser";
 import { Command, CommandContribution, CommandRegistry } from "@theia/core/lib/common/command";
 import { MessageService } from "@theia/core/lib/common/message-service";
 import { ProgressService } from "@theia/core/lib/common/progress-service";
@@ -61,12 +66,39 @@ export class GenerateCodeCommandContribution implements CommandContribution {
             execute: uri => this.getDirectory(uri).then(parent => {
                 if (parent) {
                     const parentUri = new URI(parent.uri);
-                    // @Leo hier wird die Methode zum generieren aufgerufen.
-                    // Die Variable uri ist das aktuell markierte Element
-                    // und parentUri ist dann dementsprechend der Ordner darüber(wrsl der Workspace)
-                    this.fileGenServer.generateCode().then(() => {
-                        // @Leo hier kannst du die files nachdem sie generiert wurden öffnen
+
+                    const showInput = (hint: string, prefix: string, onEnter: (result: string) => void) => {
+                        const quickOpenModel: QuickOpenModel = {
+                            onType(lookFor: string, acceptor: (items: QuickOpenItem[]) => void): void {
+                                const dynamicItems: QuickOpenItem[] = [];
+                                const suffix = "Press 'Enter' to confirm or 'Escape' to cancel.";
+
+                                dynamicItems.push(new SingleStringInputOpenItem(
+                                    `${prefix}: ${lookFor}. ${suffix}`,
+                                    () => onEnter(lookFor),
+                                    (mode: QuickOpenMode) => mode === QuickOpenMode.OPEN,
+                                    () => false
+                                ));
+
+                                acceptor(dynamicItems);
+                            }
+                        };
+                        this.quickOpenService.open(quickOpenModel, this.getOptions(hint, false));
+                    };
+
+                    showInput("Output folder name", "folder name", (folderName) => {
+                        const extensionStart = uri.displayName.lastIndexOf('.');
+                        const ecoreName = uri.displayName.substring(0, extensionStart);
+                        if (folderName.trim() === '') {
+                            folderName = ecoreName;
+                        }
+                        folderName = parentUri.path.toString() + '/' + folderName;
+                        this.fileGenServer.generateCode(uri.path.toString(), folderName, ecoreName).then(() => {
+                            open(this.openerService, uri);
+                        });
                     });
+
+                   
                 }
             })
         }));
@@ -100,6 +132,7 @@ export class GenerateCodeCommandContribution implements CommandContribution {
         return this.fileSystem.getFileStat(candidate.parent.toString());
     }
 
+    
     private getOptions(placeholder: string, fuzzyMatchLabel: boolean = true, onClose: (canceled: boolean) => void = () => { }): QuickOpenOptions {
         return QuickOpenOptions.resolve({
             placeholder,
@@ -108,6 +141,7 @@ export class GenerateCodeCommandContribution implements CommandContribution {
             onClose
         });
     }
+    
 }
 
 export class WorkspaceRootUriAwareCommandHandler extends UriAwareCommandHandler<URI> {
@@ -140,4 +174,29 @@ export class WorkspaceRootUriAwareCommandHandler extends UriAwareCommandHandler<
         }
         return undefined;
     }
+}
+
+class SingleStringInputOpenItem extends QuickOpenItem {
+
+    constructor(
+        private readonly label: string,
+        private readonly execute: (item: QuickOpenItem) => void = () => { },
+        private readonly canRun: (mode: QuickOpenMode) => boolean = mode => mode === QuickOpenMode.OPEN,
+        private readonly canClose: (mode: QuickOpenMode) => boolean = mode => true) {
+
+        super();
+    }
+
+    getLabel(): string {
+        return this.label;
+    }
+
+    run(mode: QuickOpenMode): boolean {
+        if (!this.canRun(mode)) {
+            return false;
+        }
+        this.execute(this);
+        return this.canClose(mode);
+    }
+
 }
