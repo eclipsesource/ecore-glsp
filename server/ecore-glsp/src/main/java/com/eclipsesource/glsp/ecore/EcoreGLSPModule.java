@@ -34,6 +34,7 @@ import com.eclipsesource.glsp.ecore.handler.EcoreSaveModelActionHandler;
 import com.eclipsesource.glsp.ecore.handler.EcoreUndoRedoActionHandler;
 import com.eclipsesource.glsp.ecore.model.EcoreModelFactory;
 import com.eclipsesource.glsp.ecore.model.EcoreModelStateProvider;
+import com.eclipsesource.glsp.ecore.operationhandler.ChangeRoutingPointsOperationHandler;
 import com.eclipsesource.glsp.ecore.operationhandler.CreateClassifierChildNodeOperationHandler;
 import com.eclipsesource.glsp.ecore.operationhandler.CreateClassifierNodeOperationHandler;
 import com.eclipsesource.glsp.ecore.operationhandler.CreateEcoreEdgeOperationHandler;
@@ -88,6 +89,7 @@ public class EcoreGLSPModule extends DefaultGLSPModule {
 				add(CreateEcoreEdgeOperationHandler.class);
 				add(CreateClassifierChildNodeOperationHandler.class);
 				add(EcoreLabelEditOperationHandler.class);
+				add(ChangeRoutingPointsOperationHandler.class);
 			}
 		};
 	}

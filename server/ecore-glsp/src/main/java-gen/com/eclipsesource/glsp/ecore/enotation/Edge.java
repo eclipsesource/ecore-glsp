@@ -49,4 +49,6 @@ public interface Edge extends NotationElement {
 	 */
 	EList<GPoint> getBendPoints();
 
+	void setBendPoints(EList<GPoint> newPoints);
+
 } // Edge
