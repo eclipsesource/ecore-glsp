@@ -11,6 +11,8 @@
 package com.eclipsesource.glsp.ecore;
 
 import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.eclipse.elk.alg.layered.options.LayeredMetaDataProvider;
 import org.eclipse.emf.ecore.EcorePackage;
 
@@ -26,7 +28,7 @@ public class EcoreServerLauncher {
 		EcorePackage.eINSTANCE.eClass();
 		ElkLayoutEngine.initialize(new LayeredMetaDataProvider());
 		BasicConfigurator.configure();
-		
+		Logger.getRootLogger().setLevel(Level.DEBUG);
 		GLSPServerLauncher launcher = new DefaultGLSPServerLauncher(new EcoreGLSPModule());
 		launcher.start("localhost", port);
 		

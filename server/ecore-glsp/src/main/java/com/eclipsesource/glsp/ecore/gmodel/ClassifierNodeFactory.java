@@ -23,11 +23,6 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EObject;
-
-import com.eclipsesource.glsp.ecore.enotation.Shape;
-import com.eclipsesource.glsp.ecore.model.EcoreModelState;
-import com.eclipsesource.glsp.ecore.util.EcoreConfig.CSS;
-import com.eclipsesource.glsp.ecore.util.EcoreConfig.Types;
 import org.eclipse.glsp.graph.GCompartment;
 import org.eclipse.glsp.graph.GNode;
 import org.eclipse.glsp.graph.builder.impl.GCompartmentBuilder;
@@ -36,6 +31,11 @@ import org.eclipse.glsp.graph.builder.impl.GLayoutOptionsBuilder;
 import org.eclipse.glsp.graph.builder.impl.GNodeBuilder;
 import org.eclipse.glsp.graph.util.GConstants;
 import org.eclipse.glsp.graph.util.GraphUtil;
+
+import com.eclipsesource.glsp.ecore.enotation.Shape;
+import com.eclipsesource.glsp.ecore.model.EcoreModelState;
+import com.eclipsesource.glsp.ecore.util.EcoreConfig.CSS;
+import com.eclipsesource.glsp.ecore.util.EcoreConfig.Types;
 
 public class ClassifierNodeFactory extends AbstractGModelFactory<EClassifier, GNode> {
 
@@ -65,7 +65,7 @@ public class ClassifierNodeFactory extends AbstractGModelFactory<EClassifier, GN
 				.layout(GConstants.Layout.VBOX) //
 				.addCssClass(CSS.NODE) //
 				.add(buildHeader(eClass))//
-				.add(createLabeledChildrenCompartment(eClass.getEAttributes()));
+				.add(createLabeledChildrenCompartment(eClass.getEAttributes(),eClass));
 
 		if (eClass.isAbstract()) {
 			b.addCssClass(CSS.ABSTRACT);
@@ -83,7 +83,7 @@ public class ClassifierNodeFactory extends AbstractGModelFactory<EClassifier, GN
 				.layoutOptions(new GLayoutOptionsBuilder().resizeContainer(true).build()) //
 				.addCssClass(CSS.NODE) //
 				.add(buildHeader(eEnum))//
-				.add(createLabeledChildrenCompartment(eEnum.getELiterals()));
+				.add(createLabeledChildrenCompartment(eEnum.getELiterals(),eEnum));
 		applyShapeData(eEnum, b);
 
 		return b.build();
@@ -127,16 +127,20 @@ public class ClassifierNodeFactory extends AbstractGModelFactory<EClassifier, GN
 	private GCompartment buildHeader(EClassifier classifier) {
 		return new GCompartmentBuilder(Types.COMP_HEADER) //
 				.layout("hbox") //
+				.id(toId(classifier)+"_header")
 				.add(new GCompartmentBuilder(getType(classifier)) //
+						.id(toId(classifier)+"_header_icon")
 						.build()) //
 				.add(new GLabelBuilder(Types.LABEL_NAME) //
+						.id(toId(classifier)+"_header_label")
 						.text(classifier.getName()) //
 						.build()) //
 				.build();
 	}
 
-	private GCompartment createLabeledChildrenCompartment(Collection<? extends EObject> children) {
+	private GCompartment createLabeledChildrenCompartment(Collection<? extends EObject> children,EClassifier parent) {
 		return new GCompartmentBuilder(Types.COMP) //
+				.id(toId(parent)+"_childCompartment")
 				.layout(GConstants.Layout.VBOX) //
 				.layoutOptions(new GLayoutOptionsBuilder() //
 						.hAlign(GConstants.HAlign.LEFT) //
