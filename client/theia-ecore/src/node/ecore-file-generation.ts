@@ -124,7 +124,7 @@ export class EcoreFileGenServer implements FileGenServer, BackendApplicationCont
 
         const command = 'java';
         const args: string[] = [];
-
+        console.log(ecorePath);
         args.push(
             '-jar', jarPath,
             '-ecore', ecorePath,
@@ -136,7 +136,14 @@ export class EcoreFileGenServer implements FileGenServer, BackendApplicationCont
             if (process === undefined || process.process === undefined || process === null || process.process === null) {
                 resolve('Process not spawned');
                 return;
+            } else {
+                if (process.process.stdout)
+                process.process.stdout.on('data', function (data) {
+                    console.log('stdout: ' + data.toString());
+                  });
             }
+
+            
 
             process.process.on('exit', (code: any) => {
                 switch (code) {
