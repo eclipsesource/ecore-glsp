@@ -13,5 +13,6 @@
     <modules>
         <module>ecore-backend-server</module>
         <module>ecore-glsp</module>
+        <module>backend-app</module>
     </modules>
 </project>
