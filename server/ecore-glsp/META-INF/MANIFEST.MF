@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: glsp-ecore;singleton:=true
-Automatic-Module-Name: glsp-ecore
+Bundle-SymbolicName: org.eclipse.emfcloud.ecore.glsp;singleton:=true
+Automatic-Module-Name: org.eclipse.glsp.ecore.server
 Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
