@@ -1,4 +1,4 @@
 .idea
 *.iml
-server/ecore-backend-server/target/
-server/target/
+target/
+bin/

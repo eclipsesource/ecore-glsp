@@ -4,14 +4,13 @@
                              http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.eclipsesource.glsp</groupId>
-    <artifactId>parent-pom</artifactId>
+    <groupId>org.eclipse.emfcloud.ecore</groupId>
+    <artifactId>org.eclipse.emfcloud.ecore.parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0</version>
-    <name>ecore-glsp Parent Project</name>
 
     <modules>
         <module>ecore-backend-server</module>
-        <module>ecore-glsp</module>
+        <module>org.eclipse.emfcloud.ecore.glsp</module>
     </modules>
 </project>
