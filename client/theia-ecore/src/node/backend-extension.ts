@@ -24,7 +24,7 @@ import { join, resolve } from 'path';
 export class EcoreGlspLaunchOptions implements GLSPLaunchOptions {
     isRunning = false;
     hostname = 'localhost';
-    jarPath = resolve(join(__dirname, '..', '..', 'build', 'glsp-ecore-0.0.2-SNAPSHOT-glsp.jar'));
+    jarPath = resolve(join(__dirname, '..', '..', 'build', 'org.eclipse.emfcloud.ecore.glsp-0.0.2-SNAPSHOT-glsp.jar'));
     serverPort = 5007;
 }
 
