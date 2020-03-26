@@ -148,13 +148,13 @@ public class GModelFactory extends AbstractGModelFactory<EObject, GModelElement>
 
 		referenceSet.add(EcoreEdgeUtil.getStringId(eReference));
 
-		String targetLabelMultiplicity = createMultiplicity(eReference.getEOpposite());
-		String targetLabelName = eReference.getEOpposite().getName();
-		String targetId = toId(eReference.getEOpposite());
+		String sourceLabelMultiplicity = createMultiplicity(eReference.getEOpposite());
+		String sourceLabelName = eReference.getEOpposite().getName();
+		String sourceId = toId(eReference.getEOpposite());
 
-		String sourceLabelMultiplicity = createMultiplicity(eReference);
-		String sourceLabelName = eReference.getName();
-		String sourceId = toId(eReference);
+		String targetLabelMultiplicity = createMultiplicity(eReference);
+		String targetLabelName = eReference.getName();
+		String targetId = toId(eReference);
 
 		builder.type(eReference.isContainment() ? Types.BIDIRECTIONAL_COMPOSITION : Types.BIDIRECTIONAL_REFERENCE) //
 				.add(createEdgeMultiplicityLabel(sourceLabelMultiplicity, sourceId + "_sourcelabel_multiplicity", 0.1d))//
