@@ -51,7 +51,7 @@ svg {
 }
 
 .sprotty-label-node>.sprotty-label {
-    alignment-baseline: middle;	
+    dominant-baseline: middle;
 }
 
 .sprotty-label-node>.selection-feedback {
