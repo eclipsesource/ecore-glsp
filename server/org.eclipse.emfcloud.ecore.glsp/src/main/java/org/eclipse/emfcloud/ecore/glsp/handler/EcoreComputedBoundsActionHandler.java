@@ -52,7 +52,7 @@ public class EcoreComputedBoundsActionHandler extends ComputedBoundsActionHandle
 					ActionMessage layoutMessage = new ActionMessage(clientId, new LayoutAction());
 					actionProcessor.process(layoutMessage);
 				}
-				return submissionHandler.doSubmitModel(false, modelState);
+				return submissionHandler.doSubmitModel(true, modelState);
 			}
 		}
 		return List.of();
