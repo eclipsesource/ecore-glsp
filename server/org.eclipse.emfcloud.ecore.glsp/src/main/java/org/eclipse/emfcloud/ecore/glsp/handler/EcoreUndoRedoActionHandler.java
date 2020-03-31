@@ -18,6 +18,7 @@ import org.eclipse.emfcloud.ecore.glsp.model.EcoreModelState;
 import org.eclipse.glsp.api.action.Action;
 import org.eclipse.glsp.api.action.kind.RedoAction;
 import org.eclipse.glsp.api.action.kind.RequestBoundsAction;
+import org.eclipse.glsp.api.action.kind.SetDirtyStateAction;
 import org.eclipse.glsp.api.action.kind.UndoAction;
 import org.eclipse.glsp.api.model.GraphicalModelState;
 import org.eclipse.glsp.graph.GModelRoot;
@@ -38,7 +39,7 @@ public class EcoreUndoRedoActionHandler extends AbstractActionHandler {
 		boolean success = executeOperation(action, modelState);
 		if (success) {
 			GModelRoot newRoot = context.getGModelFactory().create();
-			return List.of(new RequestBoundsAction(newRoot));
+			return List.of(new RequestBoundsAction(newRoot), new SetDirtyStateAction(modelState.isDirty()));
 		}
 		LOG.warn("Cannot undo or redo");
 		return List.of();

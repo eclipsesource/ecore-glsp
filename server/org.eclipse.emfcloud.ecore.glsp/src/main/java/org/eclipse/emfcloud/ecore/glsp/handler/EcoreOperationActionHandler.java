@@ -19,6 +19,7 @@ import org.eclipse.emfcloud.ecore.glsp.model.EcoreModelState;
 import org.eclipse.glsp.api.action.Action;
 import org.eclipse.glsp.api.action.kind.AbstractOperationAction;
 import org.eclipse.glsp.api.action.kind.RequestBoundsAction;
+import org.eclipse.glsp.api.action.kind.SetDirtyStateAction;
 import org.eclipse.glsp.api.handler.OperationHandler;
 import org.eclipse.glsp.api.model.GraphicalModelState;
 import org.eclipse.glsp.graph.GModelRoot;
@@ -39,7 +40,7 @@ public class EcoreOperationActionHandler extends OperationActionHandler {
 			modelState.execute(command);
 			GModelRoot newRoot = new GModelFactory(modelState).create();
 
-			return List.of(new RequestBoundsAction(newRoot));
+			return List.of(new RequestBoundsAction(newRoot), new SetDirtyStateAction(modelState.isDirty()));
 		}
 		return List.of();
 	}
