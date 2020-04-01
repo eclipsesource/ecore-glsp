@@ -91,6 +91,7 @@ public class ClassifierNodeFactory extends AbstractGModelFactory<EClassifier, GN
 				.addCssClass(CSS.NODE) //
 				.add(buildHeader(eDataType))//
 				.add(new GCompartmentBuilder(Types.COMP) //
+						.id(toId(eDataType) + "_childCompartment")//
 						.layout(GConstants.Layout.VBOX) //
 						.layoutOptions(new GLayoutOptionsBuilder() //
 								.hAlign(GConstants.HAlign.CENTER) //
