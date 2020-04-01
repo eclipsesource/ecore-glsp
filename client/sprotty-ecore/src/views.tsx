@@ -153,7 +153,7 @@ export class LabelNodeView extends SLabelView {
         class-mouseover={labelNode.hoverFeedback}
         class-sprotty-label-node={true}
       >
-          { !!image && <image class-sprotty-icon={true} href={image} y={-4} width={13} height={8}></image> }
+          { !!image && <image class-sprotty-icon={true} href={image} y={-5} width={13} height={8}></image> }
         <text class-sprotty-label={true} x={!!image ? 20 : 0}>{labelNode.text}</text>
       </g>
     );
