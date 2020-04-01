@@ -19,8 +19,10 @@ import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.Resource.Diagnostic;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreAdapterFactory;
+import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -98,10 +100,18 @@ public class ResourceManager {
 
 	private Resource loadResource(File file) throws IOException {
 		Resource resource = createResource(file.getAbsolutePath());
+		configureResource(resource);
 		if (file.exists()) {
 			resource.load(Collections.EMPTY_MAP);
 		}
 		return resource;
+	}
+
+	private void configureResource(Resource resource) {
+		if (resource instanceof XMLResource) {
+			XMLResource xmlResource = (XMLResource)resource;
+			xmlResource.getDefaultSaveOptions().put(XMLResource.OPTION_PROCESS_DANGLING_HREF, XMLResource.OPTION_PROCESS_DANGLING_HREF_RECORD);
+		}
 	}
 
 	private Resource createResource(String path) {
@@ -112,8 +122,23 @@ public class ResourceManager {
 		try {
 			ecoreFacade.getSemanticResource().save(Collections.EMPTY_MAP);
 			ecoreFacade.getNotationResource().save(Collections.EMPTY_MAP);
+			handleSaveErrors(ecoreFacade.getSemanticResource());
+			handleSaveErrors(ecoreFacade.getNotationResource());
 		} catch (IOException e) {
 			throw new GLSPServerException("Could not save notation resource", e);
+		}
+	}
+
+	private void handleSaveErrors(Resource resource) {
+		if (resource.getErrors().isEmpty()) {
+			return;
+		}
+		
+		System.err.println("Some errors have been found while saving "+resource.getURI().lastSegment()+":");
+		for (Diagnostic d : resource.getErrors()) {
+			if (d instanceof Exception) {
+				((Exception) d).printStackTrace();
+			}
 		}
 	}
 
