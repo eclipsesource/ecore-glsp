@@ -13,30 +13,23 @@ package org.eclipse.emfcloud.ecore.glsp.operationhandler;
 import org.eclipse.emfcloud.ecore.enotation.Shape;
 import org.eclipse.emfcloud.ecore.glsp.EcoreModelIndex;
 import org.eclipse.emfcloud.ecore.glsp.model.EcoreModelState;
-import org.eclipse.glsp.api.action.kind.AbstractOperationAction;
-import org.eclipse.glsp.api.action.kind.ChangeBoundsOperationAction;
-import org.eclipse.glsp.api.handler.OperationHandler;
 import org.eclipse.glsp.api.model.GraphicalModelState;
+import org.eclipse.glsp.api.operation.kind.ChangeBoundsOperation;
 import org.eclipse.glsp.api.types.ElementAndBounds;
 import org.eclipse.glsp.graph.GDimension;
 import org.eclipse.glsp.graph.GPoint;
+import org.eclipse.glsp.server.operationhandler.BasicOperationHandler;
 
-public class EcoreChangeBoundsOperationHandler implements OperationHandler {
-
-	@Override
-	public Class<?> handlesActionType() {
-		return ChangeBoundsOperationAction.class;
-	}
+public class EcoreChangeBoundsOperationHandler extends BasicOperationHandler<ChangeBoundsOperation> {
 
 	@Override
-	public void execute(AbstractOperationAction action, GraphicalModelState graphicalModelState) {
+	public void executeOperation(ChangeBoundsOperation changeBoundsOperation, GraphicalModelState graphicalModelState) {
 		EcoreModelState modelState = EcoreModelState.getModelState(graphicalModelState);
-		ChangeBoundsOperationAction changeBoundsAction = (ChangeBoundsOperationAction) action;
-		applyBounds(changeBoundsAction, modelState.getIndex());
+		applyBounds(changeBoundsOperation, modelState.getIndex());
 	}
 
-	private void applyBounds(ChangeBoundsOperationAction action, EcoreModelIndex index) {
-		for (ElementAndBounds element : action.getNewBounds()) {
+	private void applyBounds(ChangeBoundsOperation operation, EcoreModelIndex index) {
+		for (ElementAndBounds element : operation.getNewBounds()) {
 			index.getNotation(element.getElementId(), Shape.class)
 					.ifPresent(notationElement -> changeElementBounds(notationElement, element.getNewSize(),
 							element.getNewPosition()));
@@ -53,7 +46,7 @@ public class EcoreChangeBoundsOperationHandler implements OperationHandler {
 	}
 
 	@Override
-	public String getLabel(AbstractOperationAction action) {
+	public String getLabel() {
 		return "Change bounds";
 	}
 }

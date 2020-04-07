@@ -31,12 +31,12 @@
 		<dependency>
 			<groupId>org.eclipse.glsp</groupId>
 			<artifactId>org.eclipse.glsp.server</artifactId>
-			<version>0.7.0-RC-01</version>
+			<version>0.8.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.glsp</groupId>
 			<artifactId>org.eclipse.glsp.layout</artifactId>
-			<version>0.7.0-RC-01</version>
+			<version>0.8.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.emf</groupId>
@@ -98,6 +98,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
+				<version>3.2.0</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>

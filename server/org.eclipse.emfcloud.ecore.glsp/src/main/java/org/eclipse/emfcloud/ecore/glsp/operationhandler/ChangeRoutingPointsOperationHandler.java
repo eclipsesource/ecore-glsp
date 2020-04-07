@@ -15,33 +15,22 @@ import java.util.List;
 import org.eclipse.emfcloud.ecore.enotation.Edge;
 import org.eclipse.emfcloud.ecore.glsp.EcoreModelIndex;
 import org.eclipse.emfcloud.ecore.glsp.model.EcoreModelState;
-import org.eclipse.glsp.api.action.kind.AbstractOperationAction;
-import org.eclipse.glsp.api.action.kind.ChangeRoutingPointsOperationAction;
-import org.eclipse.glsp.api.handler.OperationHandler;
 import org.eclipse.glsp.api.model.GraphicalModelState;
+import org.eclipse.glsp.api.operation.kind.ChangeRoutingPointsOperation;
 import org.eclipse.glsp.api.types.ElementAndRoutingPoints;
 import org.eclipse.glsp.graph.GPoint;
+import org.eclipse.glsp.server.operationhandler.BasicOperationHandler;
 
-public class ChangeRoutingPointsOperationHandler implements OperationHandler {
-
-    public ChangeRoutingPointsOperationHandler() {
-
-    }
+public class ChangeRoutingPointsOperationHandler extends BasicOperationHandler<ChangeRoutingPointsOperation> {
 
     @Override
-    public Class<?> handlesActionType() {
-        return ChangeRoutingPointsOperationAction.class;
-    }
-
-    @Override
-    public void execute(AbstractOperationAction action, GraphicalModelState modelState) {
+    public void executeOperation(ChangeRoutingPointsOperation operation, GraphicalModelState modelState) {
         EcoreModelIndex index = EcoreModelState.getModelState(modelState).getIndex();
-        ChangeRoutingPointsOperationAction rerouteAction = (ChangeRoutingPointsOperationAction) action;
-        rerouteEdge(rerouteAction, index);
+        rerouteEdge(operation, index);
     }
 
-    private void rerouteEdge(ChangeRoutingPointsOperationAction action, EcoreModelIndex index) {
-        for (ElementAndRoutingPoints element : action.getNewRoutingPoints()) {
+    private void rerouteEdge(ChangeRoutingPointsOperation operation, EcoreModelIndex index) {
+        for (ElementAndRoutingPoints element : operation.getNewRoutingPoints()) {
             index.getNotation(element.getElementId(), Edge.class)
                     .ifPresent(notationElement -> changeEdgePoints(notationElement, element.getNewRoutingPoints()));
         };
@@ -55,7 +44,7 @@ public class ChangeRoutingPointsOperationHandler implements OperationHandler {
     }
 
     @Override
-    public String getLabel(AbstractOperationAction action) {
+    public String getLabel() {
         return "Reroute ecore edge";
     }
 }

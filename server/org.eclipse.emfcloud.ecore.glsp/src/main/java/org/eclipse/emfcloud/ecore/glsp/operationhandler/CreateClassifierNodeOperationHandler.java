@@ -24,37 +24,31 @@ import org.eclipse.emfcloud.ecore.glsp.EcoreEditorContext;
 import org.eclipse.emfcloud.ecore.glsp.EcoreFacade;
 import org.eclipse.emfcloud.ecore.glsp.model.EcoreModelState;
 import org.eclipse.emfcloud.ecore.glsp.util.EcoreConfig.Types;
-import org.eclipse.glsp.api.action.kind.AbstractOperationAction;
-import org.eclipse.glsp.api.action.kind.CreateNodeOperationAction;
-import org.eclipse.glsp.api.handler.OperationHandler;
 import org.eclipse.glsp.api.model.GraphicalModelState;
+import org.eclipse.glsp.api.operation.Operation;
+import org.eclipse.glsp.api.operation.kind.CreateNodeOperation;
 import org.eclipse.glsp.graph.GraphPackage;
+import org.eclipse.glsp.server.operationhandler.BasicOperationHandler;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
-public class CreateClassifierNodeOperationHandler implements OperationHandler {
+public class CreateClassifierNodeOperationHandler extends BasicOperationHandler<CreateNodeOperation> {
 
 	private List<String> handledElementTypeIds = Lists.newArrayList(Types.ECLASS, Types.ENUM, Types.INTERFACE,
 			Types.ABSTRACT, Types.DATATYPE);
 
-	public CreateClassifierNodeOperationHandler() {
-	}
-
 	@Override
-	public boolean handles(AbstractOperationAction execAction) {
-		if (execAction instanceof CreateNodeOperationAction) {
-			CreateNodeOperationAction action = (CreateNodeOperationAction) execAction;
+	public boolean handles(Operation execAction) {
+		if (execAction instanceof CreateNodeOperation) {
+			CreateNodeOperation action = (CreateNodeOperation) execAction;
 			return handledElementTypeIds.contains(action.getElementTypeId());
 		}
 		return false;
 	}
 
 	@Override
-	public void execute(AbstractOperationAction abstractAction, GraphicalModelState modelState) {
-		Preconditions.checkArgument(abstractAction instanceof CreateNodeOperationAction);
-		CreateNodeOperationAction action = (CreateNodeOperationAction) abstractAction;
-		String elementTypeId = action.getElementTypeId();
+	public void executeOperation(CreateNodeOperation operation, GraphicalModelState modelState) {
+		String elementTypeId = operation.getElementTypeId();
 		EcoreEditorContext context = EcoreModelState.getEditorContext(modelState);
 		EcoreFacade facade = context.getEcoreFacade();
 		EPackage ePackage = facade.getEPackage();
@@ -64,8 +58,8 @@ public class CreateClassifierNodeOperationHandler implements OperationHandler {
 		ePackage.getEClassifiers().add(eClassifier);
 		Diagram diagram = facade.getDiagram();
 		Shape shape = facade.initializeShape(eClassifier);
-		if (action.getLocation() != null) {
-			shape.setPosition(action.getLocation());
+		if (operation.getLocation() != null) {
+			operation.getLocation().ifPresent(shape::setPosition);
 		}
 		diagram.getElements().add(shape);
 	}
@@ -96,7 +90,7 @@ public class CreateClassifierNodeOperationHandler implements OperationHandler {
 	}
 
 	@Override
-	public String getLabel(AbstractOperationAction action) {
+	public String getLabel() {
 		return "Create ecore edge";
 	}
 

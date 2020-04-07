@@ -24,43 +24,38 @@ import org.eclipse.emfcloud.ecore.glsp.EcoreFacade;
 import org.eclipse.emfcloud.ecore.glsp.EcoreModelIndex;
 import org.eclipse.emfcloud.ecore.glsp.model.EcoreModelState;
 import org.eclipse.emfcloud.ecore.glsp.util.EcoreConfig.Types;
-import org.eclipse.glsp.api.action.kind.AbstractOperationAction;
-import org.eclipse.glsp.api.action.kind.CreateConnectionOperationAction;
-import org.eclipse.glsp.api.handler.OperationHandler;
 import org.eclipse.glsp.api.model.GraphicalModelState;
+import org.eclipse.glsp.api.operation.Operation;
+import org.eclipse.glsp.api.operation.kind.CreateEdgeOperation;
 import org.eclipse.glsp.graph.GEdge;
+import org.eclipse.glsp.server.operationhandler.BasicOperationHandler;
 
 import com.google.common.collect.Lists;
 
-public class CreateEcoreEdgeOperationHandler implements OperationHandler {
+public class CreateEcoreEdgeOperationHandler extends BasicOperationHandler<CreateEdgeOperation> {
 	private List<String> handledElementTypeIds = Lists.newArrayList(Types.REFERENCE, Types.COMPOSITION,
 			Types.INHERITANCE, Types.BIDIRECTIONAL_REFERENCE, Types.BIDIRECTIONAL_COMPOSITION);
 
-	public CreateEcoreEdgeOperationHandler() {
-
-	}
-
 	@Override
-	public boolean handles(AbstractOperationAction action) {
-		if (action instanceof CreateConnectionOperationAction) {
-			CreateConnectionOperationAction connectAction = (CreateConnectionOperationAction) action;
+	public boolean handles(Operation operation) {
+		if (operation instanceof CreateEdgeOperation) {
+			CreateEdgeOperation connectAction = (CreateEdgeOperation) operation;
 			return this.handledElementTypeIds.contains(connectAction.getElementTypeId());
 		}
 		return false;
 	}
 
 	@Override
-	public void execute(AbstractOperationAction operationAction, GraphicalModelState modelState) {
-		CreateConnectionOperationAction action = (CreateConnectionOperationAction) operationAction;
-		String elementTypeId = action.getElementTypeId();
+	public void executeOperation(CreateEdgeOperation operation, GraphicalModelState modelState) {
+		String elementTypeId = operation.getElementTypeId();
 
 		EcoreEditorContext context = EcoreModelState.getEditorContext(modelState);
 		EcoreModelIndex modelIndex = context.getModelState().getIndex();
 		EcoreFacade facade = context.getEcoreFacade();
-		EClass sourceEclass = getOrThrow(modelIndex.getSemantic(action.getSourceElementId(), EClass.class),
-				"No semantic EClass found for source element with id " + action.getSourceElementId());
-		EClass targetEClass = getOrThrow(modelIndex.getSemantic(action.getTargetElementId(), EClass.class),
-				"No semantic EClass found for target element with id" + action.getTargetElementId());
+		EClass sourceEclass = getOrThrow(modelIndex.getSemantic(operation.getSourceElementId(), EClass.class),
+				"No semantic EClass found for source element with id " + operation.getSourceElementId());
+		EClass targetEClass = getOrThrow(modelIndex.getSemantic(operation.getTargetElementId(), EClass.class),
+				"No semantic EClass found for target element with id" + operation.getTargetElementId());
 
 		Diagram diagram = facade.getDiagram();
 
@@ -110,7 +105,7 @@ public class CreateEcoreEdgeOperationHandler implements OperationHandler {
 	}
 
 	@Override
-	public String getLabel(AbstractOperationAction action) {
+	public String getLabel() {
 		return "Create ecore edge";
 	}
 

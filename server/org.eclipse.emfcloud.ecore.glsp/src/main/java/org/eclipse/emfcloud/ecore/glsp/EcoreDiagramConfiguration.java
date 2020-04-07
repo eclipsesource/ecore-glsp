@@ -17,8 +17,6 @@ import java.util.Map;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emfcloud.ecore.glsp.util.EcoreConfig.Types;
 import org.eclipse.glsp.api.diagram.DiagramConfiguration;
-import org.eclipse.glsp.api.operations.Group;
-import org.eclipse.glsp.api.operations.Operation;
 import org.eclipse.glsp.api.types.EdgeTypeHint;
 import org.eclipse.glsp.api.types.ShapeTypeHint;
 import org.eclipse.glsp.graph.DefaultTypes;
@@ -60,39 +58,6 @@ public class EcoreDiagramConfiguration implements DiagramConfiguration {
 		hints.add(new ShapeTypeHint(Types.OPERATION, false, true, false, true));
 		hints.add(new ShapeTypeHint(Types.ENUMLITERAL, false, true, false, true));
 		return hints;
-	}
-
-	@Override
-	public List<Operation> getOperations() {
-		Group classifierGroup = new Group("ecore.classifier", "Classifier");
-		Group classGroup = new Group("ecore.class", "Class", classifierGroup);
-		Operation createEClass = new Operation("Class", Types.ECLASS, Operation.Kind.CREATE_NODE, classGroup);
-		Operation createAbstract = new Operation("Abstract", Types.ABSTRACT, Operation.Kind.CREATE_NODE, classGroup);
-		Operation createInterface = new Operation("Interface", Types.INTERFACE, Operation.Kind.CREATE_NODE, classGroup);
-		Operation createEnum = new Operation("Enum", Types.ENUM, Operation.Kind.CREATE_NODE, classifierGroup);
-		Operation createDataType = new Operation("DataType", Types.DATATYPE, Operation.Kind.CREATE_NODE,
-				classifierGroup);
-		Group relationGroup = new Group("ecore.relation", "Relation");
-		Operation createEcoreEdge = new Operation("Reference", Types.REFERENCE, Operation.Kind.CREATE_CONNECTION,
-				relationGroup);
-		Operation createComposition = new Operation("Containment", Types.COMPOSITION, Operation.Kind.CREATE_CONNECTION,
-				relationGroup);
-		Operation createInheritance = new Operation("Inheritance", Types.INHERITANCE, Operation.Kind.CREATE_CONNECTION,
-				relationGroup);
-		Operation createBiReference = new Operation("Bi-Directional Reference", Types.BIDIRECTIONAL_REFERENCE, Operation.Kind.CREATE_CONNECTION,
-				relationGroup);
-		Operation createBiComposition = new Operation("Bi-Directional Containment", Types.BIDIRECTIONAL_COMPOSITION, Operation.Kind.CREATE_CONNECTION,
-				relationGroup);
-
-		Group featureGroup = new Group("ecore.feature", "Feature");
-		Operation createAttributeOperation = new Operation("Attribute", Types.ATTRIBUTE, Operation.Kind.CREATE_NODE,
-				featureGroup);
-		Operation createEnumLiteral = new Operation("Literal", Types.ENUMLITERAL, Operation.Kind.CREATE_NODE,
-				featureGroup);
-		List<Operation> operations = Lists.newArrayList(createEClass, createAbstract, createInterface, createEnum,
-				createDataType, createAttributeOperation, createEnumLiteral, createEcoreEdge, createComposition,
-				createInheritance, createBiReference, createBiComposition);
-		return operations;
 	}
 
 	@Override

@@ -20,18 +20,15 @@ import org.eclipse.glsp.api.action.kind.RedoAction;
 import org.eclipse.glsp.api.action.kind.RequestBoundsAction;
 import org.eclipse.glsp.api.action.kind.SetDirtyStateAction;
 import org.eclipse.glsp.api.action.kind.UndoAction;
+import org.eclipse.glsp.api.handler.ActionHandler;
 import org.eclipse.glsp.api.model.GraphicalModelState;
 import org.eclipse.glsp.graph.GModelRoot;
-import org.eclipse.glsp.server.actionhandler.AbstractActionHandler;
 import org.eclipse.glsp.server.actionhandler.UndoRedoActionHandler;
 
-public class EcoreUndoRedoActionHandler extends AbstractActionHandler {
-	private static final Logger LOG = Logger.getLogger(UndoRedoActionHandler.class);
+import com.google.common.collect.Lists;
 
-	@Override
-	public boolean handles(Action action) {
-		return action instanceof UndoAction || action instanceof RedoAction;
-	}
+public class EcoreUndoRedoActionHandler implements ActionHandler {
+	private static final Logger LOG = Logger.getLogger(UndoRedoActionHandler.class);
 
 	@Override
 	public List<Action> execute(Action action, GraphicalModelState modelState) {
@@ -54,5 +51,10 @@ public class EcoreUndoRedoActionHandler extends AbstractActionHandler {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public List<Class<? extends Action>> getHandledActionTypes() {
+		return Lists.newArrayList(UndoAction.class, RedoAction.class);
 	}
 }

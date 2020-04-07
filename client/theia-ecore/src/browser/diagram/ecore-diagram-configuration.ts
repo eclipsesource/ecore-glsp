@@ -8,7 +8,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR MIT
  ********************************************************************************/
-import { registerDefaultTools, TYPES } from "@eclipse-glsp/client/lib";
+import { TYPES } from "@eclipse-glsp/client/lib";
 import { SelectionService } from "@theia/core";
 import { Container, inject, injectable } from "inversify";
 import { createEcoreDiagramContainer } from "sprotty-ecore/lib";
@@ -30,7 +30,6 @@ export class EcoreDiagramConfiguration implements DiagramConfiguration {
         container.bind(TYPES.IActionHandlerInitializer).to(TheiaSprottySelectionForwarder);
         container.bind(SelectionService).toConstantValue(this.selectionService);
 
-        registerDefaultTools(container);
         return container;
     }
 }
