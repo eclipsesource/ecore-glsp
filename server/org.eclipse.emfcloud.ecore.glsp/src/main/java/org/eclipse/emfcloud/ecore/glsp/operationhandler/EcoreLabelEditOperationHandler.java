@@ -32,63 +32,55 @@ import org.eclipse.emfcloud.ecore.glsp.EcoreFacade;
 import org.eclipse.emfcloud.ecore.glsp.EcoreModelIndex;
 import org.eclipse.emfcloud.ecore.glsp.ResourceManager;
 import org.eclipse.emfcloud.ecore.glsp.model.EcoreModelState;
-import org.eclipse.emfcloud.ecore.glsp.util.EcoreEdgeUtil;
 import org.eclipse.emfcloud.ecore.glsp.util.EcoreConfig.Types;
-import org.eclipse.glsp.api.action.Action;
-import org.eclipse.glsp.api.action.kind.AbstractOperationAction;
-import org.eclipse.glsp.api.action.kind.ApplyLabelEditOperationAction;
-import org.eclipse.glsp.api.handler.OperationHandler;
+import org.eclipse.emfcloud.ecore.glsp.util.EcoreEdgeUtil;
 import org.eclipse.glsp.api.jsonrpc.GLSPServerException;
 import org.eclipse.glsp.api.model.GraphicalModelState;
+import org.eclipse.glsp.api.operation.kind.ApplyLabelEditOperation;
 import org.eclipse.glsp.graph.GModelElement;
 import org.eclipse.glsp.graph.GNode;
+import org.eclipse.glsp.server.operationhandler.BasicOperationHandler;
 
-public class EcoreLabelEditOperationHandler implements OperationHandler {
-
-	@Override
-	public Class<? extends Action> handlesActionType() {
-		return ApplyLabelEditOperationAction.class;
-	}
+public class EcoreLabelEditOperationHandler extends BasicOperationHandler<ApplyLabelEditOperation> {
 
 	@Override
-	public void execute(AbstractOperationAction action, GraphicalModelState graphicalModelState) {
-		ApplyLabelEditOperationAction editLabelAction = (ApplyLabelEditOperationAction) action;
+	public void executeOperation(ApplyLabelEditOperation editLabelOperation, GraphicalModelState graphicalModelState) {
 		EcoreFacade facade = EcoreModelState.getEcoreFacade(graphicalModelState);
 		EcoreModelIndex index = EcoreModelState.getModelState(graphicalModelState).getIndex();
-		Optional<String> type = index.findElementByClass(editLabelAction.getLabelId(), GModelElement.class).map(e -> e.getType());
+		Optional<String> type = index.findElementByClass(editLabelOperation.getLabelId(), GModelElement.class).map(e -> e.getType());
 		if (type.isPresent()) {
-			switch (type.get()) {
+			switch (type.get()) { 
 				case Types.LABEL_NAME:
-						GNode node = getOrThrow(index.findElementByClass(editLabelAction.getLabelId(), GNode.class), 
-							"No parent Node for element with id " + editLabelAction.getLabelId() + " found");
+						GNode node = getOrThrow(index.findElementByClass(editLabelOperation.getLabelId(), GNode.class), 
+							"No parent Node for element with id " + editLabelOperation.getLabelId() + " found");
 						
 						EObject node_semantic = getOrThrow(index.getSemantic(node),
 							"No semantic element for labelContainer with id " + node.getId() + " found");
 		
 						Shape shape = getOrThrow(index.getNotation(node_semantic), Shape.class,
-								"No shape element for label with id " + editLabelAction.getLabelId() + " found");
+								"No shape element for label with id " + editLabelOperation.getLabelId() + " found");
 		
 						if (node_semantic instanceof EClassifier) {
-							((EClassifier) node_semantic).setName(editLabelAction.getText().trim());
+							((EClassifier) node_semantic).setName(editLabelOperation.getText().trim());
 							// nameChange== uri change so we have to recreate the proxy here
 							shape.setSemanticElement(facade.createProxy(node_semantic));
 						}
 					break;
 				case Types.LABEL_INSTANCE:
-					node = getOrThrow(index.findElementByClass(editLabelAction.getLabelId(), GNode.class), 
-							"No parent Node for element with id " + editLabelAction.getLabelId() + " found");
+					node = getOrThrow(index.findElementByClass(editLabelOperation.getLabelId(), GNode.class), 
+							"No parent Node for element with id " + editLabelOperation.getLabelId() + " found");
 
 					node_semantic = getOrThrow(index.getSemantic(node),
 							"No semantic element for labelContainer with id " + node.getId() + " found");
 					if (node_semantic instanceof EClassifier) {
-						((EClassifier) node_semantic).setInstanceClassName(editLabelAction.getText().trim());
+						((EClassifier) node_semantic).setInstanceClassName(editLabelOperation.getText().trim());
 					}
 					break;
 				case Types.ATTRIBUTE:
-					EAttribute attribute_semantic = (EAttribute) getOrThrow(index.getSemantic(editLabelAction.getLabelId()),
-						"No semantic element for label with id " + editLabelAction.getLabelId() + " found");
+					EAttribute attribute_semantic = (EAttribute) getOrThrow(index.getSemantic(editLabelOperation.getLabelId()),
+						"No semantic element for label with id " + editLabelOperation.getLabelId() + " found");
 
-					String inputText = editLabelAction.getText();
+					String inputText = editLabelOperation.getText();
 					String attributeName;
 					if (inputText.contains(":")) {
 						String[] split = inputText.split(":");
@@ -108,36 +100,36 @@ public class EcoreLabelEditOperationHandler implements OperationHandler {
 					break;
 
 				case Types.ENUMLITERAL:
-					EEnumLiteral literal_semantic = (EEnumLiteral) getOrThrow(index.getSemantic(editLabelAction.getLabelId()),
-						"No semantic element for label with id " + editLabelAction.getLabelId() + " found");
-					String text = editLabelAction.getText().trim();
+					EEnumLiteral literal_semantic = (EEnumLiteral) getOrThrow(index.getSemantic(editLabelOperation.getLabelId()),
+						"No semantic element for label with id " + editLabelOperation.getLabelId() + " found");
+					String text = editLabelOperation.getText().trim();
 					if (!text.isEmpty()) {
 						literal_semantic.setName(text);
 					}
 					break;
 
 				case Types.LABEL_EDGE_NAME:
-					String edgeId = EcoreEdgeUtil.getEdgeId(editLabelAction.getLabelId());
+					String edgeId = EcoreEdgeUtil.getEdgeId(editLabelOperation.getLabelId());
 					EReference reference_semantic = (EReference) getOrThrow(
 						index.getSemantic(edgeId),
 						"No semantic element for labelContainer with id " + edgeId + " found");
-					reference_semantic.setName(editLabelAction.getText().trim());
+					reference_semantic.setName(editLabelOperation.getText().trim());
 					break;
 
 				case Types.LABEL_EDGE_MULTIPLICITY:
-					edgeId = EcoreEdgeUtil.getEdgeId(editLabelAction.getLabelId());
+					edgeId = EcoreEdgeUtil.getEdgeId(editLabelOperation.getLabelId());
 					reference_semantic = (EReference) getOrThrow(
 						index.getSemantic(edgeId),
 						"No semantic element for labelContainer with id " + edgeId + " found");
 					Pattern pattern = Pattern.compile("\\s*\\[\\s*(\\d+)\\s*\\.+\\s*(\\*|\\d+|\\-1)\\s*\\]\\s*");
-						Matcher matcher = pattern.matcher(editLabelAction.getText());
+						Matcher matcher = pattern.matcher(editLabelOperation.getText());
 						if (matcher.matches()) {
 							String lowerBound = matcher.group(1);
 							String upperBound = matcher.group(2);
 							reference_semantic.setLowerBound((lowerBound.equals("*")) ? -1 : Integer.valueOf(lowerBound));
 							reference_semantic.setUpperBound((upperBound.equals("*")) ? -1 : Integer.valueOf(upperBound));
 						} else {
-							throw new GLSPServerException("Multiplicity of reference with id " + editLabelAction.getLabelId() + " has a wrong input format", new IllegalArgumentException());
+							throw new GLSPServerException("Multiplicity of reference with id " + editLabelOperation.getLabelId() + " has a wrong input format", new IllegalArgumentException());
 						}
 					break;
 			}
@@ -167,7 +159,7 @@ public class EcoreLabelEditOperationHandler implements OperationHandler {
 	}
 
 	@Override
-	public String getLabel(AbstractOperationAction action) {
+	public String getLabel() {
 		return "Apply label";
 	}
 }

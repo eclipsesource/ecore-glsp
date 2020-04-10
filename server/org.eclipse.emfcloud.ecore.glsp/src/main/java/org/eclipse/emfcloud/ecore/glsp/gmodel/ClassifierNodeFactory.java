@@ -26,7 +26,7 @@ import org.eclipse.glsp.graph.GCompartment;
 import org.eclipse.glsp.graph.GNode;
 import org.eclipse.glsp.graph.builder.impl.GCompartmentBuilder;
 import org.eclipse.glsp.graph.builder.impl.GLabelBuilder;
-import org.eclipse.glsp.graph.builder.impl.GLayoutOptionsBuilder;
+import org.eclipse.glsp.graph.builder.impl.GLayoutOptions;
 import org.eclipse.glsp.graph.builder.impl.GNodeBuilder;
 import org.eclipse.glsp.graph.util.GConstants;
 import org.eclipse.glsp.graph.util.GraphUtil;
@@ -74,7 +74,7 @@ public class ClassifierNodeFactory extends AbstractGModelFactory<EClassifier, GN
 		GNodeBuilder b = new GNodeBuilder(Types.ENUM) //
 				.id(toId(eEnum)) //
 				.layout(GConstants.Layout.VBOX) //
-				.layoutOptions(new GLayoutOptionsBuilder().resizeContainer(true).build()) //
+				.layoutOptions(new GLayoutOptions().resizeContainer(true)) //
 				.addCssClass(CSS.NODE) //
 				.add(buildHeader(eEnum))//
 				.add(createLabeledChildrenCompartment(eEnum.getELiterals(), eEnum));
@@ -87,16 +87,15 @@ public class ClassifierNodeFactory extends AbstractGModelFactory<EClassifier, GN
 		GNodeBuilder b = new GNodeBuilder(Types.DATATYPE) //
 				.id(toId(eDataType)) //
 				.layout(GConstants.Layout.VBOX) //
-				.layoutOptions(new GLayoutOptionsBuilder().resizeContainer(true).build()) //
+				.layoutOptions(new GLayoutOptions().resizeContainer(true)) //
 				.addCssClass(CSS.NODE) //
 				.add(buildHeader(eDataType))//
 				.add(new GCompartmentBuilder(Types.COMP) //
 						.id(toId(eDataType) + "_childCompartment")//
 						.layout(GConstants.Layout.VBOX) //
-						.layoutOptions(new GLayoutOptionsBuilder() //
+						.layoutOptions(new GLayoutOptions() //
 								.hAlign(GConstants.HAlign.CENTER) //
-								.resizeContainer(true) //
-								.build()) //
+								.resizeContainer(true)) //
 						.add(new GLabelBuilder(Types.LABEL_INSTANCE) //
 								.addCssClass(CSS.ITALIC)//
 								.id(toId(eDataType) + Types.LABEL_INSTANCE)//
@@ -133,10 +132,9 @@ public class ClassifierNodeFactory extends AbstractGModelFactory<EClassifier, GN
 	private GCompartment createLabeledChildrenCompartment(Collection<? extends EObject> children, EClassifier parent) {
 		return new GCompartmentBuilder(Types.COMP) //
 				.id(toId(parent) + "_childCompartment").layout(GConstants.Layout.VBOX) //
-				.layoutOptions(new GLayoutOptionsBuilder() //
+				.layoutOptions(new GLayoutOptions() //
 						.hAlign(GConstants.HAlign.LEFT) //
-						.resizeContainer(true) //
-						.build()) //
+						.resizeContainer(true)) //
 				.addAll(children.stream() //
 						.map(parentFactory::create) //
 						.collect(Collectors.toList()))

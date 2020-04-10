@@ -25,35 +25,31 @@ import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emfcloud.ecore.glsp.model.EcoreModelState;
 import org.eclipse.emfcloud.ecore.glsp.util.EcoreConfig.Types;
-import org.eclipse.glsp.api.action.kind.AbstractOperationAction;
-import org.eclipse.glsp.api.action.kind.CreateNodeOperationAction;
-import org.eclipse.glsp.api.handler.OperationHandler;
 import org.eclipse.glsp.api.model.GraphicalModelState;
+import org.eclipse.glsp.api.operation.Operation;
+import org.eclipse.glsp.api.operation.kind.CreateNodeOperation;
 import org.eclipse.glsp.graph.GraphPackage;
+import org.eclipse.glsp.server.operationhandler.BasicOperationHandler;
 
-import com.google.common.base.Preconditions;
-
-public class CreateClassifierChildNodeOperationHandler implements OperationHandler {
+public class CreateClassifierChildNodeOperationHandler extends BasicOperationHandler<CreateNodeOperation> {
 
 	private List<String> handledElementTypeIds = List.of(Types.ATTRIBUTE, Types.OPERATION, Types.ENUMLITERAL);
 
 	@Override
-	public boolean handles(AbstractOperationAction operationAction) {
-		if (operationAction instanceof CreateNodeOperationAction) {
-			CreateNodeOperationAction action = (CreateNodeOperationAction) operationAction;
+	public boolean handles(Operation operationAction) {
+		if (operationAction instanceof CreateNodeOperation) {
+			CreateNodeOperation action = (CreateNodeOperation) operationAction;
 			return handledElementTypeIds.contains(action.getElementTypeId());
 		}
 		return false;
 	}
 
 	@Override
-	public void execute(AbstractOperationAction abstractAction, GraphicalModelState graphicalModelState) {
-		Preconditions.checkArgument(abstractAction instanceof CreateNodeOperationAction);
-		CreateNodeOperationAction action = (CreateNodeOperationAction) abstractAction;
+	public void executeOperation(CreateNodeOperation operation, GraphicalModelState graphicalModelState) {
 		EcoreModelState modelState = EcoreModelState.getModelState(graphicalModelState);
-		EClassifier container = getOrThrow(modelState.getIndex().getSemantic(action.getContainerId()),
-				EClassifier.class, "No valid container with id " + action.getContainerId() + " found");
-		String elementTypeId = action.getElementTypeId();
+		EClassifier container = getOrThrow(modelState.getIndex().getSemantic(operation.getContainerId()),
+				EClassifier.class, "No valid container with id " + operation.getContainerId() + " found");
+		String elementTypeId = operation.getElementTypeId();
 		if (elementTypeId.equals(Types.ATTRIBUTE) && container instanceof EClass) {
 			EAttribute attribute = createEAttribute(modelState);
 			modelState.getIndex().add(attribute);
@@ -89,7 +85,7 @@ public class CreateClassifierChildNodeOperationHandler implements OperationHandl
 	}
 
 	@Override
-	public String getLabel(AbstractOperationAction action) {
+	public String getLabel() {
 		return "Create EClassifier child node";
 	}
 

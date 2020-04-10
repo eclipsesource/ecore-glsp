@@ -23,17 +23,12 @@ import org.eclipse.emfcloud.ecore.glsp.model.EcoreModelState;
 import org.eclipse.emfcloud.ecore.glsp.operationhandler.EcoreLabelEditOperationHandler;
 import org.eclipse.glsp.api.action.Action;
 import org.eclipse.glsp.api.model.GraphicalModelState;
-import org.eclipse.glsp.server.actionhandler.AbstractActionHandler;
+import org.eclipse.glsp.server.actionhandler.BasicActionHandler;
 
-public class EcoreGetAttributeTypesActionHandler extends AbstractActionHandler {
-
-    @Override
-	public boolean handles(Action action) {
-		return action instanceof AttributeTypesAction;
-    }
+public class EcoreGetAttributeTypesActionHandler extends BasicActionHandler<AttributeTypesAction> {
 
     @Override
-	protected List<Action> execute(Action action, GraphicalModelState modelState) {
+	protected List<Action> executeAction(AttributeTypesAction action, GraphicalModelState modelState) {
 		List<String> types = getEAttributeTypeList(EcoreModelState.getResourceManager(modelState));
         Collections.sort(types);
 

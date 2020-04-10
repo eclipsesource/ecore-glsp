@@ -1,7 +1,7 @@
 :root {
     --sprotty-background: var(--theia-layout-color3);
-    --sprotty-edge: var(--theia-ui-font-color1);
-    --sprotty-border: var(--theia-border-color2);
+    --sprotty-edge: var(--theia-editor-foreground);
+    --sprotty-border: var(--theia-editor-foreground);
 }
 
 svg {
@@ -27,9 +27,13 @@ svg {
     background: var(--sprotty-background);
 }
 
+.sprotty-graph .sprotty-node {
+    fill: inherit;
+}
+
 .ecore-node {
     fill: #fffcdf;
-    stroke: black;
+    stroke: var(--sprotty-border);
     stroke-width: 1;
     font-weight: bold;
     filter: url(#dropShadow);
@@ -73,7 +77,7 @@ svg {
     line-height: 3px;
     font-weight: normal;
     text-align: left;
-    stroke: #000;
+    stroke: var(--sprotty-border);
     stroke-width: 2px;
 }
 
@@ -164,7 +168,7 @@ svg {
 }
 
 .ecore-edge>.triangle.inheritance {
-    fill: var(--sprotty-background);
+    fill: white;
 }
 
 .ecore-edge.aggregation .ecore-edge.composition {

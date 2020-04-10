@@ -11,38 +11,46 @@
 package org.eclipse.emfcloud.ecore.glsp.handler;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.emfcloud.ecore.glsp.EcoreEditorContext;
 import org.eclipse.emfcloud.ecore.glsp.EcoreRecordingCommand;
 import org.eclipse.emfcloud.ecore.glsp.gmodel.GModelFactory;
 import org.eclipse.emfcloud.ecore.glsp.model.EcoreModelState;
 import org.eclipse.glsp.api.action.Action;
-import org.eclipse.glsp.api.action.kind.AbstractOperationAction;
 import org.eclipse.glsp.api.action.kind.RequestBoundsAction;
 import org.eclipse.glsp.api.action.kind.SetDirtyStateAction;
 import org.eclipse.glsp.api.handler.OperationHandler;
 import org.eclipse.glsp.api.model.GraphicalModelState;
+import org.eclipse.glsp.api.operation.Operation;
 import org.eclipse.glsp.graph.GModelRoot;
 import org.eclipse.glsp.server.actionhandler.OperationActionHandler;
 
 public class EcoreOperationActionHandler extends OperationActionHandler {
 
 	@Override
-	public List<Action> doHandle(AbstractOperationAction action, GraphicalModelState graphicalModelState) {
+	public List<Action> executeAction(Operation operation, GraphicalModelState modelState) {
+		// Disable the special handling for CreateOperation, as we don't register
+		// 1 handler per element type to create.
+		Optional<? extends OperationHandler> operationHandler = operationHandlerRegistry.get(operation);
+		if (operationHandler.isPresent()) {
+			return executeHandler(operation, operationHandler.get(), modelState);
+		}
+		return none();
+	}
+
+	@Override
+	protected List<Action> executeHandler(Operation operation, OperationHandler handler,
+			GraphicalModelState graphicalModelState) {
 		EcoreModelState modelState = EcoreModelState.getModelState(graphicalModelState);
 		EcoreEditorContext context = modelState.getEditorContext();
+		String label = handler.getLabel();
+		EcoreRecordingCommand command = new EcoreRecordingCommand(context, label,
+				() -> handler.execute(operation, modelState));
+		modelState.execute(command);
+		GModelRoot newRoot = new GModelFactory(modelState).create();
 
-		if (operationHandlerProvider.isHandled(action)) {
-			OperationHandler handler = operationHandlerProvider.getHandler(action).get();
-			String label = handler.getLabel(action);
-			EcoreRecordingCommand command = new EcoreRecordingCommand(context, label,
-					() -> handler.execute(action, modelState));
-			modelState.execute(command);
-			GModelRoot newRoot = new GModelFactory(modelState).create();
-
-			return List.of(new RequestBoundsAction(newRoot), new SetDirtyStateAction(modelState.isDirty()));
-		}
-		return List.of();
+		return List.of(new RequestBoundsAction(newRoot), new SetDirtyStateAction(modelState.isDirty()));
 	}
 
 }

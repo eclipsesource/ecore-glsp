@@ -8,19 +8,20 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR MIT
  ********************************************************************************/
-import { RequestOperationsAction, RequestTypeHintsAction } from "@eclipse-glsp/client/lib";
+import { RequestTypeHintsAction, EnableToolPaletteAction } from "@eclipse-glsp/client";
 import {
     GLSPDiagramManager,
     GLSPDiagramWidget,
+    GLSPTheiaSprottyConnector,
     GLSPTheiaDiagramServer,
-    GLSPTheiaSprottyConnector
+    GLSPNotificationManager
 } from "@eclipse-glsp/theia-integration/lib/browser";
 import { MessageService } from "@theia/core";
 import { WidgetManager } from "@theia/core/lib/browser";
 import { EditorManager } from "@theia/editor/lib/browser";
 import { inject, injectable } from "inversify";
 import { DiagramServer, ModelSource, RequestModelAction, TYPES } from "sprotty";
-import { DiagramWidget, DiagramWidgetOptions, TheiaFileSaver } from "sprotty-theia/lib";
+import { DiagramWidget, DiagramWidgetOptions, TheiaFileSaver } from "sprotty-theia";
 
 import { EcoreLanguage } from "../../common/ecore-language";
 import { EcoreGLSPDiagramClient } from "./ecore-glsp-diagram-client";
@@ -49,9 +50,11 @@ export class EcoreDiagramManager extends GLSPDiagramManager {
         @inject(TheiaFileSaver) fileSaver: TheiaFileSaver,
         @inject(WidgetManager) widgetManager: WidgetManager,
         @inject(EditorManager) editorManager: EditorManager,
-        @inject(MessageService) messageService: MessageService) {
+        @inject(MessageService) messageService: MessageService,
+        @inject(GLSPNotificationManager) notificationManager: GLSPNotificationManager) {
         super();
-        this._diagramConnector = new GLSPTheiaSprottyConnector({ diagramClient, fileSaver, editorManager, widgetManager, diagramManager: this, messageService });
+        this._diagramConnector = new GLSPTheiaSprottyConnector({ diagramClient,
+            fileSaver, editorManager, widgetManager, diagramManager: this, messageService, notificationManager });
     }
 
     get fileExtensions() {
@@ -79,8 +82,7 @@ export class EcoreDiagramWidget extends GLSPDiagramWidget {
             needsClientLayout: `${this.viewerOptions.needsClientLayout}`,
             ...this.options
         }));
-        this.actionDispatcher.dispatch(new RequestOperationsAction());
         this.actionDispatcher.dispatch(new RequestTypeHintsAction(this.options.diagramType));
-        // this.actionDispatcher.dispatch(new LayoutAction());
+        this.actionDispatcher.dispatch(new EnableToolPaletteAction());
     }
 }

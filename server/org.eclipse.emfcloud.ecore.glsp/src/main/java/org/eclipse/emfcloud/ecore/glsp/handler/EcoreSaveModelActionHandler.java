@@ -17,21 +17,14 @@ import org.eclipse.glsp.api.action.Action;
 import org.eclipse.glsp.api.action.kind.SaveModelAction;
 import org.eclipse.glsp.api.action.kind.SetDirtyStateAction;
 import org.eclipse.glsp.api.model.GraphicalModelState;
-import org.eclipse.glsp.server.actionhandler.AbstractActionHandler;
+import org.eclipse.glsp.server.actionhandler.BasicActionHandler;
 
-public class EcoreSaveModelActionHandler extends AbstractActionHandler {
-
-	@Override
-	public boolean handles(Action action) {
-		return action instanceof SaveModelAction;
-	}
+public class EcoreSaveModelActionHandler extends BasicActionHandler<SaveModelAction> {
 
 	@Override
-	protected List<Action> execute(Action action, GraphicalModelState modelState) {
-		if (action instanceof SaveModelAction) {
-			EcoreModelState.getResourceManager(modelState).save();
-			modelState.saveIsDone();
-		}
+	protected List<Action> executeAction(SaveModelAction action, GraphicalModelState modelState) {
+		EcoreModelState.getResourceManager(modelState).save();
+		modelState.saveIsDone();
 		return List.of(new SetDirtyStateAction(modelState.isDirty()));
 	}
 

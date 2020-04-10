@@ -18,8 +18,8 @@ import org.eclipse.glsp.api.action.Action;
 import org.eclipse.glsp.api.action.ActionMessage;
 import org.eclipse.glsp.api.action.ActionProcessor;
 import org.eclipse.glsp.api.action.kind.ComputedBoundsAction;
-import org.eclipse.glsp.api.action.kind.LayoutAction;
 import org.eclipse.glsp.api.model.GraphicalModelState;
+import org.eclipse.glsp.api.operation.kind.LayoutOperation;
 import org.eclipse.glsp.api.types.ElementAndBounds;
 import org.eclipse.glsp.api.utils.LayoutUtil;
 import org.eclipse.glsp.graph.GDimension;
@@ -35,8 +35,7 @@ public class EcoreComputedBoundsActionHandler extends ComputedBoundsActionHandle
 	private ActionProcessor actionProcessor;
 
 	@Override
-	public List<Action> execute(Action action, GraphicalModelState graphicalModelState) {
-		ComputedBoundsAction computedBoundsAction = (ComputedBoundsAction) action;
+	public List<Action> executeAction(ComputedBoundsAction computedBoundsAction, GraphicalModelState graphicalModelState) {
 		EcoreModelState modelState = EcoreModelState.getModelState(graphicalModelState);
 
 		for (ElementAndBounds element : computedBoundsAction.getBounds()) {
@@ -49,7 +48,7 @@ public class EcoreComputedBoundsActionHandler extends ComputedBoundsActionHandle
 			if (model != null && model.getRevision() == computedBoundsAction.getRevision()) {
 				LayoutUtil.applyBounds(model, computedBoundsAction, graphicalModelState);
 				if (modelState.getEditorContext().getEcoreFacade().diagramNeedsAutoLayout()) {
-					ActionMessage layoutMessage = new ActionMessage(clientId, new LayoutAction());
+					ActionMessage layoutMessage = new ActionMessage(modelState.getClientId(), new LayoutOperation());
 					actionProcessor.process(layoutMessage);
 				}
 				return submissionHandler.doSubmitModel(true, modelState);
