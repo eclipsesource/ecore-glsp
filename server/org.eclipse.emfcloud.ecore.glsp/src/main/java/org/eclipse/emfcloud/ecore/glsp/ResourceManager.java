@@ -134,12 +134,13 @@ public class ResourceManager {
 			return;
 		}
 		
-		System.err.println("Some errors have been found while saving "+resource.getURI().lastSegment()+":");
+		LOG.error("Some errors have been found while saving "+resource.getURI().lastSegment()+":");
 		for (Diagnostic d : resource.getErrors()) {
 			if (d instanceof Exception) {
-				((Exception) d).printStackTrace();
+				LOG.error(d.getMessage(), (Exception) d);
 			}
 		}
+	
 	}
 
 }
