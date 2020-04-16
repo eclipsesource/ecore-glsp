@@ -121,15 +121,16 @@ const writeQuickAccessBar = async (t, text) => {
 
     await t
         .typeText(quickAccess, text)
+        .pressKey('Down')
         .pressKey('Enter');
 };
 
-const createNode = async (t, name) => {
+const createNode = async (t, name, x, y) => {
     const selector = Selector('div.tool-group > div.tool-button').withText(name);
     const svgCanvas = Selector('svg.sprotty-graph');
     await t
         .click(selector)
-        .click(svgCanvas);
+        .click(svgCanvas, {offsetX : x, offsetY : y});
 };
 
 const deleteNode = async (t, selector) => {
@@ -180,15 +181,15 @@ test('Open Workbench', async t => {
 test('Switch Theme', async t => {
 
     openQuickAccessBar(t);
-    writeQuickAccessBar(t, "Change Color Theme");
-    writeQuickAccessBar(t, "Dark");
+    writeQuickAccessBar(t, "Color Theme");
+    writeQuickAccessBar(t, "Dark (Theia)");
 
     await t
-        .expect(Selector('div.p-Widget.p-DockPanel.p-SplitPanel-child').getStyleProperty('color')).eql('rgb(224, 224, 224)');
+        .expect(Selector('div.p-Widget.p-DockPanel.p-SplitPanel-child').getStyleProperty('color')).eql('rgb(204, 204, 204)');
 
     openQuickAccessBar(t);
-    writeQuickAccessBar(t, "Change Color Theme");
-    writeQuickAccessBar(t, "Light");
+    writeQuickAccessBar(t, "Color Theme");
+    writeQuickAccessBar(t, "Light (Theia)");
 
     await t
         .expect(Selector('div.p-Widget.p-DockPanel.p-SplitPanel-child').getStyleProperty('color')).eql('rgb(97, 97, 97)');
@@ -217,7 +218,7 @@ test('Deletion/Renaming of enotation', async t => {
         .rightClick(await fileSelect('test_copy.enotation'))
         .click(selectors.renameFile)
         .pressKey('ctrl+a')
-        .typeText(selectors.renameInput, "test.enotation")
+        .typeText(selectors.renameInput, "test.enotation", { replace: true })
         .pressKey('Enter');
 
 }).after(checkDefaultWorkbench);
@@ -248,13 +249,11 @@ test('Create and Delete ecore file', async t => {
 test('Create Nodes', async t => {
     openFile(t, selectors.emptyEcore);
 
-    createNode(t, "Class");
-    createNode(t, "Abstract");
-    createNode(t, "Interface");
-    createNode(t, "Enum");
-    createNode(t, "DataType");
-
-    layout(t);
+    createNode(t, "Class", 12, 12);
+    createNode(t, "Abstract", 12, 62);
+    createNode(t, "Interface", 12, 112);
+    createNode(t, "Enum", 12, 162);
+    createNode(t, "DataType", 12, 212);
 
     await t
         .expect(defaultNodesSelector.classNode.exists).ok("Class has been created")
@@ -342,10 +341,10 @@ test('Add Attributes/Literals', async t => {
 
 test('Layout new Diagram', async t => {
     openFile(t, selectors.emptyEcore);
-    createNode(t, "Class");
-    createNode(t, "Abstract");
-    createNode(t, "Interface");
-    createNode(t, "Enum");
+    createNode(t, "Class", 100, 100);
+    createNode(t, "Abstract", 100, 100);
+    createNode(t, "Interface", 100, 100);
+    createNode(t, "Enum", 100, 100);
 
     layout(t);
 
@@ -415,30 +414,31 @@ test('Renaming Classes/Attributes', async t => {
     openFile(t, selectors.testNodesWithAttributesEcore);
 
     await t
+        .click(nodesSelector.classNode)
         .doubleClick(nodesSelector.classNode)
-        .typeText(selectors.input, "TestClass")
+        .typeText(selectors.input, "TestClass", { replace: true })
         .click(nodesSelector.abstractNode)
         .doubleClick(nodesSelector.abstractNode)
-        .typeText(selectors.input, "TestAbstract")
+        .typeText(selectors.input, "TestAbstract", { replace: true })
         .click(nodesSelector.interfaceNode)
         .doubleClick(nodesSelector.interfaceNode)
-        .typeText(selectors.input, "TestInterface")
+        .typeText(selectors.input, "TestInterface", { replace: true })
         .click(nodesSelector.enumNode)
         .doubleClick(nodesSelector.enumNode)
-        .typeText(selectors.input, "TestEnum")
+        .typeText(selectors.input, "TestEnum", { replace: true })
         .click(attributeSelector.attributeClass)
         .doubleClick(attributeSelector.attributeClass)
-        .typeText(selectors.input, "TestAttributeClass")
+        .typeText(selectors.input, "TestAttributeClass", { replace: true })
         .click(attributeSelector.attributeAbstract)
         .doubleClick(attributeSelector.attributeAbstract)
-        .typeText(selectors.input, "TestAttributeAbstract")
+        .typeText(selectors.input, "TestAttributeAbstract", { replace: true })
         .click(attributeSelector.attributeInterface)
         .doubleClick(attributeSelector.attributeInterface)
-        .typeText(selectors.input, "TestAttributeInterface")
+        .typeText(selectors.input, "TestAttributeInterface", { replace: true })
         .click(attributeSelector.literalEnum)
         .doubleClick(attributeSelector.literalEnum)
-        .typeText(selectors.input, "TestLiteralEnum")
-        .click(nameClassRenamed)
+        .typeText(selectors.input, "TestLiteralEnum", { replace: true })
+        .click(selectors.svgCanvas)
         .expect(nameClassRenamed.exists).ok("Renamed Class")
         .expect(nameAbstractRenamed.exists).ok("Renamed Abstract")
         .expect(nameInterfaceRenamed.exists).ok("Renamed Interface")
@@ -457,13 +457,13 @@ test('Change Attributetype', async t => {
     await t
         .click(attributeSelector.attributeClass)
         .doubleClick(attributeSelector.attributeClass)
-        .typeText(selectors.input, 'test : EDa')
+        .typeText(selectors.input, 'test : EDa', { replace: true })
         .pressKey('ctrl+space')
         .pressKey('down')
         .pressKey('Enter')
         .expect(changedAttribute.exists).ok("Changing the attributetype via Autocompletion")
         .doubleClick(changedAttribute)
-        .typeText(selectors.input, 'layout : EString')
+        .typeText(selectors.input, 'layout : EString', { replace: true })
         .pressKey('Enter')
         .expect(changedAttributeWrite.exists).ok("Changing the attributetype via Typing");
 });
