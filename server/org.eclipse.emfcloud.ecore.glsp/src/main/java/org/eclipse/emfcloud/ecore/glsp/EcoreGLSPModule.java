@@ -43,6 +43,7 @@ import org.eclipse.glsp.server.actionhandler.SaveModelActionHandler;
 import org.eclipse.glsp.server.actionhandler.UndoRedoActionHandler;
 import org.eclipse.glsp.server.di.DefaultGLSPModule;
 import org.eclipse.glsp.server.di.MultiBindConfig;
+import org.eclipse.glsp.server.operationhandler.LayoutOperationHandler;
 
 public class EcoreGLSPModule extends DefaultGLSPModule {
 
@@ -91,6 +92,7 @@ public class EcoreGLSPModule extends DefaultGLSPModule {
 		bindings.add(CreateClassifierChildNodeOperationHandler.class);
 		bindings.add(EcoreLabelEditOperationHandler.class);
 		bindings.add(ChangeRoutingPointsOperationHandler.class);
+		bindings.add(LayoutOperationHandler.class);
 	}
 
 	@Override
