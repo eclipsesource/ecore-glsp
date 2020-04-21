@@ -43,8 +43,8 @@
     "**/@theia/messages": "1.0.0",
     "**/sprotty": "0.9.0-next.feedfc8",
     "**/sprotty-theia": "0.9.0-next.63d6de7",
-    "**/@eclipse-glsp/client": "0.8.0-next.a936491",
-    "**/@eclipse-glsp/theia-integration": "0.8.0-next.06f8d8d"
+    "**/@eclipse-glsp/client": "0.8.0-rc-02",
+    "**/@eclipse-glsp/theia-integration": "0.8.0-rc-02"
   },
   "workspaces": [
     "theia-ecore",
