@@ -32,8 +32,6 @@ matrix:
         - cd client
       cache:
         yarn: true
-        directories:
-          - node_modules
       env:
         global:
           - CXX=g++-4.8
