@@ -1,3 +1,5 @@
+# IMPORTANT: Ecore GLSP was moved to Eclipse, and this repository is no longer maintained. You can retrieve Ecore GLSP here: [EMFCloud-Ecore GLSP](https://github.com/eclipse-emfcloud/ecore-glsp)
+
 # ecore-glsp
 [![Build Status](https://travis-ci.org/eclipsesource/ecore-glsp.svg?branch=master)](https://travis-ci.org/eclipsesource/ecore-glsp)
 
