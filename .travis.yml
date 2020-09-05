@@ -47,4 +47,40 @@ matrix:
           - xvfb
           - libx11-dev
           - libxkbfile-dev
-      install: false
+      install: skip
+
+    - dist: bionic
+
+      services:
+        - xvfb 
+    
+      language: node_js
+      node_js: '10'
+      before_script:
+        - cd server
+        - mvn install -U
+        - cd ../client
+        - fluxbox >/dev/null 2>&1 &
+        - sleep 3
+        - yarn
+      script: yarn e2etest
+      cache:
+        yarn: true
+        directories:
+          - node_modules
+      env:
+        global:
+          - CXX=g++-4.8
+          - NODE_OPTIONS="--max_old_space_size=4096"
+      addons:
+        firefox: latest
+        chrome: stable
+        apt:
+          update: true
+          packages:
+          - g++-4.8
+          - libsecret-1-dev
+          - xvfb
+          - libx11-dev
+          - libxkbfile-dev
+      install: skip
